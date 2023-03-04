@@ -5,7 +5,7 @@
     @submit.prevent="onSubmit"
     class="pt-24 h-screen flex flex-col items-center w-full">
     <img
-      src="../assets/logo.svg"
+      src="../assets/logo.png"
       alt=""
       height="32"
       width="32"
