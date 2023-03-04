@@ -16,11 +16,11 @@
       Powerful, self-serve product and growth analytics to help you convert,
       engage, and retain more users. Trusted by over 4,000 startups.
     </p>
-    <img
+    <!-- <img
       src="@/assets/dashboard-shot.jpg"
       alt="dashboard"
       class="w884 mx-auto mt-16 mb-20"
-    />
+    /> -->
     <div class="flex flex-row justify-between items-center">
       <div
         class="flex gap-5 flex-col w-96 lg:w-full justify-center items-center"
