@@ -17,7 +17,7 @@
       engage, and retain more users. Trusted by over 4,000 startups.
     </p>
     <img
-      src="@/assets/dashboard-shot.JPG"
+      src="@/assets/dashboard-shot.png"
       alt="dashboard-shot"
       class="w884 mx-auto mt-16 mb-20"
     />
