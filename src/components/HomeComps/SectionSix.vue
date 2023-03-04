@@ -1,10 +1,10 @@
 <template>
-  <div class="py-24 px-28 flex flex-col gap-16">
+  <div class="py-24 px-28 flex flex-col gap-16 md:py-16 md:px-4 md:gap-12">
     <div>
       <p class="text-base font-semibold text-purple-700 md:text-sm">
         Launch faster
       </p>
-      <h2 class="text-4xl font-semibold text-gray-900 mt-3 mb-5 md:mb-4">
+      <h2 class="text-4xl font-semibold text-gray-900 mt-3 mb-5 md:mb-4 md:text-3xl">
         Build something great
       </h2>
       <p class="text-xl font-normal text-gray-600 w-768 md:text-lg">
@@ -12,15 +12,15 @@
         you need to launch and grow your business faster.
       </p>
     </div>
-    <div class=" w-full flex justify-center gap-24">
+    <div class=" w-full flex justify-center gap-24 lg:flex-col md:gap-12">
       <div
-      class="grid grid-rows-2 grid-flow-col gap-8 gap-y-16 justify-center items-center"
+      class="grid grid-rows-2 grid-flow-col gap-8 gap-y-16 justify-center items-center md:flex md:flex-col md:gap-y-8"
       >
         <div
         class=" w-64  text-center"
         >
             <h3
-                class="text-6xl font-semibold text-purple-600"
+                class="text-6xl font-semibold text-purple-600 md:text-5xl"
             >
                 400+
             </h3>
@@ -39,7 +39,7 @@
         class=" w-64 text-center"
         >
             <h3
-                class="text-6xl font-semibold text-purple-600"
+                class="text-6xl font-semibold text-purple-600 md:text-5xl"
             >
             10k
             </h3>
@@ -58,7 +58,7 @@
         class=" w-64  text-center"
         >
             <h3
-                class="text-6xl font-semibold text-purple-600"
+                class="text-6xl font-semibold text-purple-600 md:text-5xl"
             >
             600%
             </h3>
@@ -77,7 +77,7 @@
         class=" w-64 text-center"
         >
             <h3
-                class="text-6xl font-semibold text-purple-600"
+                class="text-6xl font-semibold text-purple-600 md:text-5xl"
             >
             200+
             </h3>
@@ -108,5 +108,21 @@
 
 .w560 {
   width: 560px;
+}
+
+@media (max-width: 1023px) {
+  .w-768 {
+    width: 100%;
+  }
+
+  .w560 {
+    width: 100%;
+  }
+}
+
+@media (max-width: 767px) {
+  .h560 {
+    height: 240px;
+  }
 }
 </style>

@@ -1,12 +1,12 @@
 <template>
-  <div class="py-24 px-28">
+  <div class="py-24 px-28 md:py-16 md:px-4">
     <p
       class="text-sm font-semibold text-purple-700 bg-blend-multiply rounded-2xl mx-auto w-fit px-3 py-1 bg-purple-50 text-center md:text-sm"
     >
       Features
     </p>
     <h2
-      class="text-4xl font-semibold text-gray-900 text-center mt-3 mb-5 md:mb-4"
+      class="text-4xl font-semibold text-gray-900 text-center mt-3 mb-5 md:mb-4 md:text-3xl"
     >
       Cutting-edge features for advanced analytics
     </h2>
@@ -21,7 +21,7 @@
       alt="dashboard-shot"
       class="w884 mx-auto mt-16 mb-20"
     />
-    <div class="flex flex-row justify-between items-center">
+    <div class="flex flex-row justify-between items-center lg:flex-col lg:gap-10">
       <div
         class="flex gap-5 flex-col w-96 lg:w-full justify-center items-center"
       >
@@ -55,7 +55,7 @@
         </a>
       </div>
       <div
-        class="flex gap-5 flex-col w-96 lg:w-full justify-center items-center"
+        class="flex gap-5 flex-col w-96 lg:w-full justify-center items-center "
       >
         <div
           class="w-16 h-16 bg-violet-100 rounded-full text-center flex justify-center border-8 border-solid border-violet-50 p-3"
@@ -83,7 +83,7 @@
         </a>
       </div>
       <div
-        class="flex gap-5 flex-col w-96 lg:w-full justify-center items-center"
+        class="flex gap-5 flex-col w-96 lg:w-full justify-center items-center "
       >
         <div
           class="w-16 h-16 bg-violet-100 rounded-full text-center flex justify-center border-8 border-solid border-violet-50 p-3"
@@ -116,7 +116,7 @@
       </div>
     </div>
   </div>
-  <p class="bg-gray-200 h-px  mx-28"></p>
+  <p class="bg-gray-200 h-px  mx-28 md:mx-0"></p>
 </template>
 
 <style scoped>
@@ -126,5 +126,15 @@
 
 .w884 {
   width: 884px;
+}
+
+@media (max-width: 1023px) {
+  .w768 {
+    width: 100%;
+  }
+
+  .w884 {
+    width: 100%;
+  }
 }
 </style>

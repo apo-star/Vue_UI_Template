@@ -1,5 +1,5 @@
 <template>
-  <div class="py-24 px-28 bg-gray-50 flex flex-col gap-8 justify-center">
+  <div class="py-24 px-28 bg-gray-50 flex flex-col gap-8 justify-center lg:px-20 md:px-4 md:py-16">
     <div class="flex flex-row justify-center items-center gap-2">
       <img
         src="@/assets/homeIcons/sisy.svg"
@@ -8,7 +8,7 @@
       />
       <h4 class="text-gray-900 font-semibold text-xl">Sisyphus</h4>
     </div>
-    <h2 class="text-gray-900 font-medium text-5xl text-center line-height60">
+    <h2 class="text-gray-900 font-medium text-5xl text-center line-height60 md:text-3xl">
       We’ve been using Untitled to kick start every new project and can’t
       imagine working without it.
     </h2>
@@ -35,5 +35,11 @@
 .candice {
   border-radius: 50%;
   background-color: #a2a8cd;
+}
+
+@media (max-width: 767px) {
+  .line-height60 {
+    line-height: 40px;
+  }
 }
 </style>

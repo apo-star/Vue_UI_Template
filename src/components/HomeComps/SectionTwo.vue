@@ -1,7 +1,7 @@
 <template>
-  <div class="pb-24 px-28">
-    <p class="bg-gray-200 h-px mx-4"></p>
-    <div class="pt-24 flex flex-col gap-16">
+  <div class="pb-24 px-28 md:px-4 md:pb-16">
+    <p class="bg-gray-200 h-px mx-4 lg:mx-0"></p>
+    <div class="pt-24 flex flex-col gap-16 md:gap-12 md:pt-16">
       <div class="flex flex-col justify-center items-center">
         <p
           class="text-base font-semibold text-violet-700 text-center md:text-sm"
@@ -9,7 +9,7 @@
           Features
         </p>
         <h2
-          class="text-4xl font-semibold text-gray-900 text-center mt-3 mb-5 md:mb-4"
+          class="text-4xl font-semibold text-gray-900 text-center mt-3 mb-5 md:mb-4 md:text-3xl"
         >
           Analytics that feels like it’s from the future
         </h2>
@@ -24,7 +24,7 @@
         class="grid grid-rows-2 grid-flow-col xl:grid-rows-3 gap-y-16 justify-between lg:grid-rows-6 md:flex md:flex-col md:gap-10"
       >
         <div
-          class="flex gap-5 flex-col w-96 lg:w-full justify-center items-center"
+          class="flex gap-5 flex-col w-96 lg:w-full justify-center items-center md:gap-4"
         >
           <div
             class="w-16 h-16 bg-violet-100 rounded-full text-center flex justify-center border-8 border-solid border-violet-50 p-3"
@@ -35,7 +35,7 @@
               class="z-10 m-auto"
             />
           </div>
-          <div class="flex flex-col gap-2 items-center">
+          <div class="flex flex-col gap-2 items-center md:gap-1">
             <h3 class="text-xl font-semibold text-gray-900 md:text-lg">
               Share team inboxes
             </h3>
@@ -46,7 +46,7 @@
           </div>
         </div>
         <div
-          class="flex gap-5 flex-col w-96 lg:w-full justify-center items-center"
+          class="flex gap-5 flex-col w-96 lg:w-full justify-center items-center md:gap-4"
         >
           <div
             class="w-16 h-16 bg-violet-100 rounded-full text-center flex justify-center border-8 border-solid border-violet-50 p-3"
@@ -57,7 +57,7 @@
               class="z-10 m-auto"
             />
           </div>
-          <div class="flex flex-col gap-2 items-center">
+          <div class="flex flex-col gap-2 items-center md:gap-1">
             <h3 class="text-xl font-semibold text-gray-900 md:text-lg">
               Connect with customers
             </h3>
@@ -69,14 +69,14 @@
           </div>
         </div>
         <div
-          class="flex gap-5 flex-col w-96 lg:w-full justify-center items-center"
+          class="flex gap-5 flex-col w-96 lg:w-full justify-center items-center md:gap-4"
         >
           <div
             class="w-16 h-16 bg-violet-100 rounded-full text-center flex justify-center border-8 border-solid border-violet-50 p-3"
           >
             <img src="@/assets/zap.svg" alt="zap" class="z-10 m-auto" />
           </div>
-          <div class="flex flex-col gap-2 items-center">
+          <div class="flex flex-col gap-2 items-center md:gap-1">
             <h3 class="text-xl font-semibold text-gray-900 md:text-lg">
               Deliver instant answers
             </h3>
@@ -87,14 +87,14 @@
           </div>
         </div>
         <div
-          class="flex gap-5 flex-col w-96 lg:w-full justify-center items-center"
+          class="flex gap-5 flex-col w-96 lg:w-full justify-center items-center md:gap-4"
         >
           <div
             class="w-16 h-16 bg-violet-100 rounded-full text-center flex justify-center border-8 border-solid border-violet-50 p-3"
           >
             <img src="@/assets/command.svg" alt="command" class="z-10 m-auto" />
           </div>
-          <div class="flex flex-col gap-2 items-center">
+          <div class="flex flex-col gap-2 items-center md:gap-1">
             <h3 class="text-xl font-semibold text-gray-900 md:text-lg">
               Connect the tools you already use
             </h3>
@@ -105,7 +105,7 @@
           </div>
         </div>
         <div
-          class="flex gap-5 flex-col w-96 lg:w-full justify-center items-center"
+          class="flex gap-5 flex-col w-96 lg:w-full justify-center items-center md:gap-4"
         >
           <div
             class="w-16 h-16 bg-violet-100 rounded-full text-center flex justify-center border-8 border-solid border-violet-50 p-3"
@@ -116,7 +116,7 @@
               class="z-10 m-auto"
             />
           </div>
-          <div class="flex flex-col gap-2 items-center">
+          <div class="flex flex-col gap-2 items-center md:gap-1">
             <h3 class="text-xl font-semibold text-gray-900 md:text-lg">
               Manage your team with reports
             </h3>
@@ -127,7 +127,7 @@
           </div>
         </div>
         <div
-          class="flex gap-5 flex-col w-96 lg:w-full justify-center items-center"
+          class="flex gap-5 flex-col w-96 lg:w-full justify-center items-center md:gap-4"
         >
           <div
             class="w-16 h-16 bg-violet-100 rounded-full text-center flex justify-center border-8 border-solid border-violet-50 p-3"
@@ -138,7 +138,7 @@
               class="z-10 m-auto"
             />
           </div>
-          <div class="flex flex-col gap-2 items-center">
+          <div class="flex flex-col gap-2 items-center md:gap-1">
             <h3 class="text-xl font-semibold text-gray-900 md:text-lg">
               Our people make the difference
             </h3>
@@ -157,6 +157,12 @@
 <style scoped>
 .w-768 {
   width: 768px;
+}
+
+@media (max-width: 767px) {
+  .w-768 {
+    width: 100%;
+  }
 }
 </style>
 

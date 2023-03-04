@@ -1,10 +1,10 @@
 <template>
-  <div class="py-24 px-28 flex flex-col gap-16">
+  <div class="py-24 px-28 flex flex-col gap-16 md:py-16 md:px-4 md:gap-12">
     <div>
-      <h3 class="text-4xl font-semibold text-gray-900 text-center">
+      <h3 class="text-4xl font-semibold text-gray-900 text-center md:text-3xl">
         Frequently asked questions
       </h3>
-      <p class="text-xl font-normal text-gray-600 text-center mt-5">
+      <p class="text-xl font-normal text-gray-600 text-center mt-5 md:mt-4 md:text-lg">
         Everything you need to know about the product and billing.
       </p>
     </div>
@@ -29,7 +29,7 @@
         class="mt-2 hover:cursor-pointer"
         @click="toggleAnswer(0)"
       >
-        <p class="text-gray-600 text-base font-normal w720">
+        <p class="text-gray-600 text-base font-normal w720 md:pr-2.5">
           Yes, you can try us for free for 30 days. If you want, we’ll provide
           you with a free, personalized 30-minute onboarding call to get you up
           and running as soon as possible.
@@ -55,7 +55,7 @@
         class="mt-2 hover:cursor-pointer"
         @click="toggleAnswer(1)"
       >
-        <p class="text-gray-600 text-base font-normal w720">
+        <p class="text-gray-600 text-base font-normal w720 md:pr-2.5">
           Yes, you can change your plan at any time. Simply log in to your
           account and select the plan you want to switch to.
         </p>
@@ -80,7 +80,7 @@
         class="mt-2 hover:cursor-pointer"
         @click="toggleAnswer(2)"
       >
-        <p class="text-gray-600 text-base font-normal w720">
+        <p class="text-gray-600 text-base font-normal w720 md:pr-2.5">
           Yes, you can change your plan at any time. Simply log in to your
           account and select the plan you want to switch to.
         </p>
@@ -105,7 +105,7 @@
         class="mt-2 hover:cursor-pointer"
         @click="toggleAnswer(3)"
       >
-        <p class="text-gray-600 text-base font-normal w720">
+        <p class="text-gray-600 text-base font-normal w720 md:pr-2.5">
           Yes, you can change your plan at any time. Simply log in to your
           account and select the plan you want to switch to.
         </p>
@@ -130,7 +130,7 @@
         class="mt-2 hover:cursor-pointer"
         @click="toggleAnswer(4)"
       >
-        <p class="text-gray-600 text-base font-normal w720">
+        <p class="text-gray-600 text-base font-normal w720 md:pr-2.5">
           Yes, you can change your plan at any time. Simply log in to your
           account and select the plan you want to switch to.
         </p>
@@ -155,14 +155,14 @@
         class="mt-2 hover:cursor-pointer"
         @click="toggleAnswer(5)"
       >
-        <p class="text-gray-600 text-base font-normal w720">
+        <p class="text-gray-600 text-base font-normal w720 md:pr-2.5">
           Yes, you can change your plan at any time. Simply log in to your
           account and select the plan you want to switch to.
         </p>
       </div>
     </div>
     <div
-      class="py-8 bg-gray-50 w-full flex flex-col justify-center gap-8 rounded-2xl"
+      class="py-8 bg-gray-50 w-full flex flex-col justify-center gap-8 rounded-2xl md:gap-6"
     >
       <div class="flex justify-around items-center gap-6 w-120 mx-auto pt-2">
         <img
@@ -187,7 +187,7 @@
         <h3 class="text-xl font-semibold text-gray-900 text-center mb-2">
           Still have questions?
         </h3>
-        <p class="text-gray-600 text-lg font-normal text-center">
+        <p class="text-gray-600 text-lg font-normal text-center md:text-base">
           Can’t find the answer you’re looking for? Please chat to our friendly
           team.
         </p>
@@ -199,7 +199,7 @@
       </PurpleButton>
     </div>
   </div>
-  <p class="bg-gray-200 h-px  mx-28"></p>
+  <p class="bg-gray-200 h-px  mx-28 md:mx-4"></p>
 </template>
 
 <style scoped>
@@ -223,6 +223,18 @@
 .lori {
   background-color: #D9B9BB;
   border: 1.5px solid #ffffff;
+}
+
+@media (max-width: 1023px) {
+  .w766 {
+    width: 100%;
+  }
+  .w720 {
+    width: 100%;
+  }
+  .w120 {
+    width: 100%;
+  }
 }
 </style>
 
