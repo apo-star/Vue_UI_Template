@@ -36,7 +36,6 @@
               type="password"
               placeholder="Enter your password"
               v-model="password"
-              required
             />
           </label>
           <div class="flex items-center justify-between mt-1">
@@ -67,6 +66,7 @@
           </PurpleButtonVue>
           <WhiteButtonVue
             class="h-11 w360 flex items-center justify-center gap-3"
+            @click="signInWithGoogle"
           >
             <img
               src="../assets/google.svg"
@@ -96,6 +96,22 @@ import PurpleButtonVue from "../components/PurpleButton.vue";
 import WhiteButtonVue from "../components/WhiteButton.vue";
 import { ref } from "vue";
 import AuthLayout from "../Layouts/AuthLayout.vue";
+import { useRouter } from "vue-router";
+import {
+  signInWithEmailAndPassword,
+  signInWithRedirect,
+  auth,
+  provider,
+} from "../Config/firebase.js";
+import {
+  getFirestore,
+  collection,
+  doc,
+  updateDoc,
+  serverTimestamp,
+} from "firebase/firestore";
+import { useStore } from "vuex";
+import { onAuthStateChanged } from "firebase/auth";
 
 export default {
   name: "Login",
@@ -109,14 +125,58 @@ export default {
     const email = ref("");
     const password = ref("");
 
-    const onSubmit = () => {
-      console.log(email.value, password.value);
+    const store = useStore();
+    const router = useRouter();
+    const db = getFirestore();
+
+    const onSubmit = async () => {
+      try {
+        const { user } = await signInWithEmailAndPassword(
+          auth,
+          email.value,
+          password.value
+        );
+        const userRef = doc(db, "users", user.uid);
+        await updateDoc(userRef, {
+          lastLogin: serverTimestamp(),
+        });
+       // store.commit("SET_USER", user);
+        console.log(user)
+        router.push("/dashboard");
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    const signInWithGoogle = () => {
+      signInWithRedirect(auth, provider)
+        .then((result) => {
+          // This gives you a Google Access Token. You can use it to access the Google API.
+          const credential = GoogleAuthProvider.credentialFromResult(result);
+          const token = credential.accessToken;
+          // The signed-in user info.
+          const user = result.user;
+          // ...
+         // store.commit("SET_USER", user);
+          
+        })
+        .catch((error) => {
+          // Handle Errors here.
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          // The email of the user's account used.
+          const email = error.email;
+          // The AuthCredential type that was used.
+          const credential = GoogleAuthProvider.credentialFromError(error);
+          // ...
+        });
     };
 
     return {
       email,
       password,
       onSubmit,
+      signInWithGoogle,
     };
   },
 };

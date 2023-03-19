@@ -68,7 +68,7 @@
 </template>
 
 <style scoped>
-h1 {
+div {
   font-family: "Inter", sans-serif;
 }
 </style>

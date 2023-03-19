@@ -4,6 +4,7 @@
     ,   disabled:cursor-not-allowed"
     :disabled="disabled"
     :type="type"
+    :on-click="onClick"
   >
     <slot> Default Button </slot>
   </button>
@@ -20,6 +21,12 @@ export default {
     disabled: {
       type: String,
       default: false,
+    },
+  },
+  emits: ["onClick"],
+  methods: {
+    onClick() {
+      this.$emit("onClick");
     },
   },
 };

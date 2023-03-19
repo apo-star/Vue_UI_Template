@@ -1,12 +1,55 @@
-<script setup>
+<script>
 import Header from "./components/Header.vue";
-// import SectionOne from "./components/SectionOne.vue";
-// import SectionTwo from "./components/SectionTwo.vue";
-// import SectionThree from "./components/SectionThree.vue";
-// import SectionFour from "./components/SectionFour.vue";
+
 import Footer from "./components/Footer.vue";
-// import HelloWorld from './components/HelloWorld.vue'
-//import TheWelcome from './components/TheWelcome.vue'
+
+import { useRouter } from "vue-router";
+import { useStore } from "vuex";
+import { onAuthStateChanged, auth, createUserProfileDocument } from "@/Config/firebase.js";
+import { getFirestore, collection, getDocs, getDoc } from "firebase/firestore";
+
+export default {
+  name: "App",
+
+  setup(props, { slots }) {
+    const router = useRouter();
+    const store = useStore();
+    const db = getFirestore();
+
+    onAuthStateChanged(auth, async (userAuth) => {
+      if (userAuth) {
+        const userRef = await createUserProfileDocument(userAuth);
+        // const token = await userAuth.getIdToken();
+        // setCookie(cookiesKey.user, token);
+        if (!userRef) return;
+
+        // get cart item
+        // const cartRef = collection(db, "users", `${userRef.id}/cart`);
+        // const cartSnapshot = await getDocs(cartRef);
+        // const cartItems = cartSnapshot.docs.map((doc) => {
+        //   return {
+        //     quantity: doc.data().quantity,
+        //     ...doc.data().product,
+        //   };
+        // });
+
+        const snapShot = await getDoc(userRef);
+        if (!snapShot.exists()) return;
+         router.push({ path: "/dashboard" });
+        store.commit("SET_USER", snapShot.data());
+        localStorage.setItem("user", JSON.stringify(snapShot.data()));
+        // store.dispatch("auth/fetchFromServer", cartItems);
+      } else {
+        // router.push({ path: "/login" });
+        store.commit("SET_USER", null);
+        localStorage.removeItem("user");
+        // removeCookie(cookiesKey.user);
+      }
+    });
+
+    return{slots}
+  },
+};
 </script>
 
 <template>
@@ -20,7 +63,7 @@ import Footer from "./components/Footer.vue";
 
   <main class="">
     <!-- <TheWelcome /> -->
-    <router-view/>
+    <router-view />
   </main>
 
   <!-- <footer>
@@ -38,6 +81,4 @@ main {
 footer {
   font-family: "Inter", sans-serif;
 }
-
-
 </style>

@@ -7,12 +7,12 @@ import Login from "@/Pages/Login.vue";
 import SignUp from "@/Pages/SignUp.vue";
 import DefaultLayout from "@/Layouts/DefaultLayout.vue";
 import AuthLayout from "@/Layouts/AuthLayout.vue";
+import Dashboard from "@/Pages/Dashboard.vue";
+import DashboardLayout from "@/Layouts/DashboardLayout.vue";
+import store from "./Config/store.js";
 
 import "./assets/main.css";
 import "./assets/tailwind.css";
-
-
-
 
 const router = createRouter({
   history: createWebHistory(),
@@ -26,33 +26,89 @@ const router = createRouter({
       },
     },
     {
-        path: '/pricing',
-        name: 'Pricing',
-        component: Pricing,
-        meta: {
-          layout: DefaultLayout, // use DefaultLayout for this route
-        },
+      path: "/pricing",
+      name: "Pricing",
+      component: Pricing,
+      meta: {
+        layout: DefaultLayout, // use DefaultLayout for this route
       },
-    {
-        path: "/login",
-        name: "Login",
-        component: Login,
-        meta: {
-            layout: AuthLayout, // use AuthLayout for this route
-        },
     },
     {
-        path: "/signup",
-        name: "SignUp",
-        component: SignUp,
-        meta: {
-            layout: AuthLayout, // use AuthLayout for this route
-        },
+      path: "/login",
+      name: "Login",
+      component: Login,
+      meta: {
+        layout: AuthLayout, // use AuthLayout for this route
+      },
+      beforeEnter: (to, from, next) => {
+        const isAuthenticated = store.getters["user"];
+        if (isAuthenticated) {
+          next({ name: "Dashboard" });
+        } else {
+          next();
+        }
+      },
+      
+    },
+    {
+      path: "/signup",
+      name: "SignUp",
+      component: SignUp,
+      meta: {
+        layout: AuthLayout, // use AuthLayout for this route
+      },
+        beforeEnter: (to, from, next) => {
+        const isAuthenticated = store.getters["user"];
+        if (isAuthenticated) {
+            next({ name: "Dashboard" });
+        } else {
+            next();
+        }
+    },
+   
+    },
+    {
+      path: "/dashboard",
+      name: "Dashboard",
+      component: Dashboard,
+      meta: {
+        layout: DashboardLayout, // use DashboardLayout for this route
+      },
+        beforeEnter: (to, from, next) => {
+       if (store.getters["user"]) {
+            next();
+        } else {
+            next({ name: "Login" });
+        }
+    },
     },
   ],
 });
 
-createApp(App).use(router).mount("#app");
+
+// router.beforeEach((to, from, next) => {
+//     const isAuthenticated = store.getters["user"];
+  
+//     if (to.name === "Login" || to.name === "SignUp") {
+//       if (isAuthenticated) {
+//         next({ name: "Dashboard" });
+//       } else {
+//         next();
+//       }
+//     } else if (to.name === "Dashboard") {
+//       if (isAuthenticated) {
+//         next();
+//       } else {
+//         next({ name: "Login" });
+//       }
+//     } else {
+//       next();
+//     }
+//   });
+
+//   export default router;
+
+createApp(App).use(router).use(store).mount("#app");
 
 // routes: [
 //     { path: "/", name: "Home", component: Pricing },

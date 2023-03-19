@@ -23,6 +23,11 @@
       engage, and retain more users. Trusted by over 4,000 startups.
     </p>
     <div class="flex gap-3 justify-center mt-12 mb-16 md:mt-8 md:flex-col md:items-center">
+    <!-- <template v-if="user">
+      <div>Welcome {{ user.displayName }}</div>
+    
+    </template> -->
+    <!-- <template v-else> -->
       <RouterLink to="/" class=" md:order-2">
         <WhiteButton class="w-36 py-4 text-lg flex gap-3.5 justify-center md:w-96 md:text-base sm:w-80">
           <img
@@ -39,7 +44,8 @@
       <RouterLink to="/signup">
         <PurpleButton class="px-7 py-4 text-lg md:w-96 sm:w-80 md:text-base"> Sign up </PurpleButton>
       </RouterLink>
-    </div>
+    <!-- </template> -->
+  </div>
     <div class="w-10/12 mx-auto md:w-full">
       <div class="bg-gray-900 rounded-xl border-8 border-gray-900  md:mx-auto md:border-4 md:shadow-2xl">
         <img
@@ -113,6 +119,10 @@
 <script>
 import PurpleButton from "../PurpleButton.vue";
 import WhiteButton from "../WhiteButton.vue";
+import { computed } from 'vue'
+import { RouterLink } from 'vue-router';
+import { getCurrentUser } from "../../Config/firebase";
+
 
 export default {
   name: "SectionTwo",
@@ -120,6 +130,12 @@ export default {
     PurpleButton,
     WhiteButton,
   },
+  // computed: {
+  //   user() {
+  //     return getCurrentUser();
+  //   },
+  // },
+ 
 };
 </script>
 
