@@ -59,7 +59,7 @@
         </RouterLink>
       </div>
 
-      <div class="relative"  v-else>
+      <div class="relative" v-else>
         <div
           class="h-12 w-12 rounded-full bg-gray-50 hover:border-4 cursor-pointer transition duration-500 ease-in-out flex items-center justify-center border-purple-100"
           @click="toggleDropdown(2)"
@@ -74,9 +74,7 @@
             :class="{ hidden: !showDropdown[2] }"
           >
             <div class="w-full flex gap-3 pl-4 py-3 border-b-2 border-gray-50">
-              <div
-                class="relative w-max h-max"
-              >
+              <div class="relative w-max h-max">
                 <img
                   alt="avatar"
                   :src="displayPhotoURL"
@@ -88,17 +86,15 @@
               </div>
 
               <div>
-                <p
-                  class="font-semibold text-sm text-gray-700"
-                >
+                <p class="font-semibold text-sm text-gray-700">
                   {{ name }}
                 </p>
-                <p class="text-gray-600 text-xs" >
+                <p class="text-gray-600 text-xs">
                   {{ user.email }}
                 </p>
               </div>
             </div>
-            <div
+            <!-- <div
               class="w-full flex gap-3 pl-4 py-3 border-b-2 border-gray-50 items-center"
             >
               <img
@@ -107,7 +103,8 @@
                 alt="logout"
               />
               <p class="text-gray-700 font-medium text-sm">Logout</p>
-            </div>
+            </div> -->
+            <LogOut />
           </div>
         </div>
       </div>
@@ -132,12 +129,14 @@ div {
 import PurpleButton from "./PurpleButton.vue";
 import WhiteButton from "./WhiteButton.vue";
 import { mapState } from "vuex";
+import LogOut from "./LogOut.vue";
 
 export default {
   name: "Header",
   components: {
     PurpleButton,
     WhiteButton,
+    LogOut,
   },
 
   data() {
