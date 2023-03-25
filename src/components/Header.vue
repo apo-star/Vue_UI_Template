@@ -70,6 +70,7 @@
           <div
             class="absolute w-60 bg-white border-gray-200 top-16 right-0 rounded-lg border shadow-lg"
             :class="{ hidden: !showDropdown[2] }"
+            v-if="!isLoggedIn"
           >
             <div class="w-full flex gap-3 pl-4 py-3 border-b-2 border-gray-50">
               <div class="relative w-max h-max">
