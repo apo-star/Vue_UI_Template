@@ -48,16 +48,18 @@
     <div
       class="flex flex-row justify-between items-center gap-3 text-black md:hidden"
     >
-      <button
-        v-if="isLoggedIn"
-        class="h-11 w-20 rounded-lg font-semibold text-base text-gray-600"
-      >
-        <RouterLink to="/login">Login</RouterLink>
-      </button>
-      <RouterLink to="/signup" v-if="isLoggedIn">
-        <PurpleButton class="h-11 w-24 r"> Sign Up </PurpleButton>
-      </RouterLink>
-      <div v-if="!isLoggedIn" class="relative">
+      <div v-if="!user">
+        <button
+          class="h-11 w-20 rounded-lg font-semibold text-base text-gray-600"
+        >
+          <RouterLink to="/login">Login</RouterLink>
+        </button>
+        <RouterLink to="/signup">
+          <PurpleButton class="h-11 w-24 r"> Sign Up </PurpleButton>
+        </RouterLink>
+      </div>
+
+      <div class="relative"  v-else>
         <div
           class="h-12 w-12 rounded-full bg-gray-50 hover:border-4 cursor-pointer transition duration-500 ease-in-out flex items-center justify-center border-purple-100"
           @click="toggleDropdown(2)"
@@ -70,13 +72,11 @@
           <div
             class="absolute w-60 bg-white border-gray-200 top-16 right-0 rounded-lg border shadow-lg"
             :class="{ hidden: !showDropdown[2] }"
-            v-if="!isLoggedIn"
           >
-            <div
-              class="w-full flex gap-3 pl-4 py-3 border-b-2 border-gray-50"
-              v-if="!isLoggedIn"
-            >
-              <div class="relative w-max h-max">
+            <div class="w-full flex gap-3 pl-4 py-3 border-b-2 border-gray-50">
+              <div
+                class="relative w-max h-max"
+              >
                 <img
                   alt="avatar"
                   :src="displayPhotoURL"
@@ -88,15 +88,18 @@
               </div>
 
               <div>
-                <p class="font-semibold text-sm text-gray-700">
-                  {{ user.displayName }}
+                <p
+                  class="font-semibold text-sm text-gray-700"
+                >
+                  {{ name }}
                 </p>
-                <p class="text-gray-600 text-xs">{{ user.email }}</p>
+                <p class="text-gray-600 text-xs" >
+                  {{ user.email }}
+                </p>
               </div>
             </div>
-            <button
+            <div
               class="w-full flex gap-3 pl-4 py-3 border-b-2 border-gray-50 items-center"
-              @click="SignOut"
             >
               <img
                 src="@/assets/dashboardIcons/logout.svg"
@@ -104,7 +107,7 @@
                 alt="logout"
               />
               <p class="text-gray-700 font-medium text-sm">Logout</p>
-            </button>
+            </div>
           </div>
         </div>
       </div>
@@ -128,15 +131,6 @@ div {
 <script>
 import PurpleButton from "./PurpleButton.vue";
 import WhiteButton from "./WhiteButton.vue";
-import { useRouter } from "vue-router";
-import { signOut, auth } from "../Config/firebase.js";
-import {
-  getFirestore,
-  doc,
-  updateDoc,
-  serverTimestamp,
-} from "firebase/firestore";
-import { useStore } from "vuex";
 import { mapState } from "vuex";
 
 export default {
@@ -145,33 +139,7 @@ export default {
     PurpleButton,
     WhiteButton,
   },
-  setup() {
-    const router = useRouter();
-    const store = useStore();
 
-    const lastLogout = async (userId) => {
-      const db = getFirestore();
-      const userRef = doc(db, "users", userId);
-      await updateDoc(userRef, {
-        last_logout: serverTimestamp(),
-      });
-    };
-
-    const SignOut = async () => {
-      try {
-        await signOut(auth);
-        store.commit("SET_USER", null);
-        router.push({ path: "/login" });
-      } catch (error) {
-        alert(error.message);
-      }
-    };
-
-    return {
-      SignOut,
-      lastLogout,
-    };
-  },
   data() {
     return {
       showDropdown: [false, false],
@@ -183,10 +151,15 @@ export default {
         ? this.user.photoURL
         : "./src/assets/dashboardIcons/avatar-default.svg";
     },
-    isLoggedIn() {
-      this.$store.getters.isLoggedIn;
+    name() {
+      if (this.user) {
+        return this.user.displayName;
+      } else {
+        return "Unknown User";
+      }
     },
-    ...mapState(["user"]),
+
+    ...mapState(["user", "isLoggedIn"]),
   },
 
   methods: {

@@ -50,7 +50,7 @@
         </PurpleButton>
       </RouterLink>
       <h3 v-if="!isLoggedIn" class="text-gray-900 text-xl font-semibold">
-        Welcome back, {{ user.displayName }}
+        Welcome back, {{ name}}
       </h3>
     </div>
     <div class="w-10/12 mx-auto md:w-full">
@@ -167,6 +167,13 @@ export default {
   computed: {
     isLoggedIn() {
       this.$store.getters.isLoggedIn;
+    },
+    name() {
+      if (this.user) {
+        return this.user.displayName;
+      } else {
+        return "Unknown User"; 
+      }
     },
     ...mapState(["user"]),
   },
