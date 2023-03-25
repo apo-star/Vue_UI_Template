@@ -72,7 +72,10 @@
             :class="{ hidden: !showDropdown[2] }"
             v-if="!isLoggedIn"
           >
-            <div class="w-full flex gap-3 pl-4 py-3 border-b-2 border-gray-50">
+            <div
+              class="w-full flex gap-3 pl-4 py-3 border-b-2 border-gray-50"
+              v-if="!isLoggedIn"
+            >
               <div class="relative w-max h-max">
                 <img
                   alt="avatar"
@@ -182,7 +185,6 @@ export default {
     },
     isLoggedIn() {
       this.$store.getters.isLoggedIn;
-      console.log(this.user);
     },
     ...mapState(["user"]),
   },
