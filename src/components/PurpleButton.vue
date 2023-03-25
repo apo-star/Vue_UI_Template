@@ -1,6 +1,6 @@
 <template>
   <button
-    class="btn-pur text-white  rounded-lg border-solid font-semibold text-base focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-violet-100 focus:ring-offset-violet-100   disabled:cursor-not-allowed"
+    class="btn-pur text-white  rounded-lg border-solid font-semibold text-base focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-violet-100 focus:ring-offset-violet-100   disabled:cursor-not-allowed transition duration-500 ease-in-out"
     :disabled="disabled"
     :type="type"
     :on-click="onClick"

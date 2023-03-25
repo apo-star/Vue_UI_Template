@@ -19,23 +19,12 @@ export default {
     onAuthStateChanged(auth, async (userAuth) => {
       if (userAuth) {
         const userRef = await createUserProfileDocument(userAuth);
-        // const token = await userAuth.getIdToken();
-        // setCookie(cookiesKey.user, token);
         if (!userRef) return;
 
-        // get cart item
-        // const cartRef = collection(db, "users", `${userRef.id}/cart`);
-        // const cartSnapshot = await getDocs(cartRef);
-        // const cartItems = cartSnapshot.docs.map((doc) => {
-        //   return {
-        //     quantity: doc.data().quantity,
-        //     ...doc.data().product,
-        //   };
-        // });
 
         const snapShot = await getDoc(userRef);
         if (!snapShot.exists()) return;
-         router.push({ path: "/dashboard" });
+         router.push({ path: "/dashboard/overview" });
         store.commit("SET_USER", snapShot.data());
         localStorage.setItem("user", JSON.stringify(snapShot.data()));
         // store.dispatch("auth/fetchFromServer", cartItems);

@@ -24,7 +24,6 @@ import { useRouter } from "vue-router";
 import { signOut, auth } from "../Config/firebase.js";
 import {
   getFirestore,
-  collection,
   doc,
   updateDoc,
   serverTimestamp,
@@ -53,8 +52,6 @@ export default {
     const SignOut = async () => {
       try {
         await signOut(auth);
-        // const userId = store.state.user.uid;
-        // await lastLogout(userId);
         store.commit("SET_USER", null);
         router.push({ path: "/login" });
       } catch (error) {

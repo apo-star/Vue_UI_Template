@@ -11,7 +11,7 @@
 
     <div class="flex flex-col w766 mx-auto">
       <div
-        class="flex justify-between hover:cursor-pointer"
+        class="flex justify-between hover:cursor-pointer transition duration-500 ease-in-out"
         @click="toggleAnswer(0)"
       >
         <h4 class="text-lg font-medium text-gray-900">
@@ -26,10 +26,10 @@
       </div>
       <div
         v-if="showAnswer[0]"
-        class="mt-2 hover:cursor-pointer"
+        class="mt-2 hover:cursor-pointer transition duration-500 ease-in-out"
         @click="toggleAnswer(0)"
       >
-        <p class="text-gray-600 text-base font-normal w720 md:pr-2.5">
+        <p class="text-gray-600 text-base font-normal w720 md:pr-2.5 transition duration-500 ease-in-out">
           Yes, you can try us for free for 30 days. If you want, we’ll provide
           you with a free, personalized 30-minute onboarding call to get you up
           and running as soon as possible.
@@ -37,7 +37,7 @@
       </div>
       <p class="bg-gray-200 h-px my-7 w720"></p>
       <div
-        class="flex justify-between hover:cursor-pointer"
+        class="flex justify-between hover:cursor-pointer transition duration-500 ease-in-out"
         @click="toggleAnswer(1)"
       >
         <h4 class="text-lg font-medium text-gray-900">

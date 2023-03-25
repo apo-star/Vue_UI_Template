@@ -68,7 +68,7 @@ const router = createRouter({
    
     },
     {
-      path: "/dashboard",
+      path: "/dashboard/overview",
       name: "Dashboard",
       component: Dashboard,
       meta: {
@@ -82,6 +82,7 @@ const router = createRouter({
         }
     },
     },
+    
   ],
 });
 

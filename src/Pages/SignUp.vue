@@ -140,7 +140,7 @@ export default {
           email: email.value,
           password: password.value,
         });
-        router.push("/dashboard");
+        router.push("/dashboard/overview");
         
       } catch (error) {
         console.log(error,'error');

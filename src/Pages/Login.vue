@@ -20,7 +20,7 @@
         </p>
         <div class="flex flex-col gap-5 mt-8">
           <label for="email" class="flex flex-col gap-1.5">
-            <p class="text-sm font-medium text-gray-700">Email</p>
+            <p class="text-sm font-medium text-gray-700">Email*</p>
             <Input
               id="email"
               type="email"
@@ -140,9 +140,9 @@ export default {
         await updateDoc(userRef, {
           lastLogin: serverTimestamp(),
         });
-       // store.commit("SET_USER", user);
-        console.log(user)
-        router.push("/dashboard");
+        // store.commit("SET_USER", user);
+        console.log(user);
+        router.push("/dashboard/overview");
       } catch (error) {
         console.log(error);
       }
@@ -157,8 +157,7 @@ export default {
           // The signed-in user info.
           const user = result.user;
           // ...
-         // store.commit("SET_USER", user);
-          
+          // store.commit("SET_USER", user);
         })
         .catch((error) => {
           // Handle Errors here.

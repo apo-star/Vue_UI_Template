@@ -21,6 +21,9 @@ const store = createStore({
     user(state) {
       return state.user;
     },
+    isLoggedin(state) {
+      return !!state.user;
+    },
   },
   plugins: [
     createPersistedState({
