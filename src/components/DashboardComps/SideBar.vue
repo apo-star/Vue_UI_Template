@@ -24,8 +24,8 @@
             <img
               src="@/assets/dashboardIcons/home-line.svg"
               alt="logo"
-              height="32"
-              width="32"
+              height="20"
+              width="20"
               class="rounded-lg"
             />
           </router-link>
@@ -37,29 +37,35 @@
             <img
               src="@/assets/dashboardIcons/bar-chart-square.svg"
               alt="logo"
-              height="32"
-              width="32"
+              height="20"
+              width="20"
               class="rounded-lg"
             />
           </router-link>
         </div>
       </div>
-
-      <!-- <ul>
-      <li>
-       Home</router-link>
-      </li>
-      <li>
-        <router-link to="/dashboard">Dashboard</router-link>
-      </li>
-    </ul> -->
-      <img
-        src="@/assets/logo.png"
-        alt="logo"
-        height="48"
-        width="48"
-        class="rounded-lg"
-      />
+      <div class="flex flex-col gap-9 items-center">
+        <router-link
+          to="/dashboard/overview"
+          active-class="bg-gray-50"
+          class="p-3.5 hover:bg-gray-50 rounded-md transition duration-500 ease-in-out"
+        >
+          <img
+            src="@/assets/dashboardIcons/settings.svg"
+            alt="settings"
+            height="20"
+            width="20"
+            class="rounded-lg"
+          />
+        </router-link>
+        <div class="relative w-max h-max">
+          <img
+            alt="avatar"
+            :src="displayPhotoURL"
+            class="h-12 w-12 rounded-full hover:cursor-pointer"
+          />
+        </div>
+      </div>
     </div>
     <div
       class="flex flex-col items-center justify-between border-r border-gray-200"
@@ -124,19 +130,82 @@
             </router-link>
           </div>
         </div>
-        <div>kk</div>
+        <div class="flex justify-between">
+          <div>
+            <h3 class="text-gray-900 text-sm font-medium">
+              {{ user.displayName }}
+            </h3>
+            <p class="text-gray-600 text-xs font-normal">
+              {{ user.email }}
+            </p>
+          </div>
+          <button  @click="SignOut">
+            <img
+              src="@/assets/dashboardIcons/logout.svg"
+              class="h-4 w-4"
+              alt="logout"
+            />
+          </button>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import { mapState } from "vuex";
+import { useRouter } from "vue-router";
+import { signOut, auth } from "@/Config/firebase.js";
+import {
+  getFirestore,
+  doc,
+  updateDoc,
+  serverTimestamp,
+} from "firebase/firestore";
+import { useStore } from "vuex";
+
 export default {
   name: "Sidebar",
+  components: {},
+  setup() {
+    const router = useRouter();
+    const store = useStore();
+
+    const lastLogout = async (userId) => {
+      const db = getFirestore();
+      const userRef = doc(db, "users", userId);
+      await updateDoc(userRef, {
+        last_logout: serverTimestamp(),
+      });
+    };
+
+    const SignOut = async () => {
+      try {
+        await signOut(auth);
+        store.commit("SET_USER", null);
+        router.push({ path: "/login" });
+      } catch (error) {
+        alert(error.message);
+      }
+    };
+
+    return {
+      SignOut,
+      lastLogout,
+    };
+  },
   data() {
     return {
       showSubNav: false,
     };
+  },
+  computed: {
+    ...mapState(["user"]),
+    displayPhotoURL() {
+      return this.user.photoURL
+        ? this.user.photoURL
+        : "/src/assets/dashboardIcons/avatar-default.svg";
+    },
   },
   methods: {
     toggleSubNav() {

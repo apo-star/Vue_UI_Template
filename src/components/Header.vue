@@ -70,7 +70,7 @@
             class="h-9 w-9 rounded-full"
           />
           <div
-            class="absolute w-60 bg-white border-gray-200 top-16 right-0 rounded-lg border shadow-lg"
+            class="absolute w-64 bg-white border-gray-200 top-14 right-0 rounded-lg border shadow-lg"
             :class="{ hidden: !showDropdown[2] }"
           >
             <div class="w-full flex gap-3 pl-4 py-3 border-b-2 border-gray-50">
@@ -94,16 +94,22 @@
                 </p>
               </div>
             </div>
-            <!-- <div
-              class="w-full flex gap-3 pl-4 py-3 border-b-2 border-gray-50 items-center"
-            >
+            <router-link to="/dashboard/overview" class="w-full flex gap-3 pl-4 py-3 items-center hover:bg-gray-50 rounded-md transition duration-500 ease-in-out">
               <img
-                src="@/assets/dashboardIcons/logout.svg"
-                class="h-3.5 w-3.5"
-                alt="logout"
+                src="../assets/dashboardIcons/user.svg"
+                class="h-4 w-4"
+                alt=""
               />
-              <p class="text-gray-700 font-medium text-sm">Logout</p>
-            </div> -->
+              <p class="text-gray-700 text-sm font-medium">View profile</p>
+            </router-link>
+            <div class="w-full flex gap-3 pl-4 py-3 items-center border-b-2 border-gray-50 hover:bg-gray-50 rounded-md transition duration-500 ease-in-out">
+              <img
+                src="../assets/dashboardIcons/settings.svg"
+                class="h-4 w-4"
+                alt=""
+              />
+              <p class="text-gray-700 text-sm font-medium">Settings</p>
+            </div>
             <LogOut />
           </div>
         </div>

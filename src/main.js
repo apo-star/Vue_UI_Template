@@ -48,7 +48,6 @@ const router = createRouter({
           next();
         }
       },
-      
     },
     {
       path: "/signup",
@@ -57,15 +56,14 @@ const router = createRouter({
       meta: {
         layout: AuthLayout, // use AuthLayout for this route
       },
-        beforeEnter: (to, from, next) => {
+      beforeEnter: (to, from, next) => {
         const isAuthenticated = store.getters["user"];
         if (isAuthenticated) {
-            next({ name: "Dashboard" });
+          next({ name: "Dashboard" });
         } else {
-            next();
+          next();
         }
-    },
-   
+      },
     },
     {
       path: "/dashboard/overview",
@@ -74,22 +72,42 @@ const router = createRouter({
       meta: {
         layout: DashboardLayout, // use DashboardLayout for this route
       },
-        beforeEnter: (to, from, next) => {
-       if (store.getters["user"]) {
-            next();
+      // children: [
+      //   {
+      //     path: "overview",
+      //     name: "Overview",
+      //     component: Overview,
+      //   },
+      //   {
+      //     path: "projects",
+      //     name: "Projects",
+      //     component: Projects,
+      //   },
+      //   {
+      //     path: "team",
+      //     name: "Team",
+      //     component: Team,
+      //   },
+      //   {
+      //     path: "calendar",
+      //     name: "Calendar",
+      //     component: Calendar,
+      //   },
+      // ],
+      beforeEnter: (to, from, next) => {
+        if (store.getters["user"]) {
+          next();
         } else {
-            next({ name: "Login" });
+          next({ name: "Login" });
         }
+      },
     },
-    },
-    
   ],
 });
 
-
 // router.beforeEach((to, from, next) => {
 //     const isAuthenticated = store.getters["user"];
-  
+
 //     if (to.name === "Login" || to.name === "SignUp") {
 //       if (isAuthenticated) {
 //         next({ name: "Dashboard" });
