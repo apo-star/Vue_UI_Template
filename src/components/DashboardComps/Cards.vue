@@ -84,7 +84,7 @@
       </div>
     </div>
 
-    <div>
+    <div class="flex flex-col gap-6">
       <ul class="flex justify-between w-full">
         <li
           v-for="acctButton in acctButtons"
@@ -92,8 +92,9 @@
           @click="activeButton = acctButton"
           class="h-8 text-sm font-semibold cursor-pointer"
           :class="{
-            'text-purple-700 border-b-2 border-purple-700': activeButton.id === acctButton.id,
-            ' text-gray-900': activeButton.id !== acctButton.id,
+            'text-purple-700 border-b-2 border-purple-700':
+              activeButton.id === acctButton.id,
+            ' text-gray-500': activeButton.id !== acctButton.id,
           }"
         >
           {{ acctButton.label }}
@@ -104,19 +105,24 @@
         :is="activeButton.component"
         :data="activeButton.data"
         :balance="balance"
+        :spent="spent"
+        :spendingBreakdown="spendingBreakdown"
+        :pointsBalance="pointsBalance"
+        :rewards="rewards"
       ></component>
     </div>
-    <p>Active card amount: {{ cards[activeIndex].amount }}</p>
   </div>
 </template>
 
 <script>
-import { ref, watch, computed } from "vue";
+import { ref, computed } from "vue";
 import { mapState } from "vuex";
 import { Swiper, SwiperSlide } from "swiper/vue";
 import { Pagination, A11y, Autoplay, Scrollbar } from "swiper";
 import AcctBudget from "./AcctBudget.vue";
 import AcctOverview from "./AcctOverview.vue";
+import AcctSpending from "./AcctSpending.vue";
+import AcctRewards from "./AcctRewards.vue";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
@@ -135,6 +141,8 @@ export default {
     SwiperSlide,
     AcctBudget,
     AcctOverview,
+    AcctSpending,
+    AcctRewards,
   },
 
   created() {
@@ -159,18 +167,126 @@ export default {
         cardNumber: "1234 1234 1234 1234",
         icon: "/src/assets/dashboardIcons/mastercard.svg",
         month: "This month",
-        amount: "1,340.40",
-        progress: 54,
+        amount: "2,340.80",
+        progress: 53.2,
+        spent: "2,059.20",
+        spendingBreakdown: [
+          {
+            category: "Groceries",
+            amount: "1,029.60",
+          },
+          {
+            category: "Entertainment",
+            amount: "515.20",
+          },
+          {
+            category: "Travel",
+            amount: "257.60",
+          },
+          {
+            category: "Shopping",
+            amount: "154.40",
+          },
+          {
+            category: "Other",
+            amount: "102.40",
+          },
+        ],
+        pointsBalance: "2,500",
+        rewards: [
+          {
+            id: 1,
+            title: "Cashback on groceries",
+            description: "Get 10% cashback on your next grocery purchase",
+            expiration: "06/30/2023",
+            points: "700",
+          },
+          {
+            id: 2,
+            title: "Free movie ticket",
+            description: "Redeem your points for a free movie ticket",
+            expiration: "12/31/2022",
+            points: "500",
+          },
+          {
+            id: 3,
+            title: "Travel discount",
+            description: "Get 20% off on your next flight booking",
+            expiration: "08/31/2023",
+            points: "1,700",
+          },
+          {
+            id: 4,
+            title: "Shopping voucher",
+            description: "Redeem your points for a $50 shopping voucher",
+            expiration: "10/31/2022",
+            points: "1,000",
+          },
+        ],
       },
       {
         title: "Untitled",
         background: "linear-gradient(45deg, #101828 0%, #475467 100%  )",
         expiration: "09/26",
         cardNumber: "5678 5678 5678 5678",
-        icon: "/src/assets/dashboardIcons/mastercard.svg",
+        icon: "/src/assets/dashboardIcons/visa.svg",
         month: "This month",
-        amount: "1,240.40",
-        progress: 54,
+        amount: "1,377.20",
+        progress: 31.3,
+        spent: "3,022.80",
+        spendingBreakdown: [
+          {
+            category: "Groceries",
+            amount: "1,000.00",
+          },
+          {
+            category: "Entertainment",
+            amount: "500.00",
+          },
+          {
+            category: "Travel",
+            amount: "500.00",
+          },
+          {
+            category: "Shopping",
+            amount: "500.00",
+          },
+          {
+            category: "Other",
+            amount: "522.80",
+          },
+        ],
+        pointsBalance: "3,500",
+        rewards: [
+          {
+            id: 1,
+            title: "Cashback on groceries",
+            description: "Get 10% cashback on your next grocery purchase",
+            expiration: "06/30/2023",
+            points: "1,000",
+          },
+          {
+            id: 2,
+            title: "Free movie ticket",
+            description: "Redeem your points for a free movie ticket",
+            expiration: "12/31/2022",
+            points: "500",
+          },
+          {
+            id: 3,
+            title: "Travel discount",
+            description: "Get 20% off on your next flight booking",
+            expiration: "08/31/2023",
+            points: "2,000",
+          },
+          {
+            id: 4,
+            title: "Shopping voucher",
+            description: "Redeem your points for a $50 shopping voucher",
+            expiration: "10/31/2022",
+            points: "1,500",
+          },
+        ],
       },
       {
         title: "Untitled",
@@ -179,8 +295,62 @@ export default {
         cardNumber: "1234 1234 1234 1234",
         icon: "/src/assets/dashboardIcons/mastercard.svg",
         month: "This month",
-        amount: "1,240.40",
+        amount: "2,376.00",
         progress: 54,
+        spent: "2,024.00",
+        spendingBreakdown: [
+          {
+            category: "Groceries",
+            amount: "600.00",
+          },
+          {
+            category: "Entertainment",
+            amount: "400.00",
+          },
+          {
+            category: "Travel",
+            amount: "300.00",
+          },
+          {
+            category: "Shopping",
+            amount: "500.00",
+          },
+          {
+            category: "Other",
+            amount: "224.00",
+          },
+        ],
+        pointsBalance: "4,000",
+        rewards: [
+          {
+            id: 1,
+            title: "Cashback on groceries",
+            description: "Get 10% cashback on your next grocery purchase",
+            expiration: "06/30/2023",
+            points: "1,000",
+          },
+          {
+            id: 2,
+            title: "Free movie ticket",
+            description: "Redeem your points for a free movie ticket",
+            expiration: "12/31/2022",
+            points: "500",
+          },
+          {
+            id: 3,
+            title: "Travel discount",
+            description: "Get 20% off on your next flight booking",
+            expiration: "08/31/2023",
+            points: "1,000",
+          },
+          {
+            id: 4,
+            title: "Shopping voucher",
+            description: "Redeem your points for a $50 shopping voucher",
+            expiration: "10/31/2022",
+            points: "500",
+          },
+        ],
       },
     ]);
 
@@ -190,7 +360,8 @@ export default {
         label: "Overview",
         component: "AcctOverview",
         data: {
-          accountNumber: "1234567890",
+          currentLimit: "15,000.00",
+          budget: "4,400.00",
         },
       },
       {
@@ -198,10 +369,22 @@ export default {
         label: "Budget",
         component: "AcctBudget",
         data: {
-          budget: "$1,240.40",
-          spent: "$1,240.40",
-          remaining: "$1,240.40",
+          budget: "4,400.00",
         },
+      },
+      {
+        id: 3,
+        label: "Spending",
+        component: "AcctSpending",
+        data: {
+          budget: "4,400.00",
+        },
+      },
+      {
+        id: 4,
+        label: "Rewards",
+        component: "AcctRewards",
+        data: {},
       },
     ]);
 
@@ -210,6 +393,22 @@ export default {
 
     const balance = computed(() => {
       return cards.value[activeIndex.value].amount;
+    });
+
+    const pointsBalance = computed(() => {
+      return cards.value[activeIndex.value].pointsBalance;
+    });
+
+    const rewards = computed(() => {
+      return cards.value[activeIndex.value].rewards;
+    });
+
+    const spent = computed(() => {
+      return cards.value[activeIndex.value].spent;
+    });
+
+    const spendingBreakdown = computed(() => {
+      return cards.value[activeIndex.value].spendingBreakdown;
     });
 
     const onSwiper = (swiper) => {
@@ -229,6 +428,10 @@ export default {
       acctButtons,
       activeButton,
       balance,
+      spent,
+      spendingBreakdown,
+      pointsBalance,
+      rewards,
       onSwiper,
       onSlideChange,
       modules: [Pagination, A11y, Autoplay, Scrollbar],

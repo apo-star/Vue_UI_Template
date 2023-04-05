@@ -45,6 +45,9 @@
                 </p>
               </div>
             </div>
+            <h3 class="font-semibold text-gray-900 text-lg">
+              Balance over time
+            </h3>
             <div class="flex flex-col gap-2 relative">
               <div class="flex flex-col gap-8">
                 <hr class="w-full text-gray-100" />
@@ -218,9 +221,11 @@
               </div>
             </div>
           </div>
+          <BalanceSplit />
+          <Transaction />
         </div>
         <div
-          class="flex flex-col gap-8 flex-grow-0 border-l border-gray-200 p-6"
+          class="flex flex-col gap-8 flex-grow-0 border-l border-gray-200 p-6 min-h-screen"
           style="width: 392px; background-color: #fcfcfd"
         >
           <div class="flex justify-between">
@@ -247,41 +252,21 @@ import DashboardLayout from "@/Layouts/DashboardLayout.vue";
 import WhiteButtonVue from "../components/WhiteButton.vue";
 import PurpleButton from "../components/PurpleButton.vue";
 import Cards from "../components/DashboardComps/Cards.vue";
+import BalanceSplit from "../components/DashboardComps/BalanceSplit.vue";
+import Transaction from "../components/DashboardComps/Transaction.vue";
 import { mapState } from "vuex";
-import { Swiper, SwiperSlide } from "swiper/vue";
-import { Pagination, A11y, Autoplay } from "swiper";
-// Import Swiper styles
-import "swiper/css";
-import "swiper/css/navigation";
-import "swiper/css/pagination";
 
 export default {
   components: {
     DashboardLayout,
     WhiteButtonVue,
     PurpleButton,
-    Swiper,
-    SwiperSlide,
     Cards,
+    BalanceSplit,
+    Transaction,
   },
 
-  // data: {
-
-  // },
-
-  setup() {
-    const onSwiper = (swiper) => {
-      console.log(swiper);
-    };
-    const onSlideChange = () => {
-      console.log("slide change");
-    };
-    return {
-      onSwiper,
-      onSlideChange,
-      modules: [Pagination, A11y],
-    };
-  },
+  setup() {},
 
   computed: {
     ...mapState(["user"]),
