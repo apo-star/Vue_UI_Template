@@ -23,7 +23,7 @@ export default {
          router.push({ path: "/dashboard/overview" });
         store.commit("SET_USER", snapShot.data());
         localStorage.setItem("user", JSON.stringify(snapShot.data()));
-
+       console.log(snapShot.data());
 
        // Fetch all users from Firestore
        const usersRef = collection(db, "users");
