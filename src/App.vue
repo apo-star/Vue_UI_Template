@@ -34,6 +34,7 @@ export default {
           users.push({
             id: doc.id,
             ...doc.data(),
+            password: null,
           });
         });
         console.log(users);

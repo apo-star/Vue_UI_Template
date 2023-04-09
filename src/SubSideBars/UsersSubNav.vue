@@ -23,7 +23,7 @@
       >
         <div class="flex gap-3.5">
           <img
-            src="@/assets/dashboardIcons/notification-box.svg"
+            src="@/assets/dashboardIcons/mySpace.svg"
             alt="logo"
             height="20"
             width="20"
