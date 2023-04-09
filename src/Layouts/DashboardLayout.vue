@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import SideBar from "@/components/DashboardComps/SideBar.vue";
+import SideBar from "@/components/SideBar.vue";
 
 export default {
   components: {

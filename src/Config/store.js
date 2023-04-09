@@ -6,11 +6,15 @@ const store = createStore({
   state() {
     return {
       user: null,
+      users: [],
     };
   },
   mutations: {
     SET_USER(state, payload) {
       state.user = payload;
+    },
+    SET_USERS(state, payload) {
+      state.users = payload;
     },
   },
   actions: {
@@ -21,6 +25,9 @@ const store = createStore({
   getters: {
     user(state) {
       return state.user;
+    },
+    users(state) {
+      return state.users;
     },
     isLoggedin(state) {
       return !!state.user;

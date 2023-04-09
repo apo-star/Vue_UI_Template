@@ -7,9 +7,15 @@ import Login from "@/Pages/Login.vue";
 import SignUp from "@/Pages/SignUp.vue";
 import DefaultLayout from "@/Layouts/DefaultLayout.vue";
 import AuthLayout from "@/Layouts/AuthLayout.vue";
-import Dashboard from "@/Pages/Dashboard.vue";
+import Dashboard from "@/Pages/dashboard-pages/Dashboard.vue";
+import Users from "@/Pages/users-pages/Users.vue";
+import Notifications from "@/Pages/dashboard-pages/Notifications.vue";
+import Overview from "@/Pages/dashboard-pages/Overview.vue";
+import UserOverview from "@/Pages/users-pages/Overview.vue";
+import Friends from "@/Pages/users-pages/Friends.vue";
 import DashboardLayout from "@/Layouts/DashboardLayout.vue";
 import store from "./Config/store.js";
+
 
 import "./assets/main.css";
 import "./assets/tailwind.css";
@@ -66,34 +72,53 @@ const router = createRouter({
       },
     },
     {
-      path: "/dashboard/overview",
+      path: "/dashboard",
       name: "Dashboard",
       component: Dashboard,
       meta: {
         layout: DashboardLayout, // use DashboardLayout for this route
       },
-      // children: [
-      //   {
-      //     path: "overview",
-      //     name: "Overview",
-      //     component: Overview,
-      //   },
-      //   {
-      //     path: "projects",
-      //     name: "Projects",
-      //     component: Projects,
-      //   },
-      //   {
-      //     path: "team",
-      //     name: "Team",
-      //     component: Team,
-      //   },
-      //   {
-      //     path: "calendar",
-      //     name: "Calendar",
-      //     component: Calendar,
-      //   },
-      // ],
+      redirect: { name: "Overview" }, // redirect to Overview by default
+      children: [
+        {
+          path: "overview",
+          name: "Overview",
+          component: Overview,
+        },
+        {
+          path: "notifications",
+          name: "Notifications",
+          component: Notifications,
+        },
+      ],
+      beforeEnter: (to, from, next) => {
+        if (store.getters["user"]) {
+          next();
+        } else {
+          next({ name: "Login" });
+        }
+      },
+    },
+    {
+      path: "/users",
+      name: "Users",
+      component: Users,
+      meta: {
+        layout: DashboardLayout, // use DashboardLayout for this route
+      },
+      redirect: { name: "UserOverview" }, // redirect to Overview by default
+      children: [
+        {
+          path: "overview",
+          name: "UserOverview",
+          component: UserOverview,
+        },
+        {
+          path: "friends",
+          name: "Friends",
+          component: Friends,
+        },
+      ],
       beforeEnter: (to, from, next) => {
         if (store.getters["user"]) {
           next();

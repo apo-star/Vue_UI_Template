@@ -30,12 +30,25 @@
             />
           </router-link>
           <router-link
-            to="/dashboard/overview"
+            to="/dashboard"
             active-class="bg-gray-50"
             class="p-3.5 hover:bg-gray-50 rounded-md transition duration-500 ease-in-out"
           >
             <img
               src="@/assets/dashboardIcons/bar-chart-square.svg"
+              alt="logo"
+              height="20"
+              width="20"
+              class="rounded-lg"
+            />
+          </router-link>
+          <router-link
+            to="/users"
+            active-class="bg-gray-50"
+            class="p-3.5 hover:bg-gray-50 rounded-md transition duration-500 ease-in-out"
+          >
+            <img
+              src="@/assets/dashboardIcons/users.svg"
               alt="logo"
               height="20"
               width="20"
@@ -68,68 +81,11 @@
       </div>
     </div>
     <div
-      class="flex flex-col items-center justify-between border-r border-gray-200"
+      class="gg h-screen flex flex-col items-center justify-between border-r border-gray-200"
       :class="{ hidden: !showSubNav }"
     >
       <div class="px-4 pt-9 pb-6 flex flex-col justify-between h-full">
-        <div class="flex flex-col gap-4">
-          <h3 class="text-left font-medium text-base text-gray-900">
-            Dashboard
-          </h3>
-          <div class="w-60 flex flex-col items-center gap-1">
-            <router-link
-              to="/dashboard/overview"
-              active-class="bg-gray-50"
-              class="flex gap-3.5 w-full h-10 items-center hover:bg-gray-50 rounded-md transition duration-500 ease-in-out py-3 pl-3.5"
-            >
-              <img
-                src="@/assets/dashboardIcons/activity.svg"
-                alt="logo"
-                height="20"
-                width="20"
-                class="rounded-lg"
-              />
-              <h4 class="font-semibold text-base text-gray-900">Overiew</h4>
-            </router-link>
-            <router-link
-              to="/"
-              active-class="bg-gray-50"
-              class="flex gap-3.5 w-full h-10 items-center hover:bg-gray-50 rounded-md transition duration-500 ease-in-out py-3 pl-3.5 pr-3 justify-between"
-            >
-              <div class="flex gap-3.5">
-                <img
-                  src="@/assets/dashboardIcons/notification-box.svg"
-                  alt="logo"
-                  height="20"
-                  width="20"
-                  class="rounded-lg"
-                />
-                <h4 class="font-semibold text-base text-gray-900">
-                  Notification
-                </h4>
-              </div>
-              <p
-                class="bg-gray-100 px-2 py-0.5 rounded-2xl text-gray-600 font-medium text-xs"
-              >
-                10
-              </p>
-            </router-link>
-            <router-link
-              to="/"
-              active-class="bg-gray-50"
-              class="flex gap-3.5 w-full h-10 items-center hover:bg-gray-50 rounded-md transition duration-500 ease-in-out py-3 pl-3.5"
-            >
-              <img
-                src="@/assets/dashboardIcons/bar-line-chart.svg"
-                alt="logo"
-                height="20"
-                width="20"
-                class="rounded-lg"
-              />
-              <h4 class="font-semibold text-base text-gray-900">Activity</h4>
-            </router-link>
-          </div>
-        </div>
+        <component :is="subNavComponent"></component>
         <div class="flex justify-between">
           <div>
             <h3 class="text-gray-900 text-sm font-medium">
@@ -139,7 +95,7 @@
               {{ user.email }}
             </p>
           </div>
-          <button  @click="SignOut">
+          <button @click="SignOut">
             <img
               src="@/assets/dashboardIcons/logout.svg"
               class="h-4 w-4"
@@ -156,6 +112,9 @@
 import { mapState } from "vuex";
 import { useRouter } from "vue-router";
 import { signOut, auth } from "@/Config/firebase.js";
+import DashboardSubNav from "../SubSideBars/DashboardSubNav.vue";
+import UsersSubNav from "../SubSideBars/UsersSubNav.vue";
+//import Dashboard from "../../Pages/dashboard-pages/Dashboard.vue";
 import {
   getFirestore,
   doc,
@@ -166,7 +125,6 @@ import { useStore } from "vuex";
 
 export default {
   name: "Sidebar",
-  components: {},
   setup() {
     const router = useRouter();
     const store = useStore();
@@ -205,6 +163,23 @@ export default {
       return this.user.photoURL
         ? this.user.photoURL
         : "/src/assets/dashboardIcons/avatar-default.svg";
+    },
+    activeRoute() {
+      return this.$route.path;
+    },
+    subNavComponent() {
+      switch (this.activeRoute) {
+        case "/dashboard/overview":
+          return DashboardSubNav;
+          case "/dashboard/notifications":
+          return DashboardSubNav;
+        case "/users/overview":
+          return UsersSubNav;
+          case "/users/friends":
+          return UsersSubNav;
+        default:
+          return DashboardSubNav;
+      }
     },
   },
   methods: {

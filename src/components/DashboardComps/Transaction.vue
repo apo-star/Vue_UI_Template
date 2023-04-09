@@ -1,10 +1,22 @@
 <template>
   <div
-    class="border border-gray-200 shadow-sm rounded-xl pt-5 pb-4 flex flex-col"
+    class="border border-gray-200 shadow-sm rounded-xl pt-5 pb- flex flex-col"
   >
-    <button @click="downloadPDF">Download PDF</button>
-    <div class="pb-5 px-6 border-b-gray-200 border-b">
+    <div
+      class="pb-5 px-6 border-b-gray-200 border-b flex justify-between items-center"
+    >
       <h3 class="text-gray-900 font-semibold text-lg">Recent transactions</h3>
+      <WhiteButton
+        @click="downloadPDF"
+        class="text-sm font-semibold text-gray-700 h-10 w-32"
+      >
+        <img
+          src="../../assets/dashboardIcons/download-cloud.svg"
+          alt=""
+          class="inline-block h-4 w-4 "
+        />
+        <span class="ml-2">Download</span>
+      </WhiteButton>
     </div>
     <div>
       <table class="table-auto w-full text-left">
@@ -188,10 +200,12 @@
 import TransactionEdit from "./TransactionEdit.vue";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
+import WhiteButton from "../WhiteButton.vue";
 export default {
   name: "Transaction",
   components: {
     TransactionEdit,
+    WhiteButton,
   },
   props: {
     transactions: {
@@ -349,9 +363,8 @@ export default {
       // Create a new jsPDF instance
       const doc = new jsPDF();
 
-       // Add title to the document
-      doc.text('Transactions Report', 10, 10);
-
+      // Add title to the document
+      doc.text("Transactions Report", 10, 10);
 
       // Loop through each transaction and add it to the PDF
       const rows = [];
