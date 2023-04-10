@@ -5,6 +5,7 @@ import {
   signInWithRedirect,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
+  updateProfile,
   signOut,
   GoogleAuthProvider,
   onAuthStateChanged,
@@ -17,6 +18,7 @@ import {
   getDoc,
   setDoc,
   doc,
+  updateDoc,
 } from "firebase/firestore";
 
 const firebaseConfig = {
@@ -45,6 +47,8 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
   console.log(snapShot);
   if (!snapShot.exists()) {
     const { displayName, email, photoURL } = userAuth;
+     //const { lastLoginAt } = userAuth.metadata;
+    //if I want to get the last login time
     const createdAt = new Date();
     try {
       await setDoc(userRef, {
@@ -54,6 +58,8 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
         createdAt,
         ...additionalData,
       });
+
+       //await updateDoc(userRef, { lastLoginAt});
     } catch (error) {
       console.log("error creating user", error.message);
     }
@@ -89,4 +95,6 @@ export {
   provider,
   getCurrentUser,
   onAuthStateChanged,
+  updateProfile,
+  updateDoc,
 };

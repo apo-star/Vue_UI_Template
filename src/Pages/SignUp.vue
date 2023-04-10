@@ -26,6 +26,7 @@
               type="text"
               placeholder="Enter your name"
               v-model="displayName"
+              required
             />
           </label>
 
@@ -36,6 +37,7 @@
               type="email"
               placeholder="Enter your email"
               v-model="email"
+              required
             />
           </label>
 
@@ -46,6 +48,7 @@
               type="password"
               placeholder="Enter your password"
               v-model="password"
+              required
             />
             <p class="text-sm font-normal text-gray-600">
               Must be at least 8 characters.
@@ -101,6 +104,7 @@ import {
   auth,
   provider,
   createUserProfileDocument,
+  updateProfile,
 } from "../Config/firebase.js";
 import {
   getFirestore,
@@ -135,15 +139,17 @@ export default {
           email.value,
           password.value
         );
+        // await updateProfile(user, {
+        //   displayName: displayName.value,
+        // });
         await createUserProfileDocument(user, {
-         displayName: displayName.value,
+          displayName: displayName.value,
           email: email.value,
           password: password.value,
         });
         router.push("/dashboard/overview");
-        
       } catch (error) {
-        console.log(error,'error');
+        console.log(error, "error");
       }
     };
 

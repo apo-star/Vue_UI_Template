@@ -1,8 +1,8 @@
 <script>
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
-import { onAuthStateChanged, auth, createUserProfileDocument } from "@/Config/firebase.js";
-import { getFirestore, collection, getDocs, getDoc } from "firebase/firestore";
+import { onAuthStateChanged, auth, createUserProfileDocument,  } from "@/Config/firebase.js";
+import { getFirestore, collection, getDocs, getDoc, updateDoc, serverTimestamp } from "firebase/firestore";
 
 export default {
   name: "App",
@@ -16,8 +16,11 @@ export default {
       if (userAuth) {
         const userRef = await createUserProfileDocument(userAuth);
         if (!userRef) return;
-
-
+       
+        updateDoc(userRef, {
+          lastLogin: serverTimestamp(),
+        });
+        
         const snapShot = await getDoc(userRef);
         if (!snapShot.exists()) return;
          router.push({ path: "/dashboard/overview" });

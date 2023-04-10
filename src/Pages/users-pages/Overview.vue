@@ -27,7 +27,7 @@
               />
               <div>
                 <h1>
-                  {{ user.displayName }}
+                  {{ user.displayName ? user.displayName : "" }}
                   <span v-if="user.email === me.email">(me)</span>
                   <span v-else>(you)</span>
                 </h1>
@@ -35,9 +35,14 @@
               </div>
             </td>
             <td class="pl-6">
-              {{ new Date(user.createdAt.seconds * 1000).toLocaleDateString()  }}
+              {{ new Date(user.createdAt.seconds * 1000).toLocaleDateString() }}
             </td>
-            <td class="pl-6 border-br-xl">12/12/2021</td>
+            <td class="pl-6 border-br-xl">
+              {{user.lastLogin ?
+                new Date(user.lastLogin.seconds * 1000).toLocaleDateString() :
+                "Never"
+              }}
+            </td>
           </tr>
         </tbody>
       </table>
@@ -69,7 +74,6 @@
 <script>
 import { mapState } from "vuex";
 
-
 export default {
   computed: {
     ...mapState(["user", "users"]),
@@ -78,7 +82,6 @@ export default {
       return this.user;
     },
   },
-
 };
 </script>
 

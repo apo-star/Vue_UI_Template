@@ -262,6 +262,8 @@ export default {
     firstName() {
       if (this.user) {
         return this.user.displayName.split(" ")[0];
+      } else {
+        return "";
       }
     },
   },
