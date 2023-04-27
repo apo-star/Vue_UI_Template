@@ -41,10 +41,10 @@ const db = getFirestore(app);
 
 export const createUserProfileDocument = async (userAuth, additionalData) => {
   if (!userAuth) return;
-  console.log(userAuth);
+  //console.log(userAuth);
   const userRef = doc(db, "users", userAuth.uid);
   const snapShot = await getDoc(userRef);
-  console.log(snapShot);
+  //console.log(snapShot);
   if (!snapShot.exists()) {
     const { displayName, email, photoURL } = userAuth;
      //const { lastLoginAt } = userAuth.metadata;

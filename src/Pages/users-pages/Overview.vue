@@ -10,69 +10,77 @@
           >
             <th class="py-3.5 pl-6 rounded-tl-xl">Name</th>
             <th class="py-3.5 pl-6">Date Joined</th>
-            <th class="py-3.5 pl-6 rounded-tr-xl">Last Active</th>
+            <th class="py-3.5 pl-6 rounded-tr-xl">Last Login</th>
           </tr>
         </thead>
         <tbody v-for="user in users" :key="user.id">
-          <tr class="border-b-gray-200 border-b">
-            <td class="py-4 pl-6 rounded-bl-xl flex gap-5 items-center">
-              <img
-                :src="
-                  user.photoURL
-                    ? user.photoURL
-                    : '/src/assets/dashboardIcons/avatar-default.svg'
-                "
-                alt="User avatar"
-                class="h-28 w-28 rounded-lg border-2 border-gray-200"
-              />
-              <div>
-                <h1>
-                  {{ user.displayName ? user.displayName : "" }}
-                  <span v-if="user.email === me.email">(me)</span>
-                  <span v-else>(you)</span>
-                </h1>
-                <h1>{{ user.email }}</h1>
+          <tr
+            class="border-b-gray-200 border-b"
+            style="
+              background-color: #f6f8ff;
+              box-shadow: 0 16px 30px -10px rgba(70, 96, 187, 0.2);
+            "
+          >
+            <td class="py-4 pl-6 rounded-bl-xl">
+              <div
+                class="flex gap-5 items-center borer-gray-200 border w-96 p-3 rounded-lg border-gray-100 bg-white"
+              >
+                <img
+                  :src="
+                    user.photoURL
+                      ? user.photoURL
+                      : '/src/assets/dashboardIcons/avatar-default.svg'
+                  "
+                  alt="avatar"
+                  class="h-24 w-24 rounded-lg"
+                />
+                <div>
+                  <h1 class="text-gray-900 font-semibold text-lg capitalize">
+                    {{ user.displayName ? user.displayName : "" }}
+                    <span
+                      v-if="user.email === me.email"
+                      class="text-gray-400 font-normal text-sm"
+                      >(you)</span
+                    >
+                  </h1>
+                  <h1 class="text-gray-600 font-normal text-sm">
+                    {{ user.email }}
+                  </h1>
+                </div>
               </div>
             </td>
             <td class="pl-6">
-              {{ new Date(user.createdAt.seconds * 1000).toLocaleDateString() }}
+              <h3 class="">
+                {{
+                  new Date(user.createdAt.seconds * 1000).toLocaleDateString(
+                    "en-US",
+                    { month: "long", day: "numeric", year: "numeric" }
+                  )
+                }}
+              </h3>
             </td>
+
             <td class="pl-6 border-br-xl">
-              {{user.lastLogin ?
-                new Date(user.lastLogin.seconds * 1000).toLocaleDateString() :
-                "Never"
+              {{
+                user.lastLogin
+                  ? formatDistanceToNow(
+                      new Date(user.lastLogin.seconds * 1000)
+                    ) + " ago"
+                  : "loading.."
               }}
+              <!-- <span v-if="user.online" class="text-green-500">Online</span> -->
             </td>
           </tr>
         </tbody>
       </table>
     </div>
-    <!-- <div class="flex flex-col gap-7">
-      <div v-for="user in users" :key="user.id" class="flex gap-5">
-        <img
-          :src="
-            user.photoURL
-              ? user.photoURL
-              : '/src/assets/dashboardIcons/avatar-default.svg'
-          "
-          alt="User avatar"
-          class="h-28 w-28 rounded-lg border-2 border-gray-200"
-        />
-        <div>
-          <h1>
-            {{ user.displayName }}
-            <span v-if="user.email === me.email">(me)</span>
-            <span v-else>(you)</span>
-          </h1>
-          <h1>{{ user.email }}</h1>
-        </div>
-      </div>
-    </div> -->
   </div>
 </template>
 
 <script>
 import { mapState } from "vuex";
+import { formatDistanceToNow } from "date-fns";
+import { getDoc } from "@firebase/firestore";
 
 export default {
   computed: {
@@ -81,6 +89,9 @@ export default {
     me() {
       return this.user;
     },
+  },
+  methods: {
+    formatDistanceToNow,
   },
 };
 </script>

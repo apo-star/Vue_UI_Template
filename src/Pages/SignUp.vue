@@ -111,6 +111,7 @@ import {
   collection,
   addDoc,
   serverTimestamp,
+  updateDoc,
 } from "firebase/firestore";
 import { useStore } from "vuex";
 
@@ -161,6 +162,17 @@ export default {
           const token = credential.accessToken;
           // The signed-in user info.
           const user = result.user;
+          const userRef = doc(db, "users", user.uid);
+          updateDoc(userRef, {
+            lastLogin: serverTimestamp(),
+          })
+            .then(() => {
+              // store.commit("SET_USER", user);
+              router.push("/dashboard/overview");
+            })
+            .catch((error) => {
+              console.log(error);
+            });
           // ...
           //store.commit("SET_USER", user);
         })

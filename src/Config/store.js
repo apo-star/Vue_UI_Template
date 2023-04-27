@@ -7,6 +7,7 @@ const store = createStore({
     return {
       user: null,
       users: [],
+      usersListener: null, // added a new state to store the listener
     };
   },
   mutations: {
@@ -15,6 +16,15 @@ const store = createStore({
     },
     SET_USERS(state, payload) {
       state.users = payload;
+    },
+    SET_USERS_LISTENER(state, payload) { // added a new mutation to set the listener
+      state.usersListener = payload;
+    },
+    UPDATE_USER(state, payload) { // added a new mutation to update the lastLogin field of a user
+      const index = state.users.findIndex((user) => user.id === payload.id);
+      if (index !== -1) {
+        state.users[index].lastLogin = payload.lastLogin;
+      }
     },
   },
   actions: {
@@ -35,9 +45,9 @@ const store = createStore({
   },
   plugins: [
     createPersistedState({
-        key: "vuex",
-        paths: ["user"],
-        storage: window.sessionStorage,
+      key: "vuex",
+      paths: ["user"],
+      storage: window.sessionStorage,
     }),
   ],
 });
