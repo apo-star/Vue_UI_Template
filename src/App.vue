@@ -33,7 +33,8 @@ export default {
 
         const snapShot = await getDoc(userRef);
         if (!snapShot.exists()) return;
-        router.push({ path: "/dashboard/overview" });
+         router.push({ path: "/dashboard/overview" });
+         //router.go(-1)
         store.commit("SET_USER", snapShot.data());
         localStorage.setItem("user", JSON.stringify(snapShot.data()));
         //console.log(snapShot.data());

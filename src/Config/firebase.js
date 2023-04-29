@@ -19,6 +19,7 @@ import {
   setDoc,
   doc,
   updateDoc,
+  getDocs,
 } from "firebase/firestore";
 
 const firebaseConfig = {
@@ -47,21 +48,82 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
   //console.log(snapShot);
   if (!snapShot.exists()) {
     const { displayName, email, photoURL } = userAuth;
-     //const { lastLoginAt } = userAuth.metadata;
+    //const { lastLoginAt } = userAuth.metadata;
     //if I want to get the last login time
     const createdAt = new Date();
-    try {
-      await setDoc(userRef, {
-        displayName,
-        email,
-        photoURL,
-        createdAt,
-        ...additionalData,
-      });
 
-       //await updateDoc(userRef, { lastLoginAt});
-    } catch (error) {
-      console.log("error creating user", error.message);
+    if (displayName) {
+      // Generate username from displayName
+      const username = displayName.replace(/\s+/g, "").toLowerCase();
+      let usernameTaken = true;
+      let usernameToSave = username;
+      let i = 1;
+
+      // Check if username is already taken
+      while (usernameTaken) {
+        const querySnapshot = await getDocs(
+          query(
+            collection(db, "users"),
+            where("username", "==", usernameToSave)
+          )
+        );
+        if (querySnapshot.empty) {
+          usernameTaken = false;
+        } else {
+          usernameToSave = username + i;
+          i++;
+        }
+      }
+
+      try {
+        await setDoc(userRef, {
+          displayName,
+          email,
+          photoURL,
+          createdAt,
+          username: usernameToSave, // set the final value of usernameToSave
+          ...additionalData,
+        });
+        //await updateDoc(userRef, { lastLoginAt});
+      } catch (error) {
+        console.log("error creating user", error.message);
+      }
+    } else {
+      // If no displayName, use email
+      const username = email.split("@")[0].replace(/[^a-z]/g, "");
+      let usernameTaken = true;
+      let usernameToSave = username;
+      let i = 1;
+
+      // Check if username is already taken
+      while (usernameTaken) {
+        const querySnapshot = await getDocs(
+          query(
+            collection(db, "users"),
+            where("username", "==", usernameToSave)
+          )
+        );
+        if (querySnapshot.empty) {
+          usernameTaken = false;
+        } else {
+          usernameToSave = username + i;
+          i++;
+        }
+      }
+
+      try {
+        await setDoc(userRef, {
+          displayName,
+          email,
+          photoURL,
+          createdAt,
+          username: usernameToSave, // set the final value of usernameToSave
+          ...additionalData,
+        });
+        //await updateDoc(userRef, { lastLoginAt});
+      } catch (error) {
+        console.log("error creating user", error.message);
+      }
     }
   }
   return userRef;
@@ -97,4 +159,5 @@ export {
   onAuthStateChanged,
   updateProfile,
   updateDoc,
+  db
 };

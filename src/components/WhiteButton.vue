@@ -4,7 +4,7 @@
     ,   disabled:cursor-not-allowed transition duration-500 ease-in-out"
     :disabled="disabled"
     :type="type"
-    :on-click="onClick"
+    @click="onClick"
   >
     <slot> Default Button </slot>
   </button>
@@ -13,20 +13,20 @@
 <script>
 export default {
   name: "WhiteButton",
-  type: {
-    type: String,
-    default: "button",
-  },
   props: {
-    disabled: {
+    type: {
       type: String,
+      default: "button",
+    },
+    disabled: {
+      type: Boolean,
       default: false,
     },
   },
-  emits: ["onClick"],
+  emits: ["click"],
   methods: {
     onClick() {
-      this.$emit("onClick");
+      this.$emit("click");
     },
   },
 };

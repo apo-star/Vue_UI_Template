@@ -59,7 +59,7 @@
       </div>
       <div class="flex flex-col gap-9 items-center">
         <router-link
-          to="/dashboard/overview"
+          to="/settings/profile"
           active-class="bg-gray-50"
           class="p-3.5 hover:bg-gray-50 rounded-md transition duration-500 ease-in-out"
         >
@@ -114,6 +114,7 @@ import { useRouter } from "vue-router";
 import { signOut, auth } from "@/Config/firebase.js";
 import DashboardSubNav from "../SubSideBars/DashboardSubNav.vue";
 import UsersSubNav from "../SubSideBars/UsersSubNav.vue";
+import SettingsSubNav from "../SubSideBars/SettingsSubNav.vue";
 //import Dashboard from "../../Pages/dashboard-pages/Dashboard.vue";
 import {
   getFirestore,
@@ -138,12 +139,18 @@ export default {
     };
 
     const SignOut = async () => {
-      try {
-        await signOut(auth);
-        store.commit("SET_USER", null);
-        router.push({ path: "/login" });
-      } catch (error) {
-        alert(error.message);
+      // Display a confirmation dialog
+      const confirmed = window.confirm("Are you sure you want to log out?");
+
+      // Proceed with logout if user confirmed
+      if (confirmed) {
+        try {
+          await signOut(auth);
+          store.commit("SET_USER", null);
+          router.push({ path: "/login" });
+        } catch (error) {
+          alert(error.message);
+        }
       }
     };
 
@@ -171,12 +178,20 @@ export default {
       switch (this.activeRoute) {
         case "/dashboard/overview":
           return DashboardSubNav;
-          case "/dashboard/notifications":
+        case "/dashboard/notifications":
           return DashboardSubNav;
         case "/users/overview":
           return UsersSubNav;
-          case "/users/friends":
+        case "/users/friends":
           return UsersSubNav;
+        case "/settings/profile":
+          return SettingsSubNav;
+        case "/settings/password":
+          return SettingsSubNav;
+        case "/settings/notifications":
+          return SettingsSubNav;
+        case "/settings/billing":
+          return SettingsSubNav;
         default:
           return DashboardSubNav;
       }

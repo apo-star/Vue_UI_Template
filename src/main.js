@@ -9,13 +9,17 @@ import DefaultLayout from "@/Layouts/DefaultLayout.vue";
 import AuthLayout from "@/Layouts/AuthLayout.vue";
 import Dashboard from "@/Pages/dashboard-pages/Dashboard.vue";
 import Users from "@/Pages/users-pages/Users.vue";
+import Settings from "@/Pages/settings-pages/Settings.vue";
 import Notifications from "@/Pages/dashboard-pages/Notifications.vue";
 import Overview from "@/Pages/dashboard-pages/Overview.vue";
 import UserOverview from "@/Pages/users-pages/Overview.vue";
 import Friends from "@/Pages/users-pages/Friends.vue";
+import BillingSettings from "@/Pages/settings-pages/Billing.vue";
+import ProfileSettings from "@/Pages/settings-pages/Profile.vue";
+import NotificationsSettings from "@/Pages/settings-pages/Notifications.vue";
+import PasswordSettings from "@/Pages/settings-pages/Password.vue";
 import DashboardLayout from "@/Layouts/DashboardLayout.vue";
 import store from "./Config/store.js";
-
 
 import "./assets/main.css";
 import "./assets/tailwind.css";
@@ -117,6 +121,44 @@ const router = createRouter({
           path: "friends",
           name: "Friends",
           component: Friends,
+        },
+      ],
+      beforeEnter: (to, from, next) => {
+        if (store.getters["user"]) {
+          next();
+        } else {
+          next({ name: "Login" });
+        }
+      },
+    },
+    {
+      path: "/settings",
+      name: "Settings",
+      component: Settings,
+      meta: {
+        layout: DashboardLayout, // use DashboardLayout for this route
+      },
+      redirect: { name: "ProfileSettings" }, // redirect to Overview by default
+      children: [
+        {
+          path: "billing",
+          name: "BillingSettings",
+          component: BillingSettings,
+        },
+        {
+          path: "profile",
+          name: "ProfileSettings",
+          component: ProfileSettings,
+        },
+        {
+          path: "notifications",
+          name: "NotificationsSettings",
+          component: NotificationsSettings,
+        },
+        {
+          path: "password",
+          name: "PasswordSettings",
+          component: PasswordSettings,
         },
       ],
       beforeEnter: (to, from, next) => {

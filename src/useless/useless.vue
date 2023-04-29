@@ -287,4 +287,11 @@
     //     activeButton: null,
     //   };
     // },
+
+
+    const [photoURL, setPhotoURL] = useState("https://sbcf.fr/wp-content/uploads/2018/03/sbcf-default-avatar.png")
+
+    useEffect(() => {
+       setPhotoURL(currentUser.photoURL);
+    }, [currentUser])
   

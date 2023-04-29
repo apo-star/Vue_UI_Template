@@ -67,6 +67,7 @@
           <WhiteButtonVue
             class="h-11 w360 flex items-center justify-center gap-3"
             @click="signInWithGoogle"
+            type="button"
           >
             <img
               src="../assets/google.svg"
@@ -142,7 +143,7 @@ export default {
         });
         // store.commit("SET_USER", user);
         console.log(user);
-        router.push("/dashboard/overview");
+        router.go(-1)
       } catch (error) {
         console.log(error);
       }

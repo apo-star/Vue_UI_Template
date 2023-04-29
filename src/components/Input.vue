@@ -7,6 +7,7 @@
     :value="modelValue"
     :required="required"
     @input="$emit('update:modelValue', $event.target.value)"
+    :style="style"
   />
 </template>
 
@@ -26,15 +27,15 @@ export default {
       type: Boolean,
       default: false,
     },
-    value: {
-      type: String,
-      default: "",
-    },
     disabled: {
       type: Boolean,
       default: false,
     },
     modelValue: {
+      type: String,
+      default: "",
+    },
+    style: {
       type: String,
       default: "",
     },
