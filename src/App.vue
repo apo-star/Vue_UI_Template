@@ -15,10 +15,11 @@ import {
   serverTimestamp,
   onSnapshot,
 } from "firebase/firestore";
+import devAvatar from "./assets/dashboardIcons/avatar-default.png";
 
 
 
-export default {
+export default{
   name: "App",
 
   setup(props, { slots }) {
@@ -36,6 +37,7 @@ export default {
          router.push({ path: "/dashboard/overview" });
          //router.go(-1)
         store.commit("SET_USER", snapShot.data());
+        store.commit("SET_USER_PHOTO_URL", snapShot.data().photoURL || devAvatar);
         localStorage.setItem("user", JSON.stringify(snapShot.data()));
         //console.log(snapShot.data());
 
@@ -49,6 +51,7 @@ export default {
             id: doc.id,
             ...doc.data(),
             password: null,
+            photoURL: doc.data().photoURL || devAvatar,
           });
         });
 

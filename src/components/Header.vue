@@ -154,7 +154,7 @@ export default {
     displayPhotoURL() {
       return this.user.photoURL
         ? this.user.photoURL
-        : "./src/assets/dashboardIcons/avatar-default.svg";
+        : "./src/assets/dashboardIcons/avatar-default.png";
     },
     name() {
       if (this.user) {

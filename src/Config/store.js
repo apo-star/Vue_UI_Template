@@ -17,6 +17,9 @@ const store = createStore({
     SET_USERS(state, payload) {
       state.users = payload;
     },
+    SET_USER_PHOTO_URL(state, payload) {
+      state.user.photoURL = payload;
+    },
     SET_USERS_LISTENER(state, payload) { // added a new mutation to set the listener
       state.usersListener = payload;
     },

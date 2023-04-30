@@ -83,12 +83,12 @@
               <div class="flex justify-between gap-5">
                 <!--  -->
                 <img
-                  :src="photoURL"
+                  :src="imgSrc"
                   alt="avatar"
                   class="h-16 w-16 rounded-full"
                 />
                 <div
-                  class="flex items-center flex-col gap-3 py-4 border border-dashed border-gray-200 w-full rounded-xl"
+                  class="flex items-center flex-col gap-3 py-4 border border-dashed border-gray-200 w-full rounded-xl hover:bg-gray-50 cursor-pointer transition duration-300 ease-in-out"
                   @click="showModal = true"
                 >
                   <div
@@ -96,7 +96,7 @@
                   >
                     <img
                       src="../../assets/dashboardIcons/download-cloud.svg"
-                      class="h-5 w-5 z-10 m-auto"
+                      class="h-5 w-5 m-auto"
                       alt="upload"
                     />
                   </div>
@@ -150,26 +150,32 @@
                   </button>
                 </div>
               </div>
-              <label
-                for="upload"
-                class="flex flex-col gap-1.5 relative cursor-pointer"
-              >
+              <label for="upload" class="flex flex-col gap-1.5 relative">
                 <Input
-                  class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline cursor-pointer"
                   id="photoURL"
                   type="file"
                   placeholder="Profile Picture"
                   required
                   name="photoURL"
                   @change="handleImageChange"
+                  accept="image/*"
                 />
               </label>
+              <div class="justify-self-center flex justify-center">
+                <img
+                  :src="imagePreview"
+                  alt="Preview of the selected image"
+                  class="h-64 w-64 object-cover"
+                />
+              </div>
+
               <div class="flex justify-end gap-5">
                 <WhiteButton
                   class="px-4 h-10 text-sm font-semibold"
                   @click="showModal = false"
                 >
-                  Cancel
+                  Cancel upload
                 </WhiteButton>
                 <PurpleButton
                   class="px-4 h-10 text-sm font-semibold"
@@ -177,11 +183,8 @@
                   :disabled="!photo"
                   type="submit"
                 >
-                  Save changes
+                  Upload photo
                 </PurpleButton>
-                <button class="px-4 h-10 text-sm font-semibold bg-green-600">
-                  Upload
-                </button>
               </div>
             </div>
           </div>
@@ -199,70 +202,109 @@ import Input from "../../components/Input.vue";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { auth, db, updateProfile } from "../../Config/firebase.js";
 import { uploadImage } from "../../Config/firebaseStorage";
-import devImg from "../../assets/dashboardIcons/avatar-default.svg";
+import devImg from "../../assets/dashboardIcons/avatar-default.png";
 import { ref, watch } from "vue";
+import { useRouter } from "vue-router";
+import { useStore } from "vuex";
 export default {
   name: "ProfileSettings",
+  props: {
+    size: {
+      type: String,
+      default: "md",
+    },
+  },
   components: {
     PurpleButton,
     WhiteButton,
     Input,
   },
 
-  setup() {
+  setup(props) {
+    const router = useRouter();
+    const store = useStore();
     const showModal = ref(false);
     const photoURL = ref(
       "https://sbcf.fr/wp-content/uploads/2018/03/sbcf-default-avatar.png"
     );
     const photo = ref(null);
-    //const setLoading = ref(false);
 
     const currentUser = auth.currentUser;
+
     if (currentUser?.photoURL) {
       photoURL.value = currentUser.photoURL;
       console.log(currentUser.photoURL);
     }
 
     watch(
-      () => auth.currentUser,
-      (newUser) => {
-        photoURL.value =
-          newUser.photoURL ||
-          "https://sbcf.fr/wp-content/uploads/2018/03/sbcf-default-avatar.png";
+      () => auth.currentUser?.photoURL,
+      (newPhotoURL) => {
+        photoURL.value = newPhotoURL;
       }
     );
 
     const handleImageChange = (e) => {
       if (e.target.files[0]) {
         photo.value = e.target.files[0]; // set file
-      }
+        if(photo.value.size > 1000000) {
+          alert("File size must be less than 1MB");
+          return;
+        }
+        createImagePreview(photo.value);
+      } 
+      // const file = event.target.files[0];
+      // if (!file) {
+      //   photo.value = null;
+      // }
     };
 
-    const handleImageClick = () => {
+    const createImagePreview = (file) => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        photoURL.value = reader.result;
+      };
+      reader.readAsDataURL(file);
+    };
+
+    watch(
+      () => photo.value,
+      (newPhoto) => {
+        createImagePreview(newPhoto);
+      }
+    );
+
+    const handleImageClick = async () => {
       if (currentUser) {
-        uploadImage(photo.value, currentUser);
+        await uploadImage(photo.value, currentUser);
         const userRef = doc(db, "users", currentUser.uid);
-        updateDoc(userRef, {
-          photoURL: currentUser.photoURL,
+        await updateDoc(userRef, {
+          photoURL: photoURL.value,
         });
+        await store.commit("SET_USER_PHOTO_URL", photoURL.value);
         showModal.value = false;
         alert("image uploaded");
       }
     };
 
-    
-
     return { photoURL, showModal, handleImageChange, handleImageClick, photo };
   },
 
-
   computed: {
     ...mapState(["user"]),
+    imgSize() {
+      return this.size ? `profile-image--${this.size}` : "";
+    },
+    imagePreview() {
+      return this.photoURL;
+    },
     firstName() {
       return this.user.displayName.split(" ")[0];
     },
     lastName() {
       return this.user.displayName.split(" ")[1];
+    },
+    imgSrc() {
+      return this.user.photoURL;
     },
   },
   methods: {},
