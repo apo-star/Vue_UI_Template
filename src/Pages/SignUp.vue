@@ -24,7 +24,7 @@
             <Input
               id="name"
               type="text"
-              placeholder="Enter your name"
+              placeholder="Enter your full name"
               v-model="displayName"
               required
             />

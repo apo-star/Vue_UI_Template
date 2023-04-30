@@ -20,6 +20,12 @@ const store = createStore({
     SET_USER_PHOTO_URL(state, payload) {
       state.user.photoURL = payload;
     },
+    SET_USER_DISPLAY_NAME(state, payload) {
+      state.user.displayName = payload;
+    },
+    SET_USER_EMAIL(state, payload) {
+      state.user.email = payload;
+    },
     SET_USERS_LISTENER(state, payload) { // added a new mutation to set the listener
       state.usersListener = payload;
     },
@@ -33,6 +39,18 @@ const store = createStore({
   actions: {
     setUser({ commit }, payload) {
       commit("SET_USER", payload);
+    },
+    setUsers({ commit }, payload) {
+      commit("SET_USERS", payload);
+    },
+    setUserPhotoURL({ commit }, payload) {
+      commit("SET_USER_PHOTO_URL", payload);
+    },
+    setUserDisplayName({ commit }, payload) {
+      commit("SET_USER_DISPLAY_NAME", payload);
+    },
+    setUserEmail({ commit }, payload) {
+      commit("SET_USER_EMAIL", payload);
     },
   },
   getters: {

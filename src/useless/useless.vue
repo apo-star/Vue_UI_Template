@@ -295,3 +295,60 @@
        setPhotoURL(currentUser.photoURL);
     }, [currentUser])
   
+
+    // const handleImageChange = (e) => {
+    //   if (e.target.files[0]) {
+    //     photo.value = e.target.files[0]; // set file
+    //     if(photo.value.size > 1000000) {
+    //       alert("File size must be less than 1MB");
+    //       return;
+    //     }
+    //     createImagePreview(photo.value);
+    //   }
+    //   // const file = event.target.files[0];
+    //   // if (!file) {
+    //   //   photo.value = null;
+    //   // }
+    // };
+
+
+    // const updateDetails = async () => {
+    //   const currentUser = auth.currentUser;
+
+    //   if (currentUser) {
+    //     try {
+    //       // Update the user's display name
+    //       await updateProfile(currentUser, {
+    //         displayName: displayName.value,
+    //         email: email.value,
+    //       });
+    //       // Update the user's email
+    //      // await updateEmail(currentUser, email.value);
+    //       // Update the user's document in the database
+    //       const userRef = doc(db, "users", currentUser.uid);
+    //       await updateDoc(userRef, {
+    //         displayName: displayName.value,
+    //         email: email.value,
+    //       });
+    //       // Update the user's details in the store
+    //       //await store.commit("SET_USER", updatedUser);
+    //       await store.commit("SET_USER_DISPLAY_NAME", displayName.value);
+    //       await store.commit("SET_USER_EMAIL", email.value);
+    //       //router.push("/dashboard");
+    //       alert("Details updated");
+    //       console.log(store.state.user);
+    //     } catch (error) {
+    //       console.log(error);
+    //     }
+    //   }
+    // };
+
+
+    // const email = ref("");
+    // const lastName = ref("");
+    // const firstName = ref("");
+    // //const displayName = ref("");
+
+    // const displayName = computed(() => {
+    //   return `${firstName.value} ${lastName.value}`;
+    // });

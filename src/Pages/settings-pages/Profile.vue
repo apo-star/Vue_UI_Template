@@ -27,7 +27,7 @@
           View profile
         </PurpleButton>
       </div>
-      <div class="px-8">
+      <div class="px-8 flex flex-col gap-5">
         <div class="flex gap-8">
           <div class="w-max">
             <h5 class="text-gray-700 font-medium text-sm">Personal info</h5>
@@ -37,6 +37,7 @@
           </div>
           <form
             class="flex flex-col border border-gray-200 rounded-xl shadow-sm bg-white w-full"
+            @submit.prevent="updateDetails"
           >
             <div class="flex flex-col p-6 gap-6">
               <div class="flex gap-6">
@@ -70,7 +71,8 @@
                   type="text"
                   placeholder="Enter your email address"
                   required
-                  v-model="user.email"
+                  v-model="email"
+                  :value="currentUser?.email"
                   style="width: 70%"
                   class="pl-11"
                 />
@@ -124,7 +126,8 @@
               </WhiteButton>
               <PurpleButton
                 class="px-4 h-10 text-sm font-semibold"
-                type="button"
+                type="submit"
+                @click="submit"
               >
                 Save changes
               </PurpleButton>
@@ -182,6 +185,7 @@
                   @click="handleImageClick"
                   :disabled="!photo"
                   type="submit"
+                  id="upload-button"
                 >
                   Upload photo
                 </PurpleButton>
@@ -189,6 +193,8 @@
             </div>
           </div>
         </div>
+        <p class="bg-gray-200 h-px "></p>
+        <OtherProfile />
       </div>
     </div>
   </div>
@@ -199,11 +205,12 @@ import { mapState } from "vuex";
 import PurpleButton from "../../components/PurpleButton.vue";
 import WhiteButton from "../../components/WhiteButton.vue";
 import Input from "../../components/Input.vue";
+import OtherProfile from "../../components/SettingsComps/OtherProfile.vue";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
-import { auth, db, updateProfile } from "../../Config/firebase.js";
+import { auth, db, updateProfile, updateEmail } from "../../Config/firebase.js";
 import { uploadImage } from "../../Config/firebaseStorage";
 import devImg from "../../assets/dashboardIcons/avatar-default.png";
-import { ref, watch } from "vue";
+import { ref, watch, computed } from "vue";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 export default {
@@ -218,12 +225,22 @@ export default {
     PurpleButton,
     WhiteButton,
     Input,
+    OtherProfile,
+  },
+
+  data() {
+    return {
+      email: "",
+      lastName: "",
+      firstName: "",
+      displayName: "",
+    };
   },
 
   setup(props) {
-    const router = useRouter();
     const store = useStore();
     const showModal = ref(false);
+    const disabledButton = ref(true);
     const photoURL = ref(
       "https://sbcf.fr/wp-content/uploads/2018/03/sbcf-default-avatar.png"
     );
@@ -244,18 +261,17 @@ export default {
     );
 
     const handleImageChange = (e) => {
-      if (e.target.files[0]) {
-        photo.value = e.target.files[0]; // set file
-        if(photo.value.size > 1000000) {
+      const file = e.target.files[0];
+      if (file) {
+        if (file.size > 1000000) {
           alert("File size must be less than 1MB");
           return;
         }
+        photo.value = file;
         createImagePreview(photo.value);
-      } 
-      // const file = event.target.files[0];
-      // if (!file) {
-      //   photo.value = null;
-      // }
+      } else {
+        photo.value = null;
+      }
     };
 
     const createImagePreview = (file) => {
@@ -286,7 +302,53 @@ export default {
       }
     };
 
-    return { photoURL, showModal, handleImageChange, handleImageClick, photo };
+    return {
+      photoURL,
+      showModal,
+      handleImageChange,
+      handleImageClick,
+      photo,
+    };
+  },
+
+  mounted() {
+    this.email = this.user.email;
+    this.lastName = this.user.displayName.split(" ")[1];
+    this.firstName = this.user.displayName.split(" ")[0];
+  },
+
+  methods: {
+    async updateDetails() {
+      const currentUser = auth.currentUser;
+
+      if (currentUser) {
+        try {
+          // Update the user's display name
+          await updateProfile(currentUser, {
+            displayName: `${this.firstName} ${this.lastName}`,
+            //  email: this.email,
+          });
+          // Update the user's email
+          await updateEmail(currentUser, email.value);
+          // Update the user's document in the database
+          const userRef = doc(db, "users", currentUser.uid);
+          await updateDoc(userRef, {
+            displayName: `${this.firstName} ${this.lastName}`,
+            email: this.email,
+          });
+          // Update the user's details in the store
+          await this.$store.commit(
+            "SET_USER_DISPLAY_NAME",
+            `${this.firstName} ${this.lastName}`
+          );
+          await this.$store.commit("SET_USER_EMAIL", this.email);
+          alert("Details updated successfully");
+          //console.log(this.$store.state.user);
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    },
   },
 
   computed: {
@@ -297,17 +359,10 @@ export default {
     imagePreview() {
       return this.photoURL;
     },
-    firstName() {
-      return this.user.displayName.split(" ")[0];
-    },
-    lastName() {
-      return this.user.displayName.split(" ")[1];
-    },
     imgSrc() {
       return this.user.photoURL;
     },
   },
-  methods: {},
 };
 </script>
 

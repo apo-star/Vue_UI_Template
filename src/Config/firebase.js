@@ -9,6 +9,7 @@ import {
   signOut,
   GoogleAuthProvider,
   onAuthStateChanged,
+  updateEmail,
 } from "firebase/auth";
 import {
   getFirestore,
@@ -159,5 +160,6 @@ export {
   onAuthStateChanged,
   updateProfile,
   updateDoc,
-  db
+  db,
+  updateEmail,
 };

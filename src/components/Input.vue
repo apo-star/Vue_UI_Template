@@ -27,6 +27,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    value: {
+      type: String,
+      default: "",
+    },
     disabled: {
       type: Boolean,
       default: false,
