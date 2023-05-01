@@ -64,7 +64,7 @@
                   />
                 </label>
               </div>
-              <label for="lastName" class="flex flex-col gap-1.5 relative">
+              <label for="email" class="flex flex-col gap-1.5 relative">
                 <p class="text-sm font-medium text-gray-700">Email address</p>
                 <Input
                   id="email"
