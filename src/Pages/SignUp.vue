@@ -146,7 +146,7 @@ export default {
         await createUserProfileDocument(user, {
           displayName: displayName.value,
           email: email.value,
-          password: password.value,
+          //gg
         });
         router.push("/dashboard/overview");
       } catch (error) {

@@ -56,7 +56,6 @@ export default{
           users.push({
             id: doc.id,
             ...doc.data(),
-            password: null,
             photoURL: doc.data().photoURL || devAvatar,
           });
         });
@@ -87,7 +86,6 @@ export default{
         updatedUsers.push({
           id: doc.id,
           ...doc.data(),
-          password: null,
         });
       });
       store.commit("SET_USERS", updatedUsers);

@@ -3,6 +3,7 @@
     class="flex h-screen"
     @mouseenter="toggleSubNav"
     @mouseleave="toggleSubNav"
+    v-if="user"
   >
     <div
       class="px-4 pt-8 pb-6 bg-white flex flex-col items-center justify-between border-r border-gray-200"
