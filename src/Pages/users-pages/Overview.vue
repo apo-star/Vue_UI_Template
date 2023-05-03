@@ -30,7 +30,7 @@
                   :src="
                     user.photoURL
                       ? user.photoURL
-                      : '../../assets/dashboardIcons/avatar-default.png'
+                      : '/src/assets/dashboardIcons/avatar-default.png'
                   "
                   alt="avatar"
                   class="h-24 w-24 rounded-lg"
