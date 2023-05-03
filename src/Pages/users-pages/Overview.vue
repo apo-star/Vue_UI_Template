@@ -30,7 +30,7 @@
                   :src="
                     user.photoURL
                       ? user.photoURL
-                      : '/src/assets/dashboardIcons/avatar-default.png'
+                      : 'https://sbcf.fr/wp-content/uploads/2018/03/sbcf-default-avatar.png'
                   "
                   alt="avatar"
                   class="h-24 w-24 rounded-lg"
@@ -82,6 +82,7 @@
 import { mapState } from "vuex";
 import { formatDistanceToNow } from "date-fns";
 import { getDoc } from "@firebase/firestore";
+import devAvatar from "@/assets/dashboardIcons/avatar-default.png";
 
 export default {
   computed: {
