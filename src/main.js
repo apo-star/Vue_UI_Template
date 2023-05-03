@@ -2,9 +2,11 @@ import { createApp } from "vue";
 import App from "./App.vue";
 import { createRouter, createWebHistory } from "vue-router";
 import Home from "@/Pages/Home.vue";
+import Profile from "@/Pages/Profile.vue";
 import Pricing from "@/Pages/Pricing.vue";
 import Login from "@/Pages/Login.vue";
 import SignUp from "@/Pages/SignUp.vue";
+import NotFound from "@/Pages/NotFound.vue";
 import DefaultLayout from "@/Layouts/DefaultLayout.vue";
 import AuthLayout from "@/Layouts/AuthLayout.vue";
 import Dashboard from "@/Pages/dashboard-pages/Dashboard.vue";
@@ -20,9 +22,11 @@ import NotificationsSettings from "@/Pages/settings-pages/Notifications.vue";
 import PasswordSettings from "@/Pages/settings-pages/Password.vue";
 import DashboardLayout from "@/Layouts/DashboardLayout.vue";
 import store from "./Config/store.js";
-
+import { auth } from "./Config/firebase.js";
 import "./assets/main.css";
 import "./assets/tailwind.css";
+
+
 
 const router = createRouter({
   history: createWebHistory(),
@@ -52,8 +56,9 @@ const router = createRouter({
       },
       beforeEnter: (to, from, next) => {
         const isAuthenticated = store.getters["user"];
+        console.log(isAuthenticated);
         if (isAuthenticated) {
-          next({ name: "Dashboard" });
+          next({ name: "Overview" });
         } else {
           next();
         }
@@ -73,6 +78,14 @@ const router = createRouter({
         } else {
           next();
         }
+      },
+    },
+    {
+      path: "/:username",
+      name: "Profile",
+      component: Profile,
+      meta: {
+        Layout: DashboardLayout, // use DashboardLayout for this route
       },
     },
     {
@@ -129,6 +142,14 @@ const router = createRouter({
         } else {
           next({ name: "Login" });
         }
+      },
+    },
+    {
+      path: "/:pathMatch(.*)*",
+      name: "NotFound",
+      component: NotFound,
+      meta: {
+        layout: DefaultLayout, // use DefaultLayout for this route
       },
     },
     {

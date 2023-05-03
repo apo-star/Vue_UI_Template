@@ -22,7 +22,8 @@
             "
           >
             <td class="py-4 pl-6 rounded-bl-xl">
-              <div
+              <router-link
+                :to="{ name: 'Profile', params: { username: user.username } }"
                 class="flex gap-5 items-center borer-gray-200 border w-96 p-3 rounded-lg border-gray-100 bg-white"
               >
                 <img
@@ -47,7 +48,7 @@
                     {{ user.email }}
                   </h1>
                 </div>
-              </div>
+              </router-link>
             </td>
             <td class="pl-6">
               <h3 class="">

@@ -34,8 +34,14 @@ export default{
 
         const snapShot = await getDoc(userRef);
         if (!snapShot.exists()) return;
-         router.push({ path: "/dashboard/overview" });
-         //router.go(-1)
+        //go to dashboard if user is in login and signup page
+        if (router.currentRoute.value.path === "/login") {
+          router.push({ path: "/dashboard/overview" });
+        }
+        if (router.currentRoute.value.path === "/signup") {
+          router.push({ path: "/dashboard/overview" });
+        }
+         //router.push({ path: "/dashboard/overview" });
         store.commit("SET_USER", snapShot.data());
         store.commit("SET_USER_PHOTO_URL", snapShot.data().photoURL || devAvatar);
         localStorage.setItem("user", JSON.stringify(snapShot.data()));

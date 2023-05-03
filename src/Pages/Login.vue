@@ -103,6 +103,7 @@ import {
   signInWithRedirect,
   auth,
   provider,
+  onAuthStateChanged,
 } from "../Config/firebase.js";
 import {
   getFirestore,
@@ -112,7 +113,6 @@ import {
   serverTimestamp,
 } from "firebase/firestore";
 import { useStore } from "vuex";
-import { onAuthStateChanged } from "firebase/auth";
 
 export default {
   name: "Login",
@@ -143,13 +143,13 @@ export default {
         });
         // store.commit("SET_USER", user);
         console.log(user);
-        router.go(-1)
+        router.go(-1);
       } catch (error) {
         console.log(error);
       }
     };
 
-    const signInWithGoogle = () => {
+    const signInWithGoogle =  () => {
       signInWithRedirect(auth, provider)
         .then((result) => {
           // This gives you a Google Access Token. You can use it to access the Google API.
@@ -160,14 +160,10 @@ export default {
           const userRef = doc(db, "users", user.uid);
           updateDoc(userRef, {
             lastLogin: serverTimestamp(),
-          })
-            .then(() => {
-              // store.commit("SET_USER", user);
-              router.push("/dashboard/overview");
-            })
-            .catch((error) => {
-              console.log(error);
-            });
+          });
+          // store.commit("SET_USER", user);
+          router.push("/dashboard/overview");
+          //console.log("Document successfully updated!");
           // ...
           // store.commit("SET_USER", user);
         })

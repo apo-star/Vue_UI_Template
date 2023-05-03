@@ -26,6 +26,21 @@ const store = createStore({
     SET_USER_EMAIL(state, payload) {
       state.user.email = payload;
     },
+    SET_USER_USERNAME(state, payload) {
+      state.user.username = payload;
+    },
+    SET_USER_BIO(state, payload) {
+      state.user.bio = payload;
+    },
+    SET_USER_WEBSITE(state, payload) {
+      state.user.website = payload;
+    },
+    SET_USER_LOCATION(state, payload) {
+      state.user.location = payload;
+    },
+    SET_USER_SOCIALS(state, payload) {
+      state.user.socials = payload;
+    },
     SET_USERS_LISTENER(state, payload) { // added a new mutation to set the listener
       state.usersListener = payload;
     },
@@ -51,6 +66,21 @@ const store = createStore({
     },
     setUserEmail({ commit }, payload) {
       commit("SET_USER_EMAIL", payload);
+    },
+    setUserUsername({ commit }, payload) {
+      commit("SET_USER_USERNAME", payload);
+    },
+    setUserBio({ commit }, payload) {
+      commit("SET_USER_BIO", payload);
+    },
+    setUserWebsite({ commit }, payload) {
+      commit("SET_USER_WEBSITE", payload);
+    },
+    setUserLocation({ commit }, payload) {
+      commit("SET_USER_LOCATION", payload);
+    },
+    setUserSocials({ commit }, payload) {
+      commit("SET_USER_SOCIALS", payload);
     },
   },
   getters: {

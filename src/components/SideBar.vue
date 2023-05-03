@@ -184,6 +184,8 @@ export default {
           return UsersSubNav;
         case "/users/friends":
           return UsersSubNav;
+        case "/:username":
+          return UsersSubNav;
         case "/settings/profile":
           return SettingsSubNav;
         case "/settings/password":

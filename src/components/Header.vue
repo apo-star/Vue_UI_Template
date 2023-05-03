@@ -94,7 +94,10 @@
                 </p>
               </div>
             </div>
-            <router-link to="/dashboard/overview" class="w-full flex gap-3 pl-4 py-3 items-center hover:bg-gray-50 rounded-md transition duration-500 ease-in-out">
+            <router-link
+              :to="{ name: 'Profile', params: { username: user.username }  }"
+              class="w-full flex gap-3 pl-4 py-3 items-center hover:bg-gray-50 rounded-md transition duration-500 ease-in-out"
+            >
               <img
                 src="../assets/dashboardIcons/user.svg"
                 class="h-4 w-4"
@@ -102,7 +105,10 @@
               />
               <p class="text-gray-700 text-sm font-medium">View profile</p>
             </router-link>
-            <router-link to="/settings/profile" class="w-full flex gap-3 pl-4 py-3 items-center border-b-2 border-gray-50 hover:bg-gray-50 rounded-md transition duration-500 ease-in-out">
+            <router-link
+              to="/settings/profile"
+              class="w-full flex gap-3 pl-4 py-3 items-center border-b-2 border-gray-50 hover:bg-gray-50 rounded-md transition duration-500 ease-in-out"
+            >
               <img
                 src="../assets/dashboardIcons/settings.svg"
                 class="h-4 w-4"

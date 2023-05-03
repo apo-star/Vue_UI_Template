@@ -38,12 +38,11 @@ export default {
     const SignOut = async () => {
       // Display a confirmation dialog
       const confirmed = window.confirm("Are you sure you want to log out?");
-
       // Proceed with logout if user confirmed
       if (confirmed) {
         try {
           await signOut(auth);
-          await lastLogout(store.state.user.uid); // Update last logout time
+          //await lastLogout(store.state.user.uid); // Update last logout time
           store.commit("SET_USER", null);
           router.push({ path: "/login" });
         } catch (error) {
