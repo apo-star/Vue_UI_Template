@@ -45,7 +45,7 @@
                     >
                   </h1>
                   <h1 class="text-gray-600 font-normal text-sm">
-                    {{ user.email }}
+                    @{{ user.username }}
                   </h1>
                 </div>
               </router-link>

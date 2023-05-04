@@ -193,7 +193,7 @@
             </div>
           </div>
         </div>
-        <p class="bg-gray-200 h-px "></p>
+        <p class="bg-gray-200 h-px"></p>
         <OtherProfile />
       </div>
     </div>

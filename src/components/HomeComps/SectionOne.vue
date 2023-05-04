@@ -1,5 +1,5 @@
 <template>
-  <div class="pt-24 px-28r pb-5 md:py-16 md:px-4">
+  <div class="pt-48 px-28r pb-5 md:py-16 md:px-4">
     <h4
       class="text-center text-purple-700 font-medium text-sm bg-purple-50 w-fit flex rounded-2xl mx-auto p-1 gap-3 md:text-xs md:gap-2"
     >

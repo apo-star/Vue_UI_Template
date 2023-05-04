@@ -33,6 +33,7 @@
             id="bio"
             type="text"
             v-model="bio"
+            maxlength="160"
             placeholder="Tell us about yourself"
             style="width: 70%"
             class="pl-3.5 h-32 border border-solid bg-white border-gray-300 font-normal text-base text-gray-900 rounded-lg px-3.5 py-2.5 shadow-sm focus:border-purple-300 focus:border focus:shadow-purple-100 focus:outline-none focus:ring-2 focus:ring-purple-200 disabled:background-gray-50 disabled:border-gray-300 disabled:text-gray-500 after:bg-white transition duration-300 ease-in-out"

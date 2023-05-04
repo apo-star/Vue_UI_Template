@@ -5,6 +5,7 @@ import {
   onAuthStateChanged,
   auth,
   createUserProfileDocument,
+  db,
 } from "@/Config/firebase.js";
 import {
   getFirestore,
@@ -17,10 +18,22 @@ import {
 } from "firebase/firestore";
 import devAvatar from "./assets/dashboardIcons/avatar-default.png";
 
-
-
-export default{
+export default {
   name: "App",
+  mounted() {
+    const usersRef = collection(db, "users");
+    getDocs(usersRef).then((querySnapshot) => {
+      const users = [];
+      querySnapshot.forEach((doc) => {
+        users.push({
+          id: doc.id,
+          ...doc.data(),
+          photoURL: doc.data().photoURL || devAvatar,
+        });
+      });
+      this.$store.commit("SET_USERS", users);
+    });
+  },
 
   setup(props, { slots }) {
     const router = useRouter();
@@ -41,9 +54,12 @@ export default{
         if (router.currentRoute.value.path === "/signup") {
           router.push({ path: "/dashboard/overview" });
         }
-         //router.push({ path: "/dashboard/overview" });
+        //router.push({ path: "/dashboard/overview" });
         store.commit("SET_USER", snapShot.data());
-        store.commit("SET_USER_PHOTO_URL", snapShot.data().photoURL || devAvatar);
+        store.commit(
+          "SET_USER_PHOTO_URL",
+          snapShot.data().photoURL || devAvatar
+        );
         localStorage.setItem("user", JSON.stringify(snapShot.data()));
         //console.log(snapShot.data());
 
@@ -73,7 +89,6 @@ export default{
         updateDoc(userRef, { lastSeen: serverTimestamp() });
         // router.push({ path: "/login" });
         store.commit("SET_USER", null);
-        store.commit("SET_USERS", []);
         localStorage.removeItem("user");
         // removeCookie(cookiesKey.user);
       }
@@ -98,8 +113,6 @@ export default{
         updateUsers(snapshot.docs);
       });
     }, 4000);
-
-  
 
     return { slots };
   },

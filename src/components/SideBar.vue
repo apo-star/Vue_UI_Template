@@ -31,6 +31,19 @@
             />
           </router-link>
           <router-link
+            :to="{ name: 'Profile', params: { username: user.username } }"
+            active-class="bg-gray-50"
+            class="p-3.5 hover:bg-gray-50 rounded-md transition duration-500 ease-in-out"
+          >
+            <img
+              alt="avatar"
+              src="@/assets/dashboardIcons/user.svg"
+              height="20"
+              width="20"
+              class="rounded-lg"
+            />
+          </router-link>
+          <router-link
             to="/dashboard"
             active-class="bg-gray-50"
             class="p-3.5 hover:bg-gray-50 rounded-md transition duration-500 ease-in-out"
@@ -72,13 +85,16 @@
             class="rounded-lg"
           />
         </router-link>
-        <div class="relative w-max h-max">
+        <router-link
+          :to="{ name: 'Profile', params: { username: user.username } }"
+          class="relative w-max h-max"
+        >
           <img
             alt="avatar"
             :src="displayPhotoURL"
             class="h-12 w-12 rounded-full hover:cursor-pointer"
           />
-        </div>
+        </router-link>
       </div>
     </div>
     <div

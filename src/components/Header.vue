@@ -1,6 +1,6 @@
 <template>
   <div
-    class="py-5 flex flex-row justify-between items-center px-28 border-b-gray-100 border-b xl:px-10 lg:px-2 md:px-4 md:py-4"
+    class="py-5 flex flex-row justify-between items-center px-28 border-b-gray-100 border-b xl:px-10 lg:px-2 md:px-4 md:py-4 fixed top-0 w-full bg-white z-20"
   >
     <div class="flex flex-row justify-between items-center gap-10">
       <div>
@@ -95,7 +95,7 @@
               </div>
             </div>
             <router-link
-              :to="{ name: 'Profile', params: { username: user.username }  }"
+              :to="{ name: 'Profile', params: { username: user.username } }"
               class="w-full flex gap-3 pl-4 py-3 items-center hover:bg-gray-50 rounded-md transition duration-500 ease-in-out"
             >
               <img

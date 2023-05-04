@@ -1,5 +1,5 @@
 <template>
-  <div class="py-24 px-28 md:py-16 md:px-4">
+  <div class="py-48 px-28 md:py-16 md:px-4">
     <div class="mb-24 md:mb-16">
       <p class="text-base font-semibold text-violet-700 md:text-sm">Pricing</p>
       <h1 class="text-5xl font-semibold text-gray-900 mt-3 mb-6 md:text-4xl md:mb-4">
