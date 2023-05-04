@@ -148,7 +148,7 @@ export default {
           email: email.value,
           //gg
         });
-        router.push("/dashboard/overview");
+        router.push("/settings/profile");
       } catch (error) {
         console.log(error, "error");
       }

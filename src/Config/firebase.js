@@ -53,6 +53,9 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
     //if I want to get the last login time
     const createdAt = new Date();
 
+    const followers = [];
+    const following = [];
+
     if (displayName) {
       // Generate username from displayName
       const username = displayName.replace(/\s+/g, "").toLowerCase();
@@ -82,6 +85,8 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
           email,
           photoURL,
           createdAt,
+          followers,
+          following,
           username: usernameToSave, // set the final value of usernameToSave
           ...additionalData,
         });
@@ -118,6 +123,8 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
           email,
           photoURL,
           createdAt,
+          followers,
+          following,
           username: usernameToSave, // set the final value of usernameToSave
           ...additionalData,
         });

@@ -49,20 +49,23 @@ export default {
         if (!snapShot.exists()) return;
         //go to dashboard if user is in login and signup page
         if (router.currentRoute.value.path === "/login") {
-          router.push({ path: "/dashboard/overview" });
+          router.push({ path: "/settings/profile" });
         }
         if (router.currentRoute.value.path === "/signup") {
-          router.push({ path: "/dashboard/overview" });
+          router.push({ path: "/settings/profile" });
         }
         //router.push({ path: "/dashboard/overview" });
-        store.commit("SET_USER", snapShot.data());
+        //add snapshot.data and snapshot.id to vuex store
+
+        const user = { id: snapShot.id, ...snapShot.data() };
+        store.commit("SET_USER", user);
         store.commit(
           "SET_USER_PHOTO_URL",
           snapShot.data().photoURL || devAvatar
         );
-        localStorage.setItem("user", JSON.stringify(snapShot.data()));
-        //console.log(snapShot.data());
-
+        localStorage.setItem("user", JSON.stringify(user));
+        //console.log(user);
+        //console.log(snapShot.id);
         // Fetch all users from Firestore
         const usersRef = collection(db, "users");
         const usersSnapshot = await getDocs(usersRef);

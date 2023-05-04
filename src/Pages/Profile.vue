@@ -3,13 +3,13 @@
     <template v-slot:dashboard-contents>
       <div class="relative">
         <div
-            class="bg-gradient-to-tr from-pink-100 via-orange-200 to-purple-400 w-full absolute top-0 z-10"
-            :style="loggedInUser ? 'height: 240px' : 'height: 300px'"
-          ></div>
+          class="bg-gradient-to-tr from-pink-100 via-orange-200 to-purple-400 w-full absolute top-0 z-10"
+          :style="loggedInUser ? 'height: 240px' : 'height: 300px'"
+        ></div>
         <div v-if="!loggedInUser">
           <Header />
         </div>
-        <div v-if="loading" class="text-center pt-80" >
+        <div v-if="loading" class="text-center pt-80">
           <p>Loading...</p>
         </div>
         <div
@@ -17,8 +17,7 @@
           v-else-if="routeUser"
           :style="loggedInUser ? 'padding-top: 160px' : 'padding-top: 220px'"
         >
-         
-          <div class="flex justify-between px-16 w-full ">
+          <div class="flex justify-between px-16 w-full">
             <div
               class="flex flex-col gap-10 h-max z-20"
               style="position: sticky; top: 0"
@@ -32,7 +31,7 @@
                         : 'https://sbcf.fr/wp-content/uploads/2018/03/sbcf-default-avatar.png'
                     "
                     alt="avatar"
-                    class="h-40 w-40 rounded-full border-4 border-white shadow-lg "
+                    class="h-40 w-40 rounded-full border-4 border-white shadow-lg bg-white"
                   />
                   <img
                     src="../assets/dashboardIcons/verified-tick.svg"
@@ -73,8 +72,19 @@
                     <WhiteButton class="px-4 h-10 text-sm font-semibold">
                       Message
                     </WhiteButton>
-                    <PurpleButton class="px-4 h-10 text-sm font-semibold">
+                    <PurpleButton
+                      class="px-4 h-10 text-sm font-semibold"
+                      v-if="!isFollowing"
+                      @click="followUser"
+                    >
                       Follow
+                    </PurpleButton>
+                    <PurpleButton
+                      class="px-4 h-10 text-sm font-semibold"
+                      v-else
+                      @click="unfollowUser"
+                    >
+                      UNFollow
                     </PurpleButton>
                   </div>
                 </div>
@@ -258,8 +268,8 @@ import DashboardLayout from "../Layouts/DashboardLayout.vue";
 import { mapState, useStore } from "vuex";
 import { useRouter } from "vue-router";
 import { ref, onMounted } from "vue";
-import { db } from "../Config/firebase";
-import { collection, getDocs, query, where } from "firebase/firestore";
+import { db } from "../Config/firebase.js";
+import { collection, doc, getDocs, query, updateDoc, where } from "firebase/firestore";
 import PurpleButton from "../components/PurpleButton.vue";
 import WhiteButton from "../components/WhiteButton.vue";
 import Header from "../components/Header.vue";
@@ -277,6 +287,7 @@ export default {
     return {
       username: this.$route.params.username,
       loading: true,
+      isFollowing: false,
     };
   },
   watch: {
@@ -284,6 +295,7 @@ export default {
       immediate: true, // call the handler immediately on initial mount
       handler(newVal, oldVal) {
         this.username = newVal.params.username;
+        this.checkFollowing();
       },
     },
   },
@@ -302,10 +314,57 @@ export default {
       }
     },
   },
+  methods: {
+    async followUser() {
+      // Add the route user to the logged in user's following list
+      const loggedInUserRef = doc(db, "users", this.loggedInUser.id);
+      await updateDoc(loggedInUserRef, {
+        following: [...this.loggedInUser.following, this.routeUser.id],
+      });
+
+      // Add the logged in user to the route user's followers list
+      const routeUserRef = doc(db, "users", this.routeUser.id);
+      await updateDoc(routeUserRef, {
+        followers: [...this.routeUser.followers, this.loggedInUser.id],
+      });
+
+      // Update isFollowing flag to reflect the change
+      this.isFollowing = true;
+    },
+    async unfollowUser() {
+      // Remove the route user from the logged in user's following list
+      const loggedInUserRef = doc(db, "users", this.loggedInUser.id);
+      await updateDoc(loggedInUserRef, {
+        following: this.loggedInUser.following.filter(
+          (userId) => userId !== this.routeUser.id
+        ),
+      });
+
+      // Remove the logged in user from the route user's followers list
+      const routeUserRef = doc(db, "users", this.routeUser.id);
+      await updateDoc(routeUserRef, {
+        followers: this.routeUser.followers.filter(
+          (userId) => userId !== this.loggedInUser.id
+        ),
+      });
+
+      // Update isFollowing flag to reflect the change
+      this.isFollowing = false;
+    },
+    checkFollowing() {
+      // Check if the logged in user is following the route user
+      if (this.loggedInUser && this.routeUser) {
+        this.isFollowing =
+          this.loggedInUser.following.indexOf(this.routeUser.id) !== -1;
+      }
+    },
+  },
 
   mounted() {
     setTimeout(() => {
       this.loading = false;
+      console.log(this.routeUser);
+      console.log(this.loggedInUser);
     }, 2000);
   },
 

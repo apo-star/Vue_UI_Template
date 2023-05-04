@@ -143,7 +143,7 @@ export default {
         });
         // store.commit("SET_USER", user);
         console.log(user);
-        router.go(-1);
+        router.push("/settings/profile");
       } catch (error) {
         console.log(error);
       }
