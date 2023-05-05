@@ -51,10 +51,10 @@
 
                     <div class="flex gap-4">
                       <p class="text-gray-600 text-base font-semibold">
-                        10 followers
+                        {{ routeUser.followers.length }} followers
                       </p>
                       <p class="text-gray-600 text-base font-semibold">
-                        10 following
+                        {{ routeUser.following.length }} following
                       </p>
                     </div>
                   </div>
@@ -82,9 +82,9 @@
                     <PurpleButton
                       class="px-4 h-10 text-sm font-semibold"
                       v-else
-                      @click="unfollowUser"
+                      @click="followUser"
                     >
-                      UNFollow
+                      Unfollow
                     </PurpleButton>
                   </div>
                 </div>
@@ -269,7 +269,15 @@ import { mapState, useStore } from "vuex";
 import { useRouter } from "vue-router";
 import { ref, onMounted } from "vue";
 import { db } from "../Config/firebase.js";
-import { collection, doc, getDocs, query, updateDoc, where } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  getDocs,
+  query,
+  updateDoc,
+  where,
+  writeBatch,
+} from "firebase/firestore";
 import PurpleButton from "../components/PurpleButton.vue";
 import WhiteButton from "../components/WhiteButton.vue";
 import Header from "../components/Header.vue";
@@ -286,8 +294,6 @@ export default {
   data() {
     return {
       username: this.$route.params.username,
-      loading: true,
-      isFollowing: false,
     };
   },
   watch: {
@@ -295,7 +301,6 @@ export default {
       immediate: true, // call the handler immediately on initial mount
       handler(newVal, oldVal) {
         this.username = newVal.params.username;
-        this.checkFollowing();
       },
     },
   },
@@ -313,59 +318,46 @@ export default {
         return null;
       }
     },
-  },
-  methods: {
-    async followUser() {
-      // Add the route user to the logged in user's following list
-      const loggedInUserRef = doc(db, "users", this.loggedInUser.id);
-      await updateDoc(loggedInUserRef, {
-        following: [...this.loggedInUser.following, this.routeUser.id],
-      });
-
-      // Add the logged in user to the route user's followers list
-      const routeUserRef = doc(db, "users", this.routeUser.id);
-      await updateDoc(routeUserRef, {
-        followers: [...this.routeUser.followers, this.loggedInUser.id],
-      });
-
-      // Update isFollowing flag to reflect the change
-      this.isFollowing = true;
-    },
-    async unfollowUser() {
-      // Remove the route user from the logged in user's following list
-      const loggedInUserRef = doc(db, "users", this.loggedInUser.id);
-      await updateDoc(loggedInUserRef, {
-        following: this.loggedInUser.following.filter(
-          (userId) => userId !== this.routeUser.id
-        ),
-      });
-
-      // Remove the logged in user from the route user's followers list
-      const routeUserRef = doc(db, "users", this.routeUser.id);
-      await updateDoc(routeUserRef, {
-        followers: this.routeUser.followers.filter(
-          (userId) => userId !== this.loggedInUser.id
-        ),
-      });
-
-      // Update isFollowing flag to reflect the change
-      this.isFollowing = false;
-    },
-    checkFollowing() {
-      // Check if the logged in user is following the route user
-      if (this.loggedInUser && this.routeUser) {
-        this.isFollowing =
-          this.loggedInUser.following.indexOf(this.routeUser.id) !== -1;
-      }
+    isFollowing() {
+      // Check if the loggedInUser is following the routeUser
+      return this.loggedInUser.following.includes(this.routeUser.username);
     },
   },
 
   mounted() {
     setTimeout(() => {
       this.loading = false;
-      console.log(this.routeUser);
-      console.log(this.loggedInUser);
+      //console.log(this.routeUser);
+      //console.log(this.loggedInUser);
     }, 2000);
+  },
+
+  methods: {
+    async followUser() {
+      // Check if the loggedInUser is already following the routeUser
+      if (this.loggedInUser.following.includes(this.routeUser.username)) {
+        // The loggedInUser is already following the routeUser, so unfollow them
+        this.loggedInUser.following = this.loggedInUser.following.filter(
+          (user) => user !== this.routeUser.username
+        );
+        this.routeUser.followers = this.routeUser.followers.filter(
+          (user) => user !== this.loggedInUser.username
+        );
+      } else {
+        // The loggedInUser is not following the routeUser, so follow them
+        this.loggedInUser.following.push(this.routeUser.username);
+        this.routeUser.followers.push(this.loggedInUser.username);
+        this.routeUser = { ...this.routeUser };
+      }
+
+      // Update the Firestore database
+      await updateDoc(doc(db, "users", this.routeUser.id), {
+        followers: this.routeUser.followers,
+      });
+      await updateDoc(doc(db, "users", this.loggedInUser.id), {
+        following: this.loggedInUser.following,
+      });
+    },
   },
 
   //   setup() {
