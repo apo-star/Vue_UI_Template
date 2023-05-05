@@ -276,7 +276,6 @@ import {
   query,
   updateDoc,
   where,
-  writeBatch,
 } from "firebase/firestore";
 import PurpleButton from "../components/PurpleButton.vue";
 import WhiteButton from "../components/WhiteButton.vue";
@@ -294,6 +293,7 @@ export default {
   data() {
     return {
       username: this.$route.params.username,
+      loading: true,
     };
   },
   watch: {
@@ -320,7 +320,7 @@ export default {
     },
     isFollowing() {
       // Check if the loggedInUser is following the routeUser
-      return this.loggedInUser.following.includes(this.routeUser.username);
+      return this.loggedInUser.following.includes(this.routeUser.email);
     },
   },
 
@@ -335,18 +335,18 @@ export default {
   methods: {
     async followUser() {
       // Check if the loggedInUser is already following the routeUser
-      if (this.loggedInUser.following.includes(this.routeUser.username)) {
+      if (this.loggedInUser.following.includes(this.routeUser.email)) {
         // The loggedInUser is already following the routeUser, so unfollow them
         this.loggedInUser.following = this.loggedInUser.following.filter(
-          (user) => user !== this.routeUser.username
+          (user) => user !== this.routeUser.email
         );
         this.routeUser.followers = this.routeUser.followers.filter(
-          (user) => user !== this.loggedInUser.username
+          (user) => user !== this.loggedInUser.email
         );
       } else {
         // The loggedInUser is not following the routeUser, so follow them
-        this.loggedInUser.following.push(this.routeUser.username);
-        this.routeUser.followers.push(this.loggedInUser.username);
+        this.loggedInUser.following.push(this.routeUser.email);
+        this.routeUser.followers.push(this.loggedInUser.email);
         this.routeUser = { ...this.routeUser };
       }
 

@@ -133,6 +133,37 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
         console.log("error creating user", error.message);
       }
     }
+
+    // Check if username is "muzardemoses" and if user is not already following "muzardemoses"
+
+    if (email && email.toLowerCase() !== "muzardemoses@gmail.com") {
+      const querySnapshot = await getDocs(
+        query(
+          collection(db, "users"),
+          where("email", "==", "muzardemoses@gmail.com")
+        )
+      );
+      if (!querySnapshot.empty) {
+        const muzarUser = querySnapshot.docs[0];
+        const muzarUserId = muzarUser.id;
+        const muzarData = muzarUser.data();
+        const muzarFollowers = muzarData.followers || [];
+        const muzarFollowing = muzarData.following || [];
+
+        // Check if user is not already following "muzardemoses"
+        if (!muzarFollowing.includes(userAuth.email)) {
+          // Add user to "muzardemoses" list of followers
+          await updateDoc(doc(db, "users", muzarUserId), {
+            followers: [...muzarFollowers, userAuth.email],
+          });
+
+          // Add "muzardemoses" to user's list of following
+          await updateDoc(userRef, {
+            following: [...following, muzarData.email],
+          });
+        }
+      }
+    }
   }
   return userRef;
 };
