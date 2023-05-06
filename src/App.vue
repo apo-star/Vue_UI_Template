@@ -147,10 +147,10 @@ export default {
       if (user) {
         if (!user.emailVerified) {
           this.showVerifyEmail = true;
-          console.log(user.emailVerified);
+          //console.log(user.emailVerified);
         } else {
           this.showVerifyEmail = false;
-          console.log(user);
+         // console.log(user);
         }
       }
     },
@@ -167,7 +167,7 @@ export default {
         .catch((error) => {
           const errorCode = error.code;
           const errorMessage = error.message;
-          console.log(errorCode, errorMessage); 
+          alert(errorMessage)
           // ...
         });
     },
