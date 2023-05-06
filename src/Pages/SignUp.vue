@@ -62,6 +62,7 @@
           <WhiteButtonVue
             class="h-11 w360 flex items-center justify-center gap-3"
             @click="signInWithGoogle"
+            type="button"
           >
             <img
               src="../assets/google.svg"
@@ -105,6 +106,7 @@ import {
   provider,
   createUserProfileDocument,
   updateProfile,
+  sendEmailVerification,
 } from "../Config/firebase.js";
 import {
   getFirestore,
@@ -143,14 +145,19 @@ export default {
         // await updateProfile(user, {
         //   displayName: displayName.value,
         // });
+        await sendEmailVerification(user, {
+          url: "https://pricing-page-fox.netlify.app/settings/profile",
+          handleCodeInApp: true,
+        });
         await createUserProfileDocument(user, {
           displayName: displayName.value,
           email: email.value,
           //gg
         });
+        alert("Please check your email for verification");
         router.push("/settings/profile");
       } catch (error) {
-        console.log(error, "error");
+        alert(error.message);
       }
     };
 

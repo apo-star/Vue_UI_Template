@@ -250,7 +250,7 @@ export default {
 
     if (currentUser?.photoURL) {
       photoURL.value = currentUser.photoURL;
-      console.log(currentUser.photoURL);
+      //console.log(currentUser.photoURL);
     }
 
     watch(

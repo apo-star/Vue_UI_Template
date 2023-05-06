@@ -10,6 +10,8 @@ import {
   GoogleAuthProvider,
   onAuthStateChanged,
   updateEmail,
+  sendEmailVerification,
+  sendPasswordResetEmail,
 } from "firebase/auth";
 import {
   getFirestore,
@@ -48,7 +50,8 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
   const snapShot = await getDoc(userRef);
   //console.log(snapShot);
   if (!snapShot.exists()) {
-    const { displayName, email, photoURL } = userAuth;
+    const { displayName, email, photoURL,  emailVerified
+    } = userAuth;
     //const { lastLoginAt } = userAuth.metadata;
     //if I want to get the last login time
     const createdAt = new Date();
@@ -84,6 +87,7 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
           displayName,
           email,
           photoURL,
+          emailVerified,
           createdAt,
           followers,
           following,
@@ -122,6 +126,7 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
           displayName,
           email,
           photoURL,
+          emailVerified,
           createdAt,
           followers,
           following,
@@ -200,4 +205,6 @@ export {
   updateDoc,
   db,
   updateEmail,
+  sendEmailVerification,
+  sendPasswordResetEmail,
 };

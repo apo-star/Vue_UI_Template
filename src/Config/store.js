@@ -26,6 +26,9 @@ const store = createStore({
     SET_USER_EMAIL(state, payload) {
       state.user.email = payload;
     },
+    SET_USER_EMAIL_VERIFIED(state, payload) {
+      state.user.emailVerified = payload;
+    },
     SET_USER_USERNAME(state, payload) {
       state.user.username = payload;
     },
@@ -66,6 +69,9 @@ const store = createStore({
     },
     setUserEmail({ commit }, payload) {
       commit("SET_USER_EMAIL", payload);
+    },
+    setUserEmailVerified({ commit }, payload) {
+      commit("SET_USER_EMAIL_VERIFIED", payload);
     },
     setUserUsername({ commit }, payload) {
       commit("SET_USER_USERNAME", payload);

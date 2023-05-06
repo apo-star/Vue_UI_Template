@@ -1,6 +1,10 @@
 <template>
   <div class="flex w-full">
     <div class="pt-8 px-8 pb-12 flex flex-col gap-8 flex-grow">
+      <p 
+      class=" text-green-500">
+          This is just a dummy page of the dashboard. 
+        </p>
       <div class="flex justify-between">
         <h2 class="text-gray-900 text-3xl font-semibold">
           Welcome back, {{ firstName }}

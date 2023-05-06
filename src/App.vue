@@ -6,6 +6,7 @@ import {
   auth,
   createUserProfileDocument,
   db,
+  sendEmailVerification,
 } from "@/Config/firebase.js";
 import {
   getFirestore,
@@ -20,6 +21,11 @@ import devAvatar from "./assets/dashboardIcons/avatar-default.png";
 
 export default {
   name: "App",
+  data() {
+    return {
+      showVerifyEmail: false,
+    };
+  },
   mounted() {
     const usersRef = collection(db, "users");
     getDocs(usersRef).then((querySnapshot) => {
@@ -33,6 +39,13 @@ export default {
       });
       this.$store.commit("SET_USERS", users);
     });
+    const user = auth.currentUser;
+    //check if user email is verified
+    if (user) {
+      if (!user.emailVerified) {
+        this.showVerifyEmail = true;
+      }
+    }
   },
 
   setup(props, { slots }) {
@@ -85,6 +98,14 @@ export default {
           lastLogin: serverTimestamp(),
         });
 
+        // //check if user is verified
+        // if (!userAuth.emailVerified) {
+        //   this.$store.commit("SET_USER_EMAIL_VERIFIED", false);
+        // } else if (userAuth.emailVerified && !user.emailVerified) {
+        //   this.$store.commit("SET_USER_EMAIL_VERIFIED", true);
+        //   updateDoc(userRef, { emailVerified: true });
+        // }
+
         //console.log(users);
         store.commit("SET_USERS", users); // Save users to Vuex store
       } else {
@@ -119,10 +140,56 @@ export default {
 
     return { slots };
   },
+  //check if user is verified
+  watch: {
+    $route(to, from) {
+      const user = auth.currentUser;
+      if (user) {
+        if (!user.emailVerified) {
+          this.showVerifyEmail = true;
+          console.log(user.emailVerified);
+        } else {
+          this.showVerifyEmail = false;
+          console.log(user);
+        }
+      }
+    },
+  },
+  methods: {
+    async requestVerificationLink() {
+      sendEmailVerification(auth.currentUser, {
+        url: "https://pricing-page-fox.netlify.app/settings/profile",
+        handleCodeInApp: true,
+      })
+        .then(() => {
+          alert("Verification email sent");
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          console.log(errorCode, errorMessage); 
+          // ...
+        });
+    },
+  },
 };
 </script>
 
 <template>
+  <p
+    class="text-red-600 text-center fixed top-0 z-40 bg-white left-10"
+    v-if="showVerifyEmail"
+
+  >
+    Please verify your email address. Check your inbox for a verification link.
+    Didn't receive an email?
+    <button
+      class="text-blue-600"
+      @click="requestVerificationLink"
+    >
+      Resend
+    </button>
+  </p>
   <main class="">
     <router-view />
   </main>

@@ -9,44 +9,22 @@
       class="px-4 pt-8 pb-6 bg-white flex flex-col items-center justify-between border-r border-gray-200"
     >
       <div class="flex flex-col items-center gap-6">
-        <img
-          src="@/assets/logo.png"
-          alt="logo"
-          height="32"
-          width="32"
-          class="rounded-lg"
-        />
+        <router-link to="/">
+          <img
+            src="@/assets/logo.png"
+            alt="logo"
+            height="32"
+            width="32"
+            class="rounded-lg"
+            title="Home"
+          />
+        </router-link>
         <div class="flex flex-col gap-2 items-center">
-          <router-link
-            to="/"
-            active-class="bg-gray-50"
-            class="p-3.5 hover:bg-gray-50 rounded-md transition duration-500 ease-in-out"
-          >
-            <img
-              src="@/assets/dashboardIcons/home-line.svg"
-              alt="logo"
-              height="20"
-              width="20"
-              class="rounded-lg"
-            />
-          </router-link>
-          <router-link
-            :to="{ name: 'Profile', params: { username: user.username } }"
-            active-class="bg-gray-50"
-            class="p-3.5 hover:bg-gray-50 rounded-md transition duration-500 ease-in-out"
-          >
-            <img
-              alt="avatar"
-              src="@/assets/dashboardIcons/user.svg"
-              height="20"
-              width="20"
-              class="rounded-lg"
-            />
-          </router-link>
           <router-link
             to="/dashboard"
             active-class="bg-gray-50"
             class="p-3.5 hover:bg-gray-50 rounded-md transition duration-500 ease-in-out"
+            title="Dashboard"
           >
             <img
               src="@/assets/dashboardIcons/bar-chart-square.svg"
@@ -57,9 +35,38 @@
             />
           </router-link>
           <router-link
+            to="/explore"
+            active-class="bg-gray-50"
+            class="p-3.5 hover:bg-gray-50 rounded-md transition duration-500 ease-in-out"
+            title="Explore"
+          >
+            <img
+              src="@/assets/dashboardIcons/explore.svg"
+              alt="logo"
+              height="20"
+              width="20"
+              class="rounded-lg"
+            />
+          </router-link>
+          <router-link
+            :to="{ name: 'Profile', params: { username: user.username } }"
+            active-class="bg-gray-50"
+            class="p-3.5 hover:bg-gray-50 rounded-md transition duration-500 ease-in-out"
+            title="Profile"
+          >
+            <img
+              alt="avatar"
+              src="@/assets/dashboardIcons/user.svg"
+              height="20"
+              width="20"
+              class="rounded-lg"
+            />
+          </router-link>
+          <router-link
             to="/users"
             active-class="bg-gray-50"
             class="p-3.5 hover:bg-gray-50 rounded-md transition duration-500 ease-in-out"
+            title="Users"
           >
             <img
               src="@/assets/dashboardIcons/users.svg"
@@ -76,6 +83,7 @@
           to="/settings/profile"
           active-class="bg-gray-50"
           class="p-3.5 hover:bg-gray-50 rounded-md transition duration-500 ease-in-out"
+          title="Settings"
         >
           <img
             src="@/assets/dashboardIcons/settings.svg"

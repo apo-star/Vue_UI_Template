@@ -59,190 +59,10 @@
                     </div>
                   </div>
                 </div>
-                <div class="mt-16" v-if="loggedInUser">
-                  <div
-                    class=""
-                    v-if="routeUser.username === loggedInUser.username"
-                  >
-                    <PurpleButton class="px-4 h-10 text-sm font-semibold">
-                      Edit profile
-                    </PurpleButton>
-                  </div>
-                  <div class="flex gap-5" v-else>
-                    <WhiteButton class="px-4 h-10 text-sm font-semibold">
-                      Message
-                    </WhiteButton>
-                    <PurpleButton
-                      class="px-4 h-10 text-sm font-semibold"
-                      v-if="!isFollowing"
-                      @click="followUser"
-                    >
-                      Follow
-                    </PurpleButton>
-                    <PurpleButton
-                      class="px-4 h-10 text-sm font-semibold"
-                      v-else
-                      @click="followUser"
-                    >
-                      Unfollow
-                    </PurpleButton>
-                  </div>
-                </div>
-                <div class="mt-16 flex gap-5" v-else>
-                  <WhiteButton class="px-4 h-10 text-sm font-semibold">
-                    Message
-                  </WhiteButton>
-                  <PurpleButton class="px-4 h-10 text-sm font-semibold">
-                    Follow
-                  </PurpleButton>
-                </div>
+                <FollowButtons :loggedInUser="loggedInUser" />
               </div>
               <div class="">
-                <div class="flex flex-col gap-4">
-                  <p
-                    class="text-gray-700 text-base font-normal w-80"
-                    v-if="routeUser.bio"
-                  >
-                    {{ routeUser.bio }}
-                  </p>
-                  <p class="text-gray-700 text-base font-normal w-80" v-else>
-                    No bio
-                  </p>
-                  <div class="flex gap-4">
-                    <a
-                      v-if="routeUser.website"
-                      :href="routeUser.website"
-                      target="_blank"
-                      class="flex gap-2 items-center"
-                    >
-                      <img
-                        src="../assets/profileIcons/web.svg"
-                        alt="website"
-                        class="h-4 w-4"
-                      />
-                      <p
-                        class="text-blue-400 text-sm font-normal hover:underline hover:text-blue-500 transition duration-500 ease-in-out"
-                      >
-                        {{ routeUser.website.split("/")[2] }}
-                      </p>
-                    </a>
-                    <div
-                      v-if="routeUser.location"
-                      class="flex gap-2 items-center"
-                    >
-                      <img
-                        src="../assets/profileIcons/location.svg"
-                        alt="location"
-                        class="h-4 w-4"
-                      />
-                      <p class="text-gray-600 text-sm font-normal">
-                        {{ routeUser.location }}
-                      </p>
-                    </div>
-                  </div>
-                  <div
-                    class="grid grid-cols-2 grid-flow-row gap-2 gap-x-3 w-max"
-                    v-if="routeUser.socials"
-                  >
-                    <a
-                      v-if="routeUser.socials.twitter"
-                      :href="routeUser.socials.twitter"
-                      target="_blank"
-                      class="flex gap-2 items-center"
-                    >
-                      <img
-                        src="../assets/profileIcons/twitter.svg"
-                        alt="twitter"
-                        class="h-4 w-4"
-                      />
-                      <!-- get username -->
-                      <p class="text-gray-600 text-sm font-normal">
-                        {{ routeUser.socials.twitter.split("/")[3] }}
-                      </p>
-                    </a>
-                    <a
-                      v-if="routeUser.socials.facebook"
-                      :href="routeUser.socials.facebook"
-                      target="_blank"
-                      class="flex gap-2 items-center"
-                    >
-                      <img
-                        src="../assets/profileIcons/facebook.svg"
-                        alt="facebook"
-                        class="h-5 w-5"
-                      />
-                      <!-- get username -->
-                      <p class="text-gray-600 text-sm font-normal">
-                        {{ routeUser.socials.facebook.split("/")[3] }}
-                      </p>
-                    </a>
-
-                    <a
-                      v-if="routeUser.socials.linkedin"
-                      :href="routeUser.socials.linkedin"
-                      target="_blank"
-                      class="flex gap-2 items-center"
-                    >
-                      <img
-                        src="../assets/profileIcons/linkedin.svg"
-                        alt="linkedin"
-                        class="h-4 w-4"
-                      />
-                      <!-- get username -->
-                      <p class="text-gray-600 text-sm font-normal">
-                        {{ routeUser.socials.linkedin.split("/")[4] }}
-                      </p>
-                    </a>
-                    <a
-                      v-if="routeUser.socials.instagram"
-                      :href="routeUser.socials.instagram"
-                      target="_blank"
-                      class="flex gap-2 items-center"
-                    >
-                      <img
-                        src="../assets/profileIcons/instagram.svg"
-                        alt="instagram"
-                        class="h-4 w-4"
-                      />
-                      <!-- get username -->
-                      <p class="text-gray-600 text-sm font-normal">
-                        {{ routeUser.socials.instagram.split("/")[3] }}
-                      </p>
-                    </a>
-                    <a
-                      v-if="routeUser.socials.github"
-                      :href="routeUser.socials.github"
-                      target="_blank"
-                      class="flex gap-2 items-center"
-                    >
-                      <img
-                        src="../assets/profileIcons/github.svg"
-                        alt="github"
-                        class="h-4 w-4"
-                      />
-                      <!-- get username -->
-                      <p class="text-gray-600 text-sm font-normal">
-                        {{ routeUser.socials.github.split("/")[3] }}
-                      </p>
-                    </a>
-                    <a
-                      v-if="routeUser.socials.youtube"
-                      :href="routeUser.socials.youtube"
-                      target="_blank"
-                      class="flex gap-2 items-center"
-                    >
-                      <img
-                        src="../assets/profileIcons/youtube.svg"
-                        alt="youtube"
-                        class="h-4 w-4"
-                      />
-                      <!-- get username -->
-                      <p class="text-gray-600 text-sm font-normal">
-                        {{ routeUser.socials.youtube.split("/")[3] }}
-                      </p>
-                    </a>
-                  </div>
-                </div>
+                <Socials :routeUser="routeUser" />
               </div>
             </div>
             <div class="w-5/12 mt-16 pt-10 flex flex-col gap-5">
@@ -266,25 +86,18 @@
 <script>
 import DashboardLayout from "../Layouts/DashboardLayout.vue";
 import { mapState, useStore } from "vuex";
-import { useRouter } from "vue-router";
-import { ref, onMounted } from "vue";
-import { db } from "../Config/firebase.js";
-import {
-  collection,
-  doc,
-  getDocs,
-  query,
-  updateDoc,
-  where,
-} from "firebase/firestore";
 import PurpleButton from "../components/PurpleButton.vue";
 import WhiteButton from "../components/WhiteButton.vue";
 import Header from "../components/Header.vue";
+import FollowButtons from "../components/ProfileComps/FollowButtons.vue";
+import Socials from "../components/ProfileComps/Socials.vue";
 
 export default {
   name: "Profile",
   components: {
     DashboardLayout,
+    FollowButtons,
+    Socials,
     PurpleButton,
     WhiteButton,
     Header,
@@ -318,10 +131,6 @@ export default {
         return null;
       }
     },
-    isFollowing() {
-      // Check if the loggedInUser is following the routeUser
-      return this.loggedInUser.following.includes(this.routeUser.email);
-    },
   },
 
   mounted() {
@@ -330,34 +139,6 @@ export default {
       //console.log(this.routeUser);
       //console.log(this.loggedInUser);
     }, 2000);
-  },
-
-  methods: {
-    async followUser() {
-      // Check if the loggedInUser is already following the routeUser
-      if (this.loggedInUser.following.includes(this.routeUser.email)) {
-        // The loggedInUser is already following the routeUser, so unfollow them
-        this.loggedInUser.following = this.loggedInUser.following.filter(
-          (user) => user !== this.routeUser.email
-        );
-        this.routeUser.followers = this.routeUser.followers.filter(
-          (user) => user !== this.loggedInUser.email
-        );
-      } else {
-        // The loggedInUser is not following the routeUser, so follow them
-        this.loggedInUser.following.push(this.routeUser.email);
-        this.routeUser.followers.push(this.loggedInUser.email);
-        this.routeUser = { ...this.routeUser };
-      }
-
-      // Update the Firestore database
-      await updateDoc(doc(db, "users", this.routeUser.id), {
-        followers: this.routeUser.followers,
-      });
-      await updateDoc(doc(db, "users", this.loggedInUser.id), {
-        following: this.loggedInUser.following,
-      });
-    },
   },
 
   //   setup() {

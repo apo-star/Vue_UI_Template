@@ -6,13 +6,17 @@ import Profile from "@/Pages/Profile.vue";
 import Pricing from "@/Pages/Pricing.vue";
 import Login from "@/Pages/Login.vue";
 import SignUp from "@/Pages/SignUp.vue";
+//import VerifyEmail from "@/Pages/VerifyEmail.vue";
+import ForgetPassword from "@/Pages/ForgetPassword.vue";
 import NotFound from "@/Pages/NotFound.vue";
 import DefaultLayout from "@/Layouts/DefaultLayout.vue";
 import AuthLayout from "@/Layouts/AuthLayout.vue";
 import Dashboard from "@/Pages/dashboard-pages/Dashboard.vue";
+import Explore from "@/Pages/Explore.vue";
 import Users from "@/Pages/users-pages/Users.vue";
 import Settings from "@/Pages/settings-pages/Settings.vue";
 import Notifications from "@/Pages/dashboard-pages/Notifications.vue";
+import Activity from "@/Pages/dashboard-pages/Activity.vue";
 import Overview from "@/Pages/dashboard-pages/Overview.vue";
 import UserOverview from "@/Pages/users-pages/Overview.vue";
 import Friends from "@/Pages/users-pages/Friends.vue";
@@ -25,8 +29,6 @@ import store from "./Config/store.js";
 import { auth } from "./Config/firebase.js";
 import "./assets/main.css";
 import "./assets/tailwind.css";
-
-
 
 const router = createRouter({
   history: createWebHistory(),
@@ -81,6 +83,22 @@ const router = createRouter({
       },
     },
     {
+      path: "/forget-password",
+      name: "ForgetPassword",
+      component: ForgetPassword,
+      meta: {
+        layout: AuthLayout, // use AuthLayout for this route
+      },
+      beforeEnter: (to, from, next) => {
+        const isAuthenticated = store.getters["user"];
+        if (isAuthenticated) {
+          next({ name: "Dashboard" });
+        } else {
+          next();
+        }
+      },
+    },
+    {
       path: "/:username",
       name: "Profile",
       component: Profile,
@@ -107,6 +125,11 @@ const router = createRouter({
           name: "Notifications",
           component: Notifications,
         },
+        {
+          path: "activity",
+          name: "Activity",
+          component: Activity,
+        },
       ],
       beforeEnter: (to, from, next) => {
         if (store.getters["user"]) {
@@ -114,6 +137,14 @@ const router = createRouter({
         } else {
           next({ name: "Login" });
         }
+      },
+    },
+    {
+      path: "/explore",
+      name: "Explore",
+      component: Explore,
+      meta: {
+        layout: DashboardLayout, // use DashboardLayout for this route
       },
     },
     {
@@ -192,7 +223,6 @@ const router = createRouter({
     },
   ],
 });
-
 
 // router.beforeEach((to, from, next) => {
 //     const isAuthenticated = store.getters["user"];

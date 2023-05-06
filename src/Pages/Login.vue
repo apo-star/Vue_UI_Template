@@ -26,6 +26,7 @@
               type="email"
               placeholder="Enter your email"
               v-model="email"
+              required
             />
           </label>
 
@@ -36,6 +37,7 @@
               type="password"
               placeholder="Enter your password"
               v-model="password"
+              required
             />
           </label>
           <div class="flex items-center justify-between mt-1">
@@ -53,7 +55,7 @@
             </label>
             <p class="text-sm font-normal text-gray-600">
               <RouterLink
-                to="/forgot-password"
+                to="/forget-password"
                 class="text-purple-700 font-semibold"
                 >Forgot password</RouterLink
               >
@@ -145,7 +147,7 @@ export default {
         console.log(user);
         router.push("/settings/profile");
       } catch (error) {
-        console.log(error);
+        alert(error.message)
       }
     };
 
