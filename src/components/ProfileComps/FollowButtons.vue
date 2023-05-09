@@ -100,25 +100,25 @@ export default {
     },
     isFollowing() {
       // Check if the loggedInUser is following the routeUser
-      return this.loggedInUser.following.includes(this.routeUser.email);
+      return this.loggedInUser.following.includes(this.routeUser.id);
     },
   },
 
   methods: {
     async followUser() {
       // Check if the loggedInUser is already following the routeUser
-      if (this.loggedInUser.following.includes(this.routeUser.email)) {
+      if (this.loggedInUser.following.includes(this.routeUser.id)) {
         // The loggedInUser is already following the routeUser, so unfollow them
         this.loggedInUser.following = this.loggedInUser.following.filter(
-          (user) => user !== this.routeUser.email
+          (user) => user !== this.routeUser.id
         );
         this.routeUser.followers = this.routeUser.followers.filter(
-          (user) => user !== this.loggedInUser.email
+          (user) => user !== this.loggedInUser.id
         );
       } else {
         // The loggedInUser is not following the routeUser, so follow them
-        this.loggedInUser.following.push(this.routeUser.email);
-        this.routeUser.followers.push(this.loggedInUser.email);
+        this.loggedInUser.following.push(this.routeUser.id);
+        this.routeUser.followers.push(this.loggedInUser.id);
         this.routeUser = { ...this.routeUser };
       }
 
