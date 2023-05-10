@@ -202,21 +202,15 @@ export default {
     subNavComponent() {
       switch (this.activeRoute) {
         case "/dashboard/overview":
-          return DashboardSubNav;
         case "/dashboard/notifications":
           return DashboardSubNav;
         case "/users/overview":
-          return UsersSubNav;
         case "/users/friends":
-          return UsersSubNav;
-        case "/:username":
+        case "/:username/":
           return UsersSubNav;
         case "/settings/profile":
-          return SettingsSubNav;
         case "/settings/password":
-          return SettingsSubNav;
         case "/settings/notifications":
-          return SettingsSubNav;
         case "/settings/billing":
           return SettingsSubNav;
         default:

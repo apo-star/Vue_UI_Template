@@ -352,3 +352,15 @@
     // const displayName = computed(() => {
     //   return `${firstName.value} ${lastName.value}`;
     // });
+
+
+
+              <img
+                :src="user.photoURL ? user.photoURL : 'https://ui-avatars.com/api/?name='+user.username+'&background=random&rounded=true&color=fff'"
+                alt="avatar"
+                class="w-10 h-10 rounded-full"
+              />
+
+              .hh:hover img {
+  filter: invert(0.5) sepia(1) saturate(10000%) hue-rotate(0deg);
+}

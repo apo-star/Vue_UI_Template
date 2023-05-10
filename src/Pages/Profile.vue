@@ -50,12 +50,18 @@
                     </div>
 
                     <div class="flex gap-4">
-                      <p class="text-gray-600 text-base font-semibold">
+                      <router-link
+                        :to="`/${username}/followers`"
+                        class="text-gray-600 text-base font-semibold"
+                      >
                         {{ routeUser.followers.length }} followers
-                      </p>
-                      <p class="text-gray-600 text-base font-semibold">
+                      </router-link>
+                      <router-link
+                        :to="`/${username}/following`"
+                        class="text-gray-600 text-base font-semibold"
+                      >
                         {{ routeUser.following.length }} following
-                      </p>
+                      </router-link>
                     </div>
                   </div>
                 </div>

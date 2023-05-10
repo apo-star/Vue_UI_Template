@@ -20,6 +20,7 @@ import Activity from "@/Pages/dashboard-pages/Activity.vue";
 import Overview from "@/Pages/dashboard-pages/Overview.vue";
 import UserOverview from "@/Pages/users-pages/Overview.vue";
 import Friends from "@/Pages/users-pages/Friends.vue";
+import FollowersAndFollowing from "@/components/ProfileComps/FollowersAndFollowing.vue";
 import Followers from "@/Pages/profile-pages/Followers.vue";
 import Following from "@/Pages/profile-pages/Following.vue";
 import BillingSettings from "@/Pages/settings-pages/Billing.vue";
@@ -27,7 +28,6 @@ import ProfileSettings from "@/Pages/settings-pages/Profile.vue";
 import NotificationsSettings from "@/Pages/settings-pages/Notifications.vue";
 import PasswordSettings from "@/Pages/settings-pages/Password.vue";
 import DashboardLayout from "@/Layouts/DashboardLayout.vue";
-import ConnectionLayout from "@/Layouts/ConnectionLayout.vue";
 import store from "./Config/store.js";
 import { auth } from "./Config/firebase.js";
 import "./assets/main.css";
@@ -110,20 +110,25 @@ const router = createRouter({
       },
     },
     {
-      path: "/:username/followers",
-      name: "Followers",
-      component: Followers,
+      path: "/:username",
+      name: "FollowingAndFollowers",
+      component: FollowersAndFollowing,
       meta: {
-        Layout: ConnectionLayout, // use ConnectionLayout for this route
+        Layout: DashboardLayout, // use DashboardLayout for this route
       },
-    },
-    {
-      path: "/:username/following",
-      name: "Following",
-      component: Following,
-      meta: {
-        Layout: ConnectionLayout, // use ConnectionLayout for this route
-      },
+      redirect: { name: "Followers" }, // redirect to Followers by default
+      children: [
+        {
+          path: "followers",
+          name: "Followers",
+          component: Followers,
+        },
+        {
+          path: "following",
+          name: "Following",
+          component: Following,
+        },
+      ],
     },
     {
       path: "/dashboard",

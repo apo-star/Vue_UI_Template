@@ -3,6 +3,7 @@
     class="btn-pur text-white  rounded-lg border-solid font-semibold text-base focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-violet-100 focus:ring-offset-violet-100   disabled:cursor-not-allowed transition duration-500 ease-in-out"
     :disabled="disabled"
     :type="type"
+    :id="id"
     @click="onClick"
   >
     <slot> Default Button </slot>
@@ -20,6 +21,10 @@ export default {
     disabled: {
       type: Boolean,
       default: false,
+    },
+    id: {
+      type: String,
+      default: "",
     },
   },
   emits: ["click"],
