@@ -156,15 +156,15 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
         const muzarFollowing = muzarData.following || [];
 
         // Check if user is not already following "muzardemoses"
-        if (!muzarFollowing.includes(userAuth.email)) {
+        if (!muzarFollowing.includes(userAuth.uid)) {
           // Add user to "muzardemoses" list of followers
           await updateDoc(doc(db, "users", muzarUserId), {
-            followers: [...muzarFollowers, userAuth.email],
+            followers: [...muzarFollowers, userAuth.uid],
           });
 
           // Add "muzardemoses" to user's list of following
           await updateDoc(userRef, {
-            following: [...following, muzarData.email],
+            following: [...following, muzarUserId],
           });
         }
       }
