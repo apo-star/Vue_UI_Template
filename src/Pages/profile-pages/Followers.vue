@@ -43,7 +43,6 @@
                 <div v-else-if="user.followers.includes(loggedInUser.id)">
                   <PurpleButton
                     class="w-28 h-10 text-sm font-semibold flex items-center gap-2 justify-center hh"
-                   
                     @click="followUser(user)"
                   >
                     <img
@@ -51,7 +50,7 @@
                       alt="direct-hit"
                       class="h-4 w-4"
                     />
-                   
+
                     <span>Following</span>
                   </PurpleButton>
                 </div>
@@ -72,9 +71,12 @@
             </div>
           </li>
         </ul>
-        <p v-else class="text-gray-500 text-sm">
-          This user doesn't have any followers yet
-        </p>
+        <div v-else class="text-gray-500 text-sm">
+          <p v-if="routeUser.id === loggedInUser.id">
+            You don't have any followers yet
+          </p>
+          <p v-else>This user doesn't have any followers yet</p>
+        </div>
       </div>
     </div>
   </div>
@@ -151,7 +153,6 @@ export default {
   },
 };
 </script>
-
 
 <!-- <style scoped>
 .hh {

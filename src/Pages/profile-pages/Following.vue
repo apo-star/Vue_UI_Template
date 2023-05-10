@@ -71,9 +71,12 @@
             </div>
           </li>
         </ul>
-        <p v-else class="text-gray-500 text-sm">
-          This user is not following anyone.
-        </p>
+        <div v-else class="text-gray-500 text-sm">
+          <p v-if="loggedInUser.id === routeUser.id">
+            You are not following anyone.
+          </p>
+          <p v-else>This user is not following anyone.</p>
+        </div>
       </div>
     </div>
   </div>
