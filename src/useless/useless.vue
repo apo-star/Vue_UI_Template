@@ -352,6 +352,94 @@
     // const displayName = computed(() => {
     //   return `${firstName.value} ${lastName.value}`;
     // });
+    <template>
+  <div>
+    <!-- Render user card when hovering over a mention -->
+    <div v-if="showUserCard" class="user-card">
+      <img :src="activeUser.avatar" :alt="activeUser.username" />
+      <h3>{{ activeUser.username }}</h3>
+      <p>{{ activeUser.bio }}</p>
+      <router-link :to="'/profile/' + activeUser.username">View profile</router-link>
+    </div>
+
+    <!-- Main content of the app -->
+    <main>
+      <router-view />
+    </main>
+  </div>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      users: [
+        { username: "user1", avatar: "user1-avatar.jpg", bio: "Bio for user1" },
+        { username: "user2", avatar: "user2-avatar.jpg", bio: "Bio for user2" },
+        { username: "user3", avatar: "user3-avatar.jpg", bio: "Bio for user3" },
+        // Add more users here...
+      ],
+      showUserCard: false,
+      activeUser: null,
+    };
+  },
+
+  mounted() {
+    // Listen for mouseover events on mentions
+    document.addEventListener("mouseover", this.handleMentionMouseover);
+  },
+
+  methods: {
+    handleMentionMouseover(event) {
+      const mentionRegex = /@([^\s]+)/;
+      const match = mentionRegex.exec(event.target.textContent);
+      if (match) {
+        const username = match[1];
+        const user = this.users.find((u) => u.username === username);
+        if (user) {
+          this.activeUser = user;
+          this.showUserCard = true;
+          // Position the user card based on the mouse pointer
+          this.positionUserCard(event.clientX, event.clientY);
+        }
+      }
+    },
+
+    positionUserCard(x, y) {
+      const userCard = document.querySelector(".user-card");
+      if (userCard) {
+        const rect = userCard.getBoundingClientRect();
+        const cardX = x + 10;
+        const cardY = y - rect.height - 10;
+        userCard.style.left = `${cardX}px`;
+        userCard.style.top = `${cardY}px`;
+      }
+    },
+  },
+};
+</script>
+
+<style scoped>
+.user-card {
+  position: fixed;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.user-card img {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 50%;
+  margin-bottom: 10px;
+}
+</style>
+
 
 
 
@@ -364,3 +452,301 @@
               .hh:hover img {
   filter: invert(0.5) sepia(1) saturate(10000%) hue-rotate(0deg);
 }
+
+//hambuger menu icon
+    <button class="p-2 rounded-md hover:bg-gray-200 ">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-6 w-6"
+          viewBox="0 0 20 20"
+          fill="currentColor"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 9a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM4 14a1 1 0 100 2h12a1 1 0 100-2H4z"
+            clip-rule="evenodd"
+          />
+        </svg>
+      </button>
+
+
+      import {
+  collection,
+  getDocs,
+  limit,
+  onSnapshot,
+  orderBy,
+  query,
+  where,
+} from "firebase/firestore";
+
+otherUsersData() {
+      return this.users.filter(
+        (user) =>
+          user.id !== this.loggedInUser.id && this.otherUsers.includes(user.id)
+      );
+    },
+
+
+    <!-- <div v-for="message in messages" :key="message.timestamp" class="flex">
+          <div
+            v-if="message.senderId === loggedInUser.id"
+            class="ml-auto bg-gray-300 text-gray-700 rounded-lg px-4 py-2"
+          >
+            <span class="text-xs">{{ message.senderName }}</span>
+            <p class="text-sm">{{ message.text }}</p>
+            <p class="text-xs">
+              {{
+                formatDistanceToNow(
+                  new Date(message.timestamp.seconds * 1000),
+                  {
+                    addSuffix: true,
+                  }
+                )
+              }}
+            </p>
+          </div>
+          <div
+            v-else
+            class="mr-auto bg-indigo-500 text-white rounded-lg px-4 py-2"
+          >
+            <span class="text-xs">{{ chatUser.displayName }}</span>
+            <p class="text-sm">{{ message.text }}</p>
+            <p class="text-xs">
+              {{
+                formatDistanceToNow(
+                  new Date(message.timestamp.seconds * 1000),
+                  {
+                    addSuffix: true,
+                  }
+                )
+              }}
+            </p>
+          </div>
+        </div> -->
+        <!-- <P>{{ displayChat() }}</P> -->
+        <!-- <ul>
+        
+    // async sendMessage() {
+    //   if (!this.message) return;
+    //   const chatId = this.idOne + "-" + this.idTwo;
+    //   const senderId = this.loggedInUser.id;
+    //   const receiverId = this.chatUser.id;
+    //   const senderName = this.loggedInUser.displayName;
+    //   const timestamp = serverTimestamp();
+    //   const messageData = {
+    //     chatId,
+    //     senderId,
+    //     receiverId,
+    //     senderName,
+    //     text: this.message,
+    //     timestamp,
+    //   };
+    //   const messageRef = doc(collection(db, "messages"));
+    //   await setDoc(messageRef, messageData);
+    //   this.message = "";
+    // },
+    // loadMessages() {
+    //   const chatId = this.idOne + "-" + this.idTwo;
+    //   const q = query(
+    //     collection(db, "messages"),
+    //     where("chatId", "==", chatId),
+    //     orderBy("timestamp", "asc")
+    //   );
+    //   const unsubscribe = onSnapshot(q, (snapshot) => {
+    //     this.messages = snapshot.docs.map((doc) => doc.data());
+    //   });
+    // },
+    <script>
+import { mapState } from "vuex";
+import { db } from "../Config/firebase";
+import {
+  collection,
+  getDocs,
+  limit,
+  onSnapshot,
+  orderBy,
+  query,
+  where,
+} from "firebase/firestore";
+export default {
+  name: "ChatSidebar",
+  data() {
+    return {
+      otherUsers: [],
+    };
+  },
+  computed: {
+    ...mapState(["users"]),
+    loggedInUser() {
+      if (this.$store.state.user) {
+        return this.$store.state.user;
+      } else {
+        return null;
+      }
+    },
+    otherUsersData() {
+      const otherUsersIds = this.otherUsers.map((user) => user.id);
+      return this.users
+        .filter((user) => otherUsersIds.includes(user.id))
+        .map((user) => {
+          const otherUser = this.otherUsers.find((u) => u.id === user.id);
+          return {
+            ...user,
+            lastMessageData: otherUser.lastMessageData,
+          };
+        });
+    },
+  },
+  watch: {
+    $route: {
+      immediate: true,
+      handler(newVal, oldVal) {
+        this.getOtherUsers();
+      },
+    },
+  },
+  methods: {
+    async getOtherUsers() {
+      const userChatsRef = collection(db, "userChats");
+
+      // Listen for real-time updates to the userChats collection
+      onSnapshot(
+        query(
+          userChatsRef,
+          where("participants", "array-contains", this.loggedInUser.id)
+        ),
+        (snapshot) => {
+          const otherUsers = [];
+          snapshot.forEach(async (doc) => {
+            const participants = doc.data().participants;
+            const otherUserId = participants.find(
+              (userId) => userId !== this.loggedInUser.id
+            );
+            const chatId =
+              this.loggedInUser.id < otherUserId
+                ? `${this.loggedInUser.id}-${otherUserId}`
+                : `${otherUserId}-${this.loggedInUser.id}`;
+
+            const chatMessagesRef = collection(
+              db,
+              `userChats/${doc.id}/messages`
+            );
+
+            // Get the last message from the chatMessages collection
+            const querySnapshot = await getDocs(
+              query(chatMessagesRef, orderBy("timestamp", "desc"), limit(1))
+            );
+            const lastMessage =
+              querySnapshot.docs.length > 0
+                ? querySnapshot.docs[0].data()
+                : null;
+
+            const lastMessageData = lastMessage
+              ? {
+                  senderId: lastMessage.senderId,
+                  text: lastMessage.text,
+                  timestamp: lastMessage.timestamp,
+                }
+              : null;
+
+            otherUsers.push({
+              id: otherUserId,
+              lastMessageData,
+            });
+          });
+          this.otherUsers = otherUsers;
+        }
+      );
+    },
+  },
+
+  mounted() {
+    this.getOtherUsers();
+  },
+};
+</script>
+
+
+
+
+
+
+//after 
+
+
+
+
+
+<script>
+import { mapState } from "vuex";
+import { db } from "../Config/firebase";
+import {
+  collection,
+  getDocs,
+  onSnapshot,
+  query,
+  where,
+} from "firebase/firestore";
+import { th } from "date-fns/locale";
+export default {
+  name: "ChatSidebar",
+  data() {
+    return {
+      otherUsers: [],
+    };
+  },
+  computed: {
+    ...mapState(["users"]),
+    loggedInUser() {
+      if (this.$store.state.user) {
+        return this.$store.state.user;
+      } else {
+        return null;
+      }
+    },
+    otherUsersData() {
+      return this.users.filter(
+        (user) =>
+          user.id !== this.loggedInUser.id && this.otherUsers.includes(user.id)
+      );
+    },
+  },
+  watch: {
+    $route: {
+      immediate: true,
+      handler(newVal, oldVal) {
+        this.getOtherUsers();
+      },
+    },
+  },
+  methods: {
+    async getOtherUsers() {
+      const userChatsRef = collection(db, "userChats");
+
+      // Listen for real-time updates to the userChats collection
+      onSnapshot(
+        query(
+          userChatsRef,
+          where("participants", "array-contains", this.loggedInUser.id)
+        ),
+        (snapshot) => {
+          const otherUsers = [];
+          snapshot.forEach((doc) => {
+            const participants = doc.data().participants;
+            const otherUserId = participants.find(
+              (userId) => userId !== this.loggedInUser.id
+            );
+            otherUsers.push(otherUserId);
+          });
+          this.otherUsers = otherUsers;
+        }
+      );
+    },
+  },
+
+  onMounted() {
+    this.getOtherUsers();
+  },
+};
+</script>

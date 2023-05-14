@@ -16,6 +16,21 @@
         />
         <h4 class="font-semibold text-base text-gray-900">Overiew</h4>
       </router-link>
+      <router-link
+        to="/messages"
+        active-class="bg-gray-50"
+        class="flex gap-3.5 w-full h-10 items-center hover:bg-gray-50 rounded-md transition duration-500 ease-in-out py-3 pl-3.5"
+        title="Messages"
+      >
+        <img
+          src="@/assets/profileIcons/messages-1.svg"
+          alt="logo"
+          height="20"
+          width="20"
+          class="rounded-lg"
+        />
+        <h4 class="font-semibold text-base text-gray-900">Messages</h4>
+      </router-link>
       <!-- <router-link
         to="/users/friends"
         active-class="bg-gray-50"

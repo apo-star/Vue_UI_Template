@@ -4,6 +4,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import Home from "@/Pages/Home.vue";
 import Profile from "@/Pages/Profile.vue";
 import Pricing from "@/Pages/Pricing.vue";
+import Messages from "@/Pages/Messages.vue";
 import Login from "@/Pages/Login.vue";
 import SignUp from "@/Pages/SignUp.vue";
 //import VerifyEmail from "@/Pages/VerifyEmail.vue";
@@ -23,6 +24,8 @@ import Friends from "@/Pages/users-pages/Friends.vue";
 import FollowersAndFollowing from "@/components/ProfileComps/FollowersAndFollowing.vue";
 import Followers from "@/Pages/profile-pages/Followers.vue";
 import Following from "@/Pages/profile-pages/Following.vue";
+import ChatRoom from "@/Pages/profile-pages/ChatRoom.vue";
+import SelectAndMessage from "@/Pages/profile-pages/SelectAndMessage.vue";
 import BillingSettings from "@/Pages/settings-pages/Billing.vue";
 import ProfileSettings from "@/Pages/settings-pages/Profile.vue";
 import NotificationsSettings from "@/Pages/settings-pages/Notifications.vue";
@@ -129,6 +132,34 @@ const router = createRouter({
           component: Following,
         },
       ],
+    },
+    {
+      path: "/messages",
+      name: "Messages",
+      component: Messages,
+      meta: {
+        layout: DashboardLayout, // use DashboardLayout for this route
+      },
+      redirect: { name: "SelectAndMessage" }, // redirect to SelectAndMessage by default
+      children: [
+        {
+          path: "select-and-message",
+          name: "SelectAndMessage",
+          component: SelectAndMessage,
+        },
+        {
+          path: ":idone-:idtwo",
+          name: "ChatRoom",
+          component: ChatRoom,
+        },
+      ],
+      beforeEnter: (to, from, next) => {
+        if (store.getters["user"]) {
+          next();
+        } else {
+          next({ name: "Login" });
+        }
+      }
     },
     {
       path: "/dashboard",
@@ -272,10 +303,3 @@ const router = createRouter({
 
 createApp(App).use(router).use(store).mount("#app");
 
-// routes: [
-//     { path: "/", name: "Home", component: Pricing },
-//     { path: "/login", name: "Login", component: Login },
-//     { path: "/signup", name: "SignUp", component: SignUp },
-//     {path: "/pricing", name: "Pricing", component: Pricing},
-//     { path: "/:pathMatch(.*)*", name: "NotFound", component: Pricing}
-//   ],

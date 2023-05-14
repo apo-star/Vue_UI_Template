@@ -37,7 +37,10 @@ export default {
           photoURL: doc.data().photoURL || devAvatar,
         });
       });
-      this.$store.commit("SET_USERS", users);
+      this.$store.commit(
+        "SET_USERS",
+        users.map((user) => ({ ...user, lastMessage: "" }))
+      );
     });
     const user = auth.currentUser;
     //check if user email is verified
@@ -107,7 +110,10 @@ export default {
         // }
 
         //console.log(users);
-        store.commit("SET_USERS", users); // Save users to Vuex store
+        store.commit(
+          "SET_USERS",
+          users.map((user) => ({ ...user, lastMessage: "" }))
+        ); // Save users to Vuex store
       } else {
         const userRef = db.doc(`users/${store.getters.currentUser.id}`);
         updateDoc(userRef, { lastSeen: serverTimestamp() });
@@ -150,7 +156,7 @@ export default {
           //console.log(user.emailVerified);
         } else {
           this.showVerifyEmail = false;
-         // console.log(user);
+          // console.log(user);
         }
       }
     },
@@ -167,7 +173,7 @@ export default {
         .catch((error) => {
           const errorCode = error.code;
           const errorMessage = error.message;
-          alert(errorMessage)
+          alert(errorMessage);
           // ...
         });
     },
@@ -179,14 +185,10 @@ export default {
   <p
     class="text-red-600 text-center fixed top-0 z-40 bg-white left-10"
     v-if="showVerifyEmail"
-
   >
     Please verify your email address. Check your inbox for a verification link.
     Didn't receive an email?
-    <button
-      class="text-blue-600"
-      @click="requestVerificationLink"
-    >
+    <button class="text-blue-600" @click="requestVerificationLink">
       Resend
     </button>
   </p>

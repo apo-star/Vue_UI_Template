@@ -43,6 +43,8 @@ const provider = new GoogleAuthProvider();
 
 const db = getFirestore(app);
 
+
+
 export const createUserProfileDocument = async (userAuth, additionalData) => {
   if (!userAuth) return;
   //console.log(userAuth);
@@ -50,8 +52,7 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
   const snapShot = await getDoc(userRef);
   //console.log(snapShot);
   if (!snapShot.exists()) {
-    const { displayName, email, photoURL,  emailVerified
-    } = userAuth;
+    const { displayName, email, photoURL, emailVerified } = userAuth;
     //const { lastLoginAt } = userAuth.metadata;
     //if I want to get the last login time
     const createdAt = new Date();

@@ -76,6 +76,20 @@
               class="rounded-lg"
             />
           </router-link>
+          <router-link
+            to="/messages"
+            active-class="bg-gray-50"
+            class="p-3.5 hover:bg-gray-50 rounded-md transition duration-500 ease-in-out"
+            title="Messages"
+          >
+            <img
+              src="@/assets/profileIcons/messages-1.svg"
+              alt="logo"
+              height="20"
+              width="20"
+              class="rounded-lg"
+            />
+          </router-link>
         </div>
       </div>
       <div class="flex flex-col gap-9 items-center">
@@ -207,6 +221,8 @@ export default {
         case "/users/overview":
         case "/users/friends":
         case "/:username/":
+        case "/messages/select-and-message":
+        case "/messages/:idone-:idtwo":
           return UsersSubNav;
         case "/settings/profile":
         case "/settings/password":

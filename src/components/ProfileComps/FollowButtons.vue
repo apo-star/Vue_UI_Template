@@ -8,9 +8,16 @@
       </router-link>
     </div>
     <div class="flex gap-5" v-else>
-      <WhiteButton class="px-4 h-10 text-sm font-semibold">
-        Message
-      </WhiteButton>
+      <router-link
+        :to="{
+          name: 'ChatRoom',
+          params: { idone: loggedInUser.id, idtwo: routeUser.id },
+        }"
+      >
+        <WhiteButton class="px-4 h-10 text-sm font-semibold">
+          Message
+        </WhiteButton>
+      </router-link>
       <PurpleButton
         class="w-28 h-10 text-sm font-semibold flex items-center gap-3 justify-center"
         v-if="!isFollowing"
