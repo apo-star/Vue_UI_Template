@@ -36,6 +36,8 @@ import { auth } from "./Config/firebase.js";
 import "./assets/main.css";
 import "./assets/tailwind.css";
 
+
+
 const router = createRouter({
   history: createWebHistory(),
   routes: [
@@ -300,6 +302,7 @@ const router = createRouter({
 //   });
 
 //   export default router;
+
 
 createApp(App).use(router).use(store).mount("#app");
 
