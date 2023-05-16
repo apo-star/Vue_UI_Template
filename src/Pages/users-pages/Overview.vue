@@ -33,11 +33,24 @@
                       : 'https://sbcf.fr/wp-content/uploads/2018/03/sbcf-default-avatar.png'
                   "
                   alt="avatar"
-                  class="h-24 w-24 rounded-lg"
+                  class="h-20 w-20 rounded-lg"
                 />
                 <div>
                   <h1 class="text-gray-900 font-semibold text-lg capitalize">
                     {{ user.displayName ? user.displayName : "" }}
+                    <span v-if="user.admin" class="relative" title="Admin">
+                      <img
+                        src="../../assets/profileIcons/admin-tag.svg"
+                        alt="admin"
+                        class="h-6 w-6 inline-block"
+                        title="Admin"
+                      />
+                      <p
+                        class="absolute top-1 left-2 text-xs font-semibold text-white"
+                      >
+                        A
+                      </p>
+                    </span>
                     <span
                       v-if="user.email === me.email"
                       class="text-gray-400 font-normal text-sm"

@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col justify-center items-center gap-5 mx-auto">
+  <div class="flex flex-col justify-center items-center gap-5 mx-auto h-full">
     <div class="flex flex-col justify-center items-center gap-2">
       <img
         src="../../assets/profileIcons/messages-1.svg"
@@ -14,19 +14,39 @@
         choice is yours!
       </p>
     </div>
-    <PurpleButton class="px-3.5 h-10 text-sm font-semibold mt-2">
+    <PurpleButton
+      class="px-3.5 h-10 text-sm font-semibold mt-2"
+      @click="openModal"
+      type="button"
+    >
       New Message
     </PurpleButton>
+    <NewMessageModal v-if="showModal" @close="closeModal" />
   </div>
 </template>
 
 <script>
 import PurpleButton from "../../components/PurpleButton.vue";
+import NewMessageModal from "../../components/ProfileComps/NewMessageModal.vue";
 
 export default {
   name: "Messages",
   components: {
     PurpleButton,
+    NewMessageModal,
+  },
+  data() {
+    return {
+      showModal: false,
+    };
+  },
+  methods: {
+    closeModal() {
+      this.showModal = false;
+    },
+    openModal() {
+      this.showModal = true;
+    },
   },
 };
 </script>

@@ -65,7 +65,7 @@
                       class="h-4 w-4"
                     />
                     Follow
-                  </WhiteButton>
+                  </WhiteButton >
                 </div>
               </div>
             </div>

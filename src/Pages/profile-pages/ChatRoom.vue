@@ -19,6 +19,19 @@
           <div>
             <h1 class="font-semibold text-lg ml-4">
               {{ chatUser.displayName }}
+              <span v-if="chatUser.admin" class="relative" title="Admin">
+                <img
+                  src="../../assets/profileIcons/admin-tag.svg"
+                  alt="admin"
+                  class="h-6 w-6 inline-block"
+                  title="Admin"
+                />
+                <p
+                  class="absolute top-1 left-2 text-xs font-semibold text-white"
+                >
+                  A
+                </p>
+              </span>
             </h1>
             <p class="text-sm text-gray-500 ml-4">@{{ chatUser.username }}</p>
           </div>
@@ -45,6 +58,17 @@
         <div class="flex flex-col">
           <h1 class="font-bold text-lg text-gray-900">
             {{ chatUser.displayName }}
+            <span v-if="chatUser.admin" class="relative" title="Admin">
+              <img
+                src="../../assets/profileIcons/admin-tag.svg"
+                alt="admin"
+                class="h-6 w-6 inline-block"
+                title="Admin"
+              />
+              <p class="absolute top-1 left-2 text-xs font-semibold text-white">
+                A
+              </p>
+            </span>
           </h1>
           <p class="text-base text-gray-600">@{{ chatUser.username }}</p>
         </div>
@@ -66,7 +90,7 @@
           </h2>
         </div>
       </div>
-      <div class=" mb-10" style="min-height: 380px">
+      <div class="mb-10" style="min-height: 380px">
         <ul class="flex flex-col gap-7 px-10">
           <li v-for="message in messages" :key="message.timestamp">
             <div
@@ -101,6 +125,19 @@
                 <div class="flex justify-between gap-4">
                   <p class="text-gray-700 text-sm font-medium">
                     {{ chatUser.displayName }}
+                    <span v-if="chatUser.admin" class="relative" title="Admin">
+                      <img
+                        src="../../assets/profileIcons/admin-tag.svg"
+                        alt="admin"
+                        class="h-6 w-6 inline-block"
+                        title="Admin"
+                      />
+                      <p
+                        class="absolute top-0.5 left-2 text-xs font-semibold text-white"
+                      >
+                        A
+                      </p>
+                    </span>
                   </p>
                 </div>
                 <div
@@ -120,8 +157,11 @@
         </ul>
       </div>
     </div>
-    <div class="bg-gray-50 border-t border-purple-300 py-3" style="position: sticky; bottom: 0">
-      <div class="flex justify-between px-20  relative">
+    <div
+      class="bg-gray-50 border-t border-purple-300 py-3"
+      style="position: sticky; bottom: 0"
+    >
+      <div class="flex justify-between px-20 relative">
         <div class="absolute top-3 pl-1">
           <button
             type="button"
@@ -185,7 +225,7 @@
         </button>
         <textarea
           placeholder="Type a message..."
-          class="w-full bg-white font-normal text-base text-gray-900 rounded-lg py-2.5 shadow-sm  focus:outline-none disabled:background-gray-50 disabled:border-gray-300 disabled:text-gray-500 after:bg-white transition duration-300 ease-in-out resize-none box-border pr-16 pl-24"
+          class="w-full bg-white font-normal text-base text-gray-900 rounded-lg py-2.5 shadow-sm focus:outline-none disabled:background-gray-50 disabled:border-gray-300 disabled:text-gray-500 after:bg-white transition duration-300 ease-in-out resize-none box-border pr-16 pl-24"
           v-model="message"
           :rows="rows"
           @input="handleInput"
@@ -374,7 +414,6 @@ export default {
       }
     },
     formatDistanceToNow,
-
   },
 
   onMounted() {

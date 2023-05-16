@@ -41,8 +41,25 @@
                   />
                   <div class="flex flex-col gap-3 mt-16">
                     <div>
-                      <h1 class="text-3xl font-semibold text-gray-900 w-max">
+                      <h1 class="text-3xl font-semibold text-gray-900 w-max ">
                         {{ routeUser.displayName }}
+                        <span
+                          v-if="routeUser.admin"
+                          class="relative"
+                          title="Admin"
+                        >
+                          <img
+                            src="../assets/profileIcons/admin-tag.svg"
+                            alt="admin"
+                            class="h-7 w-7 inline-block"
+                            title="Admin"
+                          />
+                          <p
+                            class="absolute top-2.5 left-2 text-sm font-semibold text-white"
+                          >
+                            A
+                          </p>
+                        </span>
                       </h1>
                       <p class="text-gray-600 text-base font-normal">
                         @{{ username }}

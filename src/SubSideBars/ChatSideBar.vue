@@ -5,6 +5,7 @@
       <div class="text-lg font-semibold text-gray-900">Messages</div>
       <button
         class="h-10 w-10 shadow-sm border border-gray-300 rounded-lg transition duration-500 ease-in-out hover:bg-gray-50"
+        @click="openModal"
       >
         <img
           src="../assets/profileIcons/edit-for-message.svg"
@@ -12,6 +13,7 @@
           class="h-5 w-5 mx-auto"
         />
       </button>
+      <NewMessageModal v-if="showModal" @close="closeModal" />
     </div>
 
     <!-- Chat list -->
@@ -42,23 +44,7 @@
                 </p>
               </div>
             </div>
-            <!-- <p class="text-gray-600 text-sm font-normal">
-              {{ formatTimestamp(loggedInUser.lastMessageData.timestamp) }}
-            </p> -->
           </div>
-          <!-- <h5 class="text-gray-600 font-normal text-sm">
-            <span class="font-semibold">
-              {{
-                user.lastMessageData.senderId === loggedInUser.id ? "You: " : ""
-              }}
-            </span>
-
-            {{
-              user.lastMessageData.text.length > 90
-                ? user.lastMessageData.text.slice(0, 90) + "..."
-                : user.lastMessageData.text
-            }}
-          </h5> -->
         </router-link>
         <router-link
           v-for="user in otherUsersData"
@@ -81,6 +67,19 @@
               <div>
                 <h4 class="text-gray-700 font-semibold text-sm">
                   {{ user.displayName }}
+                  <span v-if="user.admin" class="relative" title="Admin">
+                    <img
+                      src="../assets/profileIcons/admin-tag.svg"
+                      alt="admin"
+                      class="h-6 w-6 inline-block"
+                      title="Admin"
+                    />
+                    <p
+                      class="absolute top-0.5 left-2 text-xs font-semibold text-white"
+                    >
+                      A
+                    </p>
+                  </span>
                 </h4>
                 <p class="text-gray-600 text-xs font-normal">
                   @{{ user.username }}
@@ -111,6 +110,7 @@
 </template>
 
 <script>
+import NewMessageModal from "../components/ProfileComps/NewMessageModal.vue";
 import { mapState } from "vuex";
 import { db } from "../Config/firebase";
 import {
@@ -124,9 +124,13 @@ import {
 } from "firebase/firestore";
 export default {
   name: "ChatSidebar",
+  components: {
+    NewMessageModal,
+  },
   data() {
     return {
       otherUsers: [],
+      showModal: false,
     };
   },
   computed: {
@@ -173,6 +177,12 @@ export default {
     },
   },
   methods: {
+    closeModal() {
+      this.showModal = false;
+    },
+    openModal() {
+      this.showModal = true;
+    },
     formatTimestamp(timestamp) {
       const date = new Date(timestamp.seconds * 1000); // Convert to milliseconds
       const now = new Date();
