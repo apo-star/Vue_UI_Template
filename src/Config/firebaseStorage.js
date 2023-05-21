@@ -5,7 +5,7 @@ const storage = getStorage(app);
 
 export const uploadImage = async (file, currentUser) => {
   const fileRef = ref(storage, currentUser.uid + ".jpg");
- 
+
   //const setLoading = true;
   const snapShot = await uploadBytes(fileRef, file);
   const photoURL = await getDownloadURL(fileRef);
@@ -15,3 +15,7 @@ export const uploadImage = async (file, currentUser) => {
   //setLoading(false);
   alert("Image uploaded successfully");
 };
+
+//storage
+
+export { storage };

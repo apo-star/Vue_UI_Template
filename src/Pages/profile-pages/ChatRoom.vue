@@ -45,7 +45,9 @@
         </button>
       </div>
     </div>
-    <div class="mt-10 flex flex-col gap-28">
+    <div class="mt-10 flex flex-col gap-28"
+       style="overflow-y: scroll; height: 75vh; "
+    >
       <div class="text-center flex flex-col items-center justify-center gap-4">
         <img
           :src="
@@ -91,7 +93,7 @@
         </div>
       </div>
       <div class="mb-10" style="min-height: 380px">
-        <ul class="flex flex-col gap-7 px-10">
+        <ul class="flex flex-col gap-8 px-10">
           <li v-for="message in messages" :key="message.timestamp">
             <div
               v-if="message.senderId === loggedInUser.id"
@@ -103,11 +105,17 @@
               <div
                 style="max-width: 508px"
                 class="bg-purple-600 py-2.5 px-3.5 rounded-lg"
+                v-if="message.text"
               >
                 <p class="text-white font-normal text-base">
                   {{ message.text }}
                 </p>
               </div>
+              <img
+                v-if="message.imageURL"
+                :src="message.imageURL"
+                class="w-72 h-60 rounded-lg mt-2"
+              />
               <p class="text-gray-600 text-xs font-normal">
                 {{ formatTime(message.timestamp.seconds * 1000) }}
               </p>
@@ -148,6 +156,11 @@
                     {{ message.text }}
                   </p>
                 </div>
+                <img
+                  v-if="message.imageURL"
+                  :src="message.imageURL"
+                  class="w-72 h-60 rounded-lg mt-2"
+                />
                 <p class="text-gray-600 text-xs font-normal">
                   {{ formatTime(message.timestamp.seconds * 1000) }}
                 </p>
@@ -160,11 +173,23 @@
     <div
       class="bg-gray-50 border-t border-purple-300 py-3"
       style="position: sticky; bottom: 0"
+      :class="{ 'h-52': showImagePreview }"
     >
-      <div class="flex justify-between px-20 relative">
-        <div class="absolute top-3 pl-1">
+      <div class="flex justify-between px-20 relative items-end h-full">
+        <div class="absolute top-1 pl-1" v-if="showImagePreview">
+          <img :src="imagePreview" class="w-28 h-24 rounded-lg" />
+          <button
+            v-if="showImagePreview"
+            @click="cancelImageUpload"
+            class="absolute top-1 right-1 bg-white border-gray-100 rounded-full p-1 transition duration-300 ease-in-out hover:bg-gray-100"
+          >
+            <img src="../../assets/dashboardIcons/close.svg" class="w-6 h-6" />
+          </button>
+        </div>
+        <div class="absolute bottom-3 pl-1">
           <button
             type="button"
+            @click="openImagePicker"
             class="inline-flex justify-center p-2 text-purple-600 rounded-full cursor-pointer hover:text-purple-900 hover:bg-purple-100 transition duration-300 ease-in-out"
           >
             <svg
@@ -204,9 +229,12 @@
         </div>
         <button
           type="submit"
-          class="absolute inset-y-0 right-24 bg-white text-purple-600 w-10 h-10 flex items-center justify-center rounded-md shadow-xl hover:bg-purple-100 hover:text-purple-800 transition duration-300 ease-in-out top-3"
+          class="absolute right-24 bg-white w-10 h-10 flex items-center justify-center rounded-md shadow-xl hover:bg-purple-100 transition duration-300 ease-in-out bottom-3"
           :class="{
-            ' text-purple-400 hover:text-purple-500': message.length === 0,
+            ' text-purple-400 hover:text-purple-500 cursor-default':
+              message.length === 0 && !showImagePreview,
+            ' text-purple-600 hover:text-purple-800':
+              message.length > 0 || showImagePreview,
           }"
           @click="sendMessage"
         >
@@ -223,6 +251,14 @@
           </svg>
           <span class="sr-only">Send message</span>
         </button>
+        <input
+          type="file"
+          ref="imageInput"
+          accept="image/*"
+          @change="handleImageUpload"
+          class="hidden"
+        />
+
         <textarea
           placeholder="Type a message..."
           class="w-full bg-white font-normal text-base text-gray-900 rounded-lg py-2.5 shadow-sm focus:outline-none disabled:background-gray-50 disabled:border-gray-300 disabled:text-gray-500 after:bg-white transition duration-300 ease-in-out resize-none box-border pr-16 pl-24"
@@ -252,6 +288,8 @@ import {
   addDoc,
   getDocs,
 } from "firebase/firestore";
+import { ref, getDownloadURL, uploadBytes } from "firebase/storage";
+import { storage } from "../../Config/firebaseStorage";
 
 export default {
   name: "ChatRoom",
@@ -264,6 +302,7 @@ export default {
       rows: 2,
       maxChars: 120,
       messages: [],
+      showImagePreview: false,
     };
   },
   watch: {
@@ -324,6 +363,77 @@ export default {
       return messageTime.format("MMM D, YYYY h:mm A");
     },
 
+    // async handleImageUpload(event) {
+    //   const file = event.target.files[0];
+    //   const chatId =
+    //     this.idOne < this.idTwo
+    //       ? `${this.idOne}-${this.idTwo}`
+    //       : `${this.idTwo}-${this.idOne}`;
+
+    //   // Check if a file is selected
+    //   if (file) {
+    //     // Save the image in the "messages" collection in Firebase Storage
+    //     const storageRef = ref(storage, `messages/${chatId}/${file.name}`);
+    //     const snapshot = await uploadBytes(storageRef, file);
+    //     const downloadURL = await getDownloadURL(storageRef);
+
+    //     // Create an imageData object with the downloadURL
+    //     const imageData = {
+    //       imageURL: downloadURL,
+    //     };
+
+    //     // Call the sendMessage function with the imageData
+    //     this.sendMessage(imageData);
+    //   } else {
+    //     // If no file is selected, call the sendMessage function without the imageData
+    //     this.sendMessage();
+    //   }
+    // },
+
+    // openImagePicker() {
+    //   this.$refs.imageInput.click();
+    // },
+    handleImageUpload(event) {
+      const file = event.target.files[0];
+      const chatId =
+        this.idOne < this.idTwo
+          ? `${this.idOne}-${this.idTwo}`
+          : `${this.idTwo}-${this.idOne}`;
+
+      // Check if a file is selected
+      if (file) {
+        // Create a FileReader to read the image file
+        const reader = new FileReader();
+
+        // Define the FileReader onload event handler
+        reader.onload = (e) => {
+          // Set the image preview source
+          this.imagePreview = e.target.result;
+          this.showImagePreview = true;
+          //this.rows = 6;
+        };
+
+        // Read the file as a data URL
+        reader.readAsDataURL(file);
+
+        // Store the file in a class variable for later use
+        this.uploadingImageFile = file;
+      }
+    },
+
+    openImagePicker() {
+      this.$refs.imageInput.click();
+    },
+
+    cancelImageUpload() {
+      // Clear the image preview and reset the variables
+      this.imagePreview = "";
+      this.showImagePreview = false;
+      this.uploadingImageFile = null;
+      this.imageData = null;
+      //this.rows = 2;
+    },
+
     handleInput(event) {
       this.message = event.target.value;
       const numRows =
@@ -335,7 +445,28 @@ export default {
       }
     },
     async sendMessage() {
-      if (!this.message) return;
+      // Check if an image file is being uploaded
+      if (this.uploadingImageFile) {
+        // Save the image in the "messages" collection in Firebase Storage
+        const chatId =
+          this.idOne < this.idTwo
+            ? `${this.idOne}-${this.idTwo}`
+            : `${this.idTwo}-${this.idOne}`;
+        const storageRef = ref(
+          storage,
+          `messages/${chatId}/${this.uploadingImageFile.name}`
+        );
+        const snapshot = await uploadBytes(storageRef, this.uploadingImageFile);
+        const downloadURL = await getDownloadURL(storageRef);
+
+        // Create an imageData object with the downloadURL
+        this.imageData = {
+          imageURL: downloadURL,
+        };
+      }
+
+      if (!this.message && !this.imageData) return;
+      console.log("sendMessage" + this.imageData);
       const userChatsRef = collection(db, "userChats");
 
       const chatId =
@@ -371,14 +502,21 @@ export default {
         senderId,
         receiverId,
         senderName,
-        text: this.message,
+        text: this.message || null, // Include the message text in the message data
+        imageURL: this.imageData?.imageURL || null,
         timestamp,
       };
       await addDoc(chatMessagesRef, messageData);
 
       this.message = "";
       this.displayChat();
+      this.imagePreview = "";
+      this.showImagePreview = false;
+      this.uploadingImageFile = null;
+      this.imageData = null;
+      //this.rows = 2;
     },
+
     async displayChat() {
       const userChatsRef = collection(db, "userChats");
 
@@ -423,29 +561,6 @@ export default {
 </script>
 
 <style scoped>
-.message-right {
-  display: flex;
-  flex-direction: row-reverse;
-  align-items: center;
-  margin-bottom: 10px;
-}
 
-.message-left {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  margin-bottom: 10px;
-}
-
-.message-label {
-  font-weight: bold;
-  margin-right: 5px;
-}
-
-.message-text {
-  padding: 5px;
-  border-radius: 10px;
-  background-color: #e6e6e6;
-}
 </style>
 ```
