@@ -96,12 +96,21 @@
                 user.lastMessageData.senderId === loggedInUser.id ? "You: " : ""
               }}
             </span>
-
-            {{
-              user.lastMessageData.text.length > 90
-                ? user.lastMessageData.text.slice(0, 90) + "..."
-                : user.lastMessageData.text
-            }}
+            <span v-if="user.lastMessageData.text">
+              {{
+                user.lastMessageData.text.length > 90
+                  ? user.lastMessageData.text.slice(0, 90) + "..."
+                  : user.lastMessageData.text
+              }}
+            </span>
+            <span v-else>
+              <img
+                src="../assets/profileIcons/blank-photo.svg"
+                alt="image"
+                class="h-5 w-5 inline-block mr-1"
+              />
+              <span class="font-semibold">Photo</span>
+            </span>
           </h5>
         </router-link>
       </div>
