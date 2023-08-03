@@ -108,12 +108,11 @@ export default {
     },
     filteredUsers() {
       // Filter the 'users' array based on the search query
-      return this.users.filter(
-        (user) =>
-          user.displayName
-            .toLowerCase()
-            .includes(this.searchQuery.toLowerCase()) ||
-          user.username.toLowerCase().includes(this.searchQuery.toLowerCase())
+      return this.users.filter((user) =>
+        // user.displayName
+        //   .toLowerCase()
+        //   .includes(this.searchQuery.toLowerCase()) ||
+        user.username.toLowerCase().includes(this.searchQuery.toLowerCase())
       );
     },
   },

@@ -23,9 +23,11 @@
           </h1>
           <p class="text-gray-600 text-base font-normal">{{ user.email }}</p>
         </div>
-        <PurpleButton class="px-4 h-10 text-sm font-semibold">
-          View profile
-        </PurpleButton>
+        <RouterLink :to="`/${user.username}`">
+          <PurpleButton class="px-4 h-10 text-sm font-semibold">
+            View profile
+          </PurpleButton>
+        </RouterLink>
       </div>
       <div class="px-8 flex flex-col gap-5">
         <div class="flex gap-8">
@@ -211,7 +213,7 @@ import { auth, db, updateProfile, updateEmail } from "../../Config/firebase.js";
 import { uploadImage } from "../../Config/firebaseStorage";
 import devImg from "../../assets/dashboardIcons/avatar-default.png";
 import { ref, watch, computed } from "vue";
-import { useRouter } from "vue-router";
+import { useRouter, RouterLink } from "vue-router";
 import { useStore } from "vuex";
 export default {
   name: "ProfileSettings",

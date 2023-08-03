@@ -85,7 +85,7 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
 
       try {
         await setDoc(userRef, {
-          displayName,
+          displayName, //no forget to have john for users with no displayName
           email,
           photoURL,
           emailVerified,
