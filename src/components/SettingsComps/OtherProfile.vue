@@ -206,6 +206,11 @@ export default {
         try {
           const docRef = doc(db, "users", user.uid);
 
+          if (username === "") {
+            alert("Username cannot be empty");
+            return;
+          }
+
           // Check if username is taken through vuex store
           if (this.$store.state.user.username !== this.username) {
             const q = query(
