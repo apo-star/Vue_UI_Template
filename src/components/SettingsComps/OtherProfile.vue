@@ -220,6 +220,7 @@ export default {
             const querySnapshot = await getDocs(q);
             if (querySnapshot.size > 0) {
               alert("Username is taken");
+              this.username = this.$store.state.user.username;
               return;
             }
           }
