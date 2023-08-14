@@ -1,6 +1,6 @@
 # untitled-ui
 
-This template should help get you started developing with Vue 3 in Vite.
+This is a project using Untitled UI.
 
 ## Recommended IDE Setup
 
