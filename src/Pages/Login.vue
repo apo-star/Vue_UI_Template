@@ -145,7 +145,7 @@ export default {
         });
         // store.commit("SET_USER", user);
         console.log(user);
-        router.push("/settings/profile");
+        router.push("/dashboard/overview");
       } catch (error) {
         alert(error.message)
       }

@@ -65,10 +65,10 @@ export default {
         if (!snapShot.exists()) return;
         //go to dashboard if user is in login and signup page
         if (router.currentRoute.value.path === "/login") {
-          router.push({ path: "/settings/profile" });
+          router.push({ path: "/dashboard/overview" });
         }
         if (router.currentRoute.value.path === "/signup") {
-          router.push({ path: "/settings/profile" });
+          router.push({ path: "/dashboard/overview" });
         }
         //router.push({ path: "/dashboard/overview" });
         //add snapshot.data and snapshot.id to vuex store

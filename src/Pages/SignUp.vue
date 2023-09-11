@@ -155,7 +155,7 @@ export default {
           //gg
         });
         alert("Please check your email for verification");
-        router.push("/settings/profile");
+        router.push("/dashboard/overview");
       } catch (error) {
         alert(error.message);
       }
